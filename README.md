@@ -11,7 +11,6 @@
 * req, res
 * route parameters
 * query parameters
-* CORS - Cross Origin Resource Sharing
 * Postman
 * body-parser
 
