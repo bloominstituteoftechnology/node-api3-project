@@ -19,7 +19,7 @@
 Download Postman.  You'll be using this to verify that you're routes are working properly.
 Download `nodemon` using `npm i -g nodemon`.
 Create a new folder and run `npm init` to create your `package.json` file.
-Install npm packages: `npm i --save express body-parser cors`
+Install npm packages: `npm i --save express body-parser`
 Create a server that makes the following routes function properly.
 * [POST] `/users` This route should save a new user to the server. (This is just in memory and will not persist if you restart the server.)
 * [GET] `/users` This route will return an array of all users.
