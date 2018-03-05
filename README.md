@@ -16,7 +16,7 @@
 
 ## Assignment
 
-Download Postman.  You'll be using this to verify that you're routes are working properly.
+Download Postman.  You'll be using this to verify that your routes are working properly.
 Download `nodemon` using `npm i -g nodemon`.
 Create a new folder and run `npm init` to create your `package.json` file.
 Install npm packages: `npm i --save express body-parser`
