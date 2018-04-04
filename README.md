@@ -32,18 +32,18 @@ The `/data/helpers` folder includes helper files that you can use to manage the 
 
 * `get()`: calling find returns a promise that resolves to an array of all the resources contained in the database. If you pass an `id` to this method it will return the resource with that id if found.
 * `insert()`: calling insert passing it a resource object will add it to the database and return an object with the id of the inserted resource. The object looks like this: `{ id: 123 }`.
-* `update()`: accepts two arguments, the first is the id of the resource to update and the second is an object with the changes to apply. It returns the count of updated records. If the count is 1 it means the record was updated correctly.
-* `remove()`: the remove method accepts an id as it's first parameter and, upon successfully deleting the resource from the database, it returns the number of records deleted.
+* `update()`: accepts two arguments, the first is the `id` of the resource to update and the second is an object with the `changes` to apply. It returns the count of updated records. If the count is 1 it means the record was updated correctly.
+* `remove()`: the remove method accepts an `id` as it's first parameter and, upon successfully deleting the resource from the database, returns the number of records deleted.
 
 The `postDb.js` helper includes an extra method called `getPostTags()` that when passed a post id as it's only argument, returns a list of all the _tags_ for the post.
 
 The `userDb.js` helper includes an extra method called `getUserPosts()` that when passed a user id as it's only argument, returns a list of all the posts for the user.
 
-**All these helper methods return promises.**
+**All these helper methods return a promise.**
 
 #### Database Schemas
 
-The _schemas_ (properties and data type of each property) used to store and retrieve the resources inside the included database file (`lambda.sqlite3`) is described below.
+The _schemas_ (properties and data type of each property) used to store and retrieve the resources inside the included database (`lambda.sqlite3`) is described below.
 
 ##### Users
 
@@ -77,5 +77,5 @@ Design and build the necessary endpoints to:
 
 * Use `create-react-app` to create an application inside the root folder, name it `client`.
 * From the React application connect to the `/api/users` endpoint in the API and show the list of users.
-* Add functionality required to show the details of a user, including their posts, when clicking on a user name on the list. Use React Router to navigate to a `/users/:id` route to show the user details.
+* Add functionality to show the details of a user, including their posts, when clicking a user name in the list. Use React Router to navigate to a `/users/:id` route to show the user details.
 * Add styling!
