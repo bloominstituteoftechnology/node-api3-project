@@ -23,7 +23,7 @@ Use Node.js and Express to design and build an API that performs CRUD operations
 * Take the steps necessary to create a `package.json` to keep a record of our dependencies.
 * use _yarn_ or _npm_ to add **knex** and **sqlite3** as dependencies to the project. **This is required for database access**.
 * Configure an _npm script_ named _"start"_ that will execute your code using _nodemon_ so that the server restarts on changes. Make _nodemon_ be a development time dependency only, it shouldn't be deployed to production.
-* Design and build a set of endpoints satisfy the API requirements.
+* Design and build a set of endpoints that satisfy the API requirements.
 * **Use _Postman_ to test your API as you work through the exercises.**
 
 ### Database Persistence Helpers
