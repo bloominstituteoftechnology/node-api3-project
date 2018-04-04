@@ -1,4 +1,4 @@
-# Building and API using a Node.js and Express
+# Building an API using a Node.js and Express
 
 ## Topics
 
