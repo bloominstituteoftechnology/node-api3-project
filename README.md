@@ -1,4 +1,4 @@
-# Building and API using a Node.js and Express
+# Building an API using a Node.js and Express
 
 ## Topics
 
@@ -28,7 +28,7 @@ Use Node.js and Express to design and build an API that performs CRUD operations
 
 ### Database Persistence Helpers
 
-The `/data/helpers` folder includes helper files you can use to manage the persistence of the users, posts and tags resources. These files are `userDb.js`, `postDb.js` and `tagDb.js`. All three of them publish the following api, that you can use to store, modify and retrieve each resource:
+The `/data/helpers` folder includes helper files that you can use to manage the persistence of users, posts and tags data. These files are `userDb.js`, `postDb.js` and `tagDb.js`. All three of them publish the following api, that you can use to store, modify and retrieve each resource:
 
 * `get()`: calling find returns a promise that resolves to an array of all the resources contained in the database. If you pass an `id` to this method it will return the resource with that id if found.
 * `insert()`: calling insert passing it a resource object will add it to the database and return an object with the id of the inserted resource. The object looks like this: `{ id: 123 }`.
