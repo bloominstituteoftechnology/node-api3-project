@@ -12,6 +12,8 @@
 
 - Use Node.js and Express to **design and build** an API that performs CRUD operations on `users` and `posts`.
 - Write custom middleware to ensure that the user's `name` is uppercased before the request reaches the `POST` or `PUT` route handler.
+- **You will work on this assignment over the course of TWO days**
+- **The endpoints for managing users and the middleware to uppercase the user's name are due on Wednesday, the posts endpoints are due on Thursday**.
 
 ### Download Project Files and Install Dependencies
 
@@ -51,7 +53,7 @@ We have provided test data for the resources.
 
 Now that we have a way to add, update, remove and retrieve data from the provided database, it is time to work on the API.
 
-### Implement Requirements
+### Implementation Requirements
 
 - Take the steps necessary to create a `package.json` to keep a record of our dependencies.
 - use _yarn_ or _npm_ to add **knex** and **sqlite3** as dependencies to the project. **This is required for database access**.
@@ -61,7 +63,7 @@ Now that we have a way to add, update, remove and retrieve data from the provide
   - retrieve the list of posts for a user.
 - **Use _Postman_ to test the API as you work through the exercises.**
 
-**The endpoints for managing users and the middleware to uppercase the user's name are due on Wednesday, the posts endpoints are due on Thursday**.
+
 
 ## Stretch Goal
 
