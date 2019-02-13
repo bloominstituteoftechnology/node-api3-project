@@ -1,16 +1,12 @@
 # Building an API using a Node.js and Express
 
-In this challenge you will practice the concepts learned in this module.
+In this challenge, you will **design** and build an API that satisfies the requirements listed below under the `Minimum Viable Product` section.
 
 ## Instructions
 
 **Read these instructions carefully. Understand exactly what is expected before starting.**
 
 You are allowed, and **encouraged**, to collaborate with other peers. Please follow the twenty-minute rule, before seeking support from your PM and Instructor.
-
-## Description
-
-In this challenge, you will **design** and build an API that satisfies the requirements listed below under the `Minimum Viable Product` section.
 
 ## Project Set Up
 
