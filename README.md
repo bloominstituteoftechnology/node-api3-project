@@ -1,69 +1,74 @@
 # Building an API using a Node.js and Express
 
-## Topics
+This challenge allows yoy to practice the concepts you learned in this module.
 
-- Building RESTful APIs.
-- Performing CRUD Operations on Multiple Resources.
-- Configuring CORS.
-- Writing Custom Middleware.
-- Using Express Routers to Modularize Application.
+## Instructions
 
-## Assignment
+**Read these instructions carefully. Understand exactly what is expected before starting this Challenge.**
 
-- Use Node.js and Express to **design and build** an API that performs CRUD operations on `users` and `posts`.
-- Write custom middleware to ensure that the user's `name` is uppercased before the request reaches the `POST` or `PUT` route handler.
-- **You will work on this assignment over the course of TWO days**
-- **The endpoints for managing users and the middleware to uppercase the user's name are due on Wednesday, the posts endpoints are due on Thursday**.
+You are allowed to collaborate with other peers. However, you are encouraged to follow the twenty-minute rule and seek support from your PM and Instructor in your cohort's help channel.
 
-### Download Project Files and Install Dependencies
+## Description
 
-- **Fork** and **Clone** this repository.
-- **CD into the folder** where you cloned the repository.
-- Do your magic!
+In this challenge, you will **design** and build an API that sitisfies the requirements listed as the Minimum Viable Product.
+
+## Project Set Up
+
+- [ ] Create a forked copy of this project.
+- [ ] Add your project manager as collaborator on Github.
+- [ ] Clone your OWN version of the repository.
+- [ ] Create a new branch: git checkout -b `<firstName-lastName>`.
+- [ ] Implement the project on your newly created `<firstName-lastName>` branch, committing changes regularly.
+- [ ] Push commits: git push origin `<firstName-lastName>`.
+
+Follow these steps for completing your project.
+
+- [ ] Submit a Pull-Request to merge <firstName-lastName> Branch into master (student's Repo). **Please don't merge your own pull request**
+- [ ] Add your project manager as a reviewer on the pull-request
+- [ ] Your project manager will count the project as complete by merging the branch back into master.
+- [ ] Do your magic!
+
+## Minimum Viable Product
+
+1. Build an API to let the clients perform CRUD operations on `users` and `posts`.
+1. Add an endpoint to retrieve the list of `posts` for a `user`.
+1. Write custom `middleware` to ensure that the user's `name` is uppercased before the request reaches the `POST` or `PUT` route handlers.
+1. Use `Express Routers` to organize the endpoints. You can optionally move and rename `postDb.js` and `userDb.js` to place it next to the corresponding router.
 
 ### Database Persistence Helpers
 
 The `/data/helpers` folder includes helper files that you can use to manage the persistence of _users_ and _posts_ data. These files are `userDb.js` and `postDb.js`. Both files publish the following api:
 
-- `get()`: calling find returns a promise that resolves to an array of all the resources contained in the database. If you pass an `id` to this method it will return the resource with that id if found.
-- `insert()`: calling insert passing it a resource object will add it to the database and return an object with the id of the inserted resource. The object looks like this: `{ id: 123 }`.
-- `update()`: accepts two arguments, the first is the `id` of the resource to update and the second is an object with the `changes` to apply. It returns the count of updated records. If the count is 1 it means the record was updated correctly.
-- `remove()`: the remove method accepts an `id` as it's first parameter and, upon successfully deleting the resource from the database, returns the number of records deleted.
+- `get()`: calling find returns a promise that resolves to an array of all the `resources` contained in the database.
+- `getById()`: takes an `id` as the argument and returns a promise that resolves to the `resource` with that id if found.
+- `insert()`: calling insert passing it a `resource` object will add it to the database and return the new `resource`.
+- `update()`: accepts two arguments, the first is the `id` of the `resource` to update and the second is an object with the `changes` to apply. It returns the count of updated records. If the count is 1 it means the record was updated correctly.
+- `remove()`: the remove method accepts an `id` as it's first parameter and, upon successfully deleting the `resource` from the database, returns the number of records deleted.
 
-The `userDb.js` helper includes an extra method called `getUserPosts()` that when passed a user id as it's only argument, returns a list of all the posts for the user.
+The `userDb.js` helper includes an extra method called `getUserPosts()` that when passed a user's `id`, returns a list of all the `posts` for the `user`.
 
 **All helper methods return a promise.**
 
 #### Database Schemas
 
-The _schemas_ (properties and data type of each property) used to store and retrieve the resources inside the included database (`lambda.sqlite3`) is described below.
+The _schemas_ (properties and data type of each property) used to store and retrieve the resources inside the included database (`blog.db3`) is described below.
 
 ##### Users
 
-- id: number, no need to provide it when creating users, the database will generate it.
-- name: up to 128 characters long, required.
+| field | data type        | metadata                                            |
+| ----- | ---------------- | --------------------------------------------------- |
+| id    | unsigned integer | primary key, auto-increments, generated by database |
+| name  | string           | required, unique                                    |
 
 ##### Posts
 
-- id: number, no need to provide it when creating posts, the database will automatically generate it.
-- userId: number, required, must be the id of an existing user.
-- text: string, no size limit, required.
+| field   | data type        | metadata                                            |
+| ------- | ---------------- | --------------------------------------------------- |
+| id      | unsigned integer | primary key, auto-increments, generated by database |
+| text    | text             | required                                            |
+| user_id | unsigned integer | must be the `id` of an existing `user`              |
 
 We have provided test data for the resources.
-
-Now that we have a way to add, update, remove and retrieve data from the provided database, it is time to work on the API.
-
-### Implementation Requirements
-
-- Take the steps necessary to create a `package.json` to keep a record of our dependencies.
-- use _yarn_ or _npm_ to add **knex** and **sqlite3** as dependencies to the project. **This is required for database access**.
-- Configure an _npm script_ named _"start"_ that will execute your code using _nodemon_ so that the server restarts on changes. Make _nodemon_ be a development time dependency only, it shouldn't be deployed to production.
-- Design and build the necessary endpoints to:
-  - perform CRUD operations on _users_ and _posts_.
-  - retrieve the list of posts for a user.
-- **Use _Postman_ to test the API as you work through the exercises.**
-
-
 
 ## Stretch Goal
 
