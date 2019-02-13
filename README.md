@@ -1,16 +1,16 @@
 # Building an API using a Node.js and Express
 
-This challenge allows you to practice the concepts you learned in this module.
+In this challenge you will practice the concepts learned in this module.
 
 ## Instructions
 
-**Read these instructions carefully. Understand exactly what is expected before starting this Challenge.**
+**Read these instructions carefully. Understand exactly what is expected before starting.**
 
-You are allowed to collaborate with other peers. However, you are encouraged to follow the twenty-minute rule and seek support from your PM and Instructor in your cohort's help channel.
+You are allowed, and **encouraged**, to collaborate with other peers. Please follow the twenty-minute rule, before seeking support from your PM and Instructor.
 
 ## Description
 
-In this challenge, you will **design** and build an API that sitisfies the requirements listed as the Minimum Viable Product.
+In this challenge, you will **design** and build an API that sitisfies the requirements listed below under the `Minimum Viable Product` section.
 
 ## Project Set Up
 
@@ -30,9 +30,9 @@ Follow these steps for completing your project.
 
 ## Minimum Viable Product
 
-1. Build an API to let the clients perform CRUD operations on `users` and `posts`.
+1. Build an API to let clients perform CRUD operations on `users` and `posts`.
 1. Add an endpoint to retrieve the list of `posts` for a `user`.
-1. Write custom `middleware` to ensure that the user's `name` is uppercased before the request reaches the `POST` or `PUT` route handlers.
+1. Write custom `middleware` to ensure that the user's `name` is uppercased before the request reaches the `POST` or `PUT` _route handlers_.
 1. Use `Express Routers` to organize the endpoints. You can optionally move and rename `postDb.js` and `userDb.js` to place it next to the corresponding router.
 
 ### Database Persistence Helpers
@@ -51,7 +51,7 @@ The `userDb.js` helper includes an extra method called `getUserPosts()` that whe
 
 #### Database Schemas
 
-The _schemas_ (properties and data type of each property) used to store and retrieve the resources inside the included database (`blog.db3`) is described below.
+The _Database Schemas_ for the `users` and `posts` resources are:
 
 ##### Users
 
