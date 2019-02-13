@@ -1,6 +1,6 @@
 # Building an API using a Node.js and Express
 
-This challenge allows yoy to practice the concepts you learned in this module.
+This challenge allows you to practice the concepts you learned in this module.
 
 ## Instructions
 
