@@ -3,7 +3,7 @@ const express = 'express';
 const server = express();
 
 server.get('/', (req, res) => {
-
+  
 });
 
 //custom middleware
