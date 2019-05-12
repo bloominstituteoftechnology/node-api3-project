@@ -30,11 +30,11 @@ Follow these steps for completing your project.
 1. Build an API to let clients perform CRUD operations on `users`.
 1. Add endpoints to retrieve the list of `posts` for a `user` and to store a new `post` for a `user`.
 
-### Custom Middleware
+#### Custom Middleware Requirements
 
 - `logger()`
-  - the `logger` middleware logs to the console the following information about each request: request type, request url, and a timestamp
-  - this middleware should run on every request made to the API
+  - `logger` logs to the console the following information about each request: request type, request url, and a timestamp
+  - this middleware runs on every request made to the API
 
 - `validateUserId()`
   - `validateUserId` validates the user id on every request that expects a user id parameter
