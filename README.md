@@ -33,7 +33,7 @@ Follow these steps for completing your project.
 #### Custom Middleware Requirements
 
 - `logger()`
-  - `logger` logs to the console the following information about each request: request type, request url, and a timestamp
+  - `logger` logs to the console the following information about each request: request method, request url, and a timestamp
   - this middleware runs on every request made to the API
 
 - `validateUserId()`
