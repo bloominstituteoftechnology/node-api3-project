@@ -24,10 +24,10 @@
   "homepage": "https://github.com/LambdaSchool/Node-Blog#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "knex": "^0.18.3",
-    "sqlite3": "^4.0.9"
+    "knex": "^0.20.1",
+    "sqlite3": "^4.1.0"
   },
   "devDependencies": {
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.4"
   }
 }
