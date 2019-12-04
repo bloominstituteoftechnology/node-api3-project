@@ -26,10 +26,12 @@ function insert(post) {
     });
 }
 
-function update(id, changes) {
-  return db('posts')
+async function update(id, changes) {
+  await db('posts')
     .where({ id })
     .update(changes);
+
+  return getById(id);
 }
 
 function remove(id) {
