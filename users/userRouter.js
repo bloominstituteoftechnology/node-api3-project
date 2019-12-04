@@ -1,10 +1,20 @@
 const express = require('express');
 const Utils = require('../MiddleWare/Utils')
+const db = require('../users/userDb');
 
 const router = express.Router();
 
-router.post('/', (req, res) => {
+router.post('/', Utils.validateUser, (req, res) => {
   // do your magic!
+  const user = req.body;
+  db.insert(user)
+  .then((user)=>{
+    res.status(200).json({user})
+  })
+  .catch(err=>{
+    res.status(500).json({err})
+  })
+ 
 });
 
 router.post('/:id/posts', (req, res) => {
@@ -13,6 +23,13 @@ router.post('/:id/posts', (req, res) => {
 
 router.get('/', (req, res) => {
   // do your magic!
+  db.get()
+  .then((users)=>{
+    res.status(200).json({users})
+  })
+  .catch(err=>{
+    res.status(500).json({err})
+  })
 });
 
 router.get('/:id', (req, res) => {

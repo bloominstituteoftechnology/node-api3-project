@@ -20,7 +20,7 @@ const validateUserId = (req,res,next)=>{
 
 // validates the body on a User POST request
 const validateUser = (req,res,next)=>{
-    if(!req.body){
+    if(JSON.stringify(req.body)=== '{}'){
         res.status(400).json({message:'missing user data'})
     }else{
         if(!req.body.name){
