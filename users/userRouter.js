@@ -13,7 +13,7 @@ router.post('/', validateUser, (req, res) => {
   // do your magic!
   db.insert(req.body)
   .then(user => {
-    res.status(201).json(user)
+    res.status(201).json({user})
   })
   .catch(error => {
     console.log(error)
@@ -21,17 +21,17 @@ router.post('/', validateUser, (req, res) => {
   })
 });
 
-router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
-  // do your magic!
-  db.insert(req.body)
-  .then(post => {
-    res.status(201).json({post})
-  })
-  .catch(error => {
-    console.log(error)
-    res.status(500).json({ message: "Error adding post" })
-  })
-});
+// router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
+//   // do your magic!
+//   db.insert({...req.body})
+//   .then(post => {
+//     res.status(201).json({post})
+//   })
+//   .catch(error => {
+//     console.log(error)
+//     res.status(500).json({ message: "Error adding post" })
+//   })
+// });
 
 router.get('/', (req, res) => {
   // do your magic!
@@ -45,20 +45,56 @@ router.get('/', (req, res) => {
   })
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', validateUserId, (req, res) => {
   // do your magic!
+  db.getById(req.params.id)
+  .then(get => {
+    res.status(200).json({get})
+  })
+  .catch(error => {
+    console.log(error)
+    res.status(500).json({ message: "Error retrieving user." })
+  })
 });
 
-router.get('/:id/posts', (req, res) => {
+router.get('/:id/posts', validateUserId, (req, res) => {
   // do your magic!
+  db.getUserPosts(req.params.id)
+  .then(post => {
+    res.status(201).json({post})
+  })
+  .catch(error => {
+    console.log(error)
+    res.status(500).json({ message: "Error getting user's posts." })
+  })
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id',validateUserId, (req, res) => {
   // do your magic!
-});
+  db.remove(req.params.id)
+  .then(gone => {
+    if(gone !== 0){
+      res.status(200).json({ message: "The user has been deleted." })
+    }else{
+      res.status(404).json({  message: "The user could not be found." })
+    }
+  })
+  .catch(error => {
+    res.status(500).json({ message: "Error deleting the user." })
+  })
+})
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validateUserId, (req, res) => {
   // do your magic!
+  db.update(req.params.id, req.body)
+  .then(change => {
+      res.status(201).json({change})
+  })
+  .catch(error => {
+    console.log(error)
+    res.status(500).json({message: "Error updating user"})
+  })
+
 });
 
 //custom middleware
