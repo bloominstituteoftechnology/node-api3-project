@@ -1,4 +1,3 @@
-import { METHODS } from "http"
 
 function validatePost(req, res, next) {
    if (!req.body) {

@@ -1,11 +1,11 @@
 const express = require('express');
-const logger = require('./middleware/logger')
+const logger = require('./middleware/logger');
 
 const server = express();
 const userRouter = require('./users/userRouter')
 
 server.use(logger)
-server.use(express.json)
+server.use(express.json())
 server.use('/api/users', userRouter)
 
 server.get('/', (req, res) => {
