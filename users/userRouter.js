@@ -6,6 +6,9 @@ const Posts = require("../posts/postDb")
 
 const router = express.Router();
 
+const easyErr = (status, message, res) => {
+  res.status(status).json({error: message})
+}
 router.post('/', validateUser, (req, res) => {
   Users
   .insert(req.body)
@@ -13,7 +16,8 @@ router.post('/', validateUser, (req, res) => {
     res.status(201).json(user)
   })
   .catch(() => {
-    res.status(500).json({errorMessage: "we couldnt create that user for you bud"})
+    easyErr(500, "we couldnt create that user for you buddy", res)
+    // res.status(500).json({errorMessage: "we couldnt create that user for you bud"})
   })
 });
 
@@ -24,7 +28,8 @@ router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
     res.status(201).json(post)
   })
   .catch(() => {
-    res.status(500).json({errorMessage: "couldnt add that new post to the database"})
+    easyErr(500, " couldnt add that new post to the database", res)
+    // res.status(500).json({errorMessage: "couldnt add that new post to the database"})
   })
 });
 
@@ -35,7 +40,8 @@ router.get('/', checkRole("admin"), (req, res) => {
     res.status(200).json(users);
   })
   .catch(() => {
-    res.status(500).json({errorMessage: "cant get the users from the data base sorry buddy"})
+    easyErr(500, "cant get the users from the data base sorry buddy", res)
+    // res.status(500).json({errorMessage: "cant get the users from the data base sorry buddy"})
   }) 
 });
 
@@ -52,7 +58,8 @@ router.get('/:id/posts',validateUserId, (req, res) => {
     res.status(200).json(posts)
   })
   .catch(() => {
-    res.status(500).json ({errorMessage: "cant get this users post from the data base"})
+    easyErr(500, "cant get this users post from the data base", res)
+    // res.status(500).json ({errorMessage: "cant get this users post from the data base"})
   })
 });
 
@@ -62,7 +69,8 @@ router.delete('/:id', validateUserId, (req, res) => {
       res.status(200).json({errorMessage: "user deleted", removed})
   })
   .catch(() => {
-    res.status(500).json ({errorMessage: "i have no clue i cant force this to work something is wrong"})
+    easyErr(500, "i have no clue i cant force this to work something is wrong", res)
+    // res.status(500).json ({errorMessage: "i have no clue i cant force this to work something is wrong"})
   })
 });
 
@@ -73,20 +81,21 @@ router.put('/:id', validateUserId, validateUser, (req, res) => {
     res.status(200).json(post)
   })
   .catch(() => {
-    res.status(500).json({errorMessage: "couldnt make those changes to the user"})
+    easyErr(500, "couldnt make those changes to the user", res)
+    // res.status(500).json({errorMessage: "couldnt make those changes to the user"})
   })
 });
-
-router.put('/:id/posts/user_id', validateUserId, validateUser, (req, res) => {
-  Posts
-  .update(req.params.id, req.body)
-  .then(post => {
-    res.status(200).json(post)
-  })
-  .catch(() => {
-    res.status(500).json({errorMessage: "couldnt make those changes to the post"})
-  })
-});
+//FIALED ATTEMPT TO UPDATE POST BY USER ID
+// router.put('/:id/posts/user_id', validateUserId, validateUser, (req, res) => {
+//   Posts
+//   .update(req.params.id, req.body)
+//   .then(post => {
+//     res.status(200).json(post)
+//   })
+//   .catch(() => {
+//     res.status(500).json({errorMessage: "couldnt make those changes to the post"})
+//   })
+// });
 
 //custom middleware
 function checkRole(role) {
@@ -94,7 +103,8 @@ function checkRole(role) {
     if (role && role === req.headers.role) {
       next();
     }else {
-      res.status(403).json({errorMessage: "cant touch that you not admin, or an agent"})
+      easyErr(403, "cant touch that you not admin, or an agent", res)
+      // res.status(403).json({errorMessage: "cant touch that you not admin, or an agent"})
     }
   }
 }
@@ -108,20 +118,24 @@ function validateUserId(req, res, next) {
       req.user = user;
     return next()
     }else {
-      res.status(400)
-      .jsonn({errorMessage: "that is not a valid id"})
+      easyErr(400, "that is not a valid id", res)
+      // res.status(400)
+      // .jsonn({errorMessage: "that is not a valid id"})
     }
   })
   .catch(() => {
-    res.status(500).json({errorMessage: "cant find that user in our data"})
+    easyErr(500, "cant find that user in our data", res)
+    // res.status(500).json({errorMessage: "cant find that user in our data"})
   })
 }
 
 function validateUser(req, res, next) {
   if (!req.body) {
-    res.status(400).json({errorMessage: "cant find user data"})
+    easyErr(400, "cant find user data", res)
+    // res.status(400).json({errorMessage: "cant find user data"})
   }else if (!req.body.name) {
-    res.status(400).json({errorMessage: "name is gunna be required bud"})
+    easyErr(400, "name is gunna be required bud", res)
+    // res.status(400).json({errorMessage: "name is gunna be required bud"})
   }else{
     return next()
   }
@@ -129,9 +143,11 @@ function validateUser(req, res, next) {
 
 function validatePost(req, res, next) {
   if (!req.body) {
-    res.status(400).json({errorMessage: "cant find post data"})
+    easyErr(400, "cant find post data", res)
+    // res.status(400).json({errorMessage: "cant find post data"})
   }else if (!req.body.text) {
-    res.status(400).json({errorMessage: "text is gunna be required bud"})
+    easyErr(400, "text is gunna be required bud", res)
+    // res.status(400).json({errorMessage: "text is gunna be required bud"})
   }else{
     req.body.user_id = req.user.id;
     next()
