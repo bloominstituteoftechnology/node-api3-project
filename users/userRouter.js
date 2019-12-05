@@ -34,6 +34,7 @@ router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
 });
 
 router.get('/', checkRole("admin"), (req, res) => {
+  // const message = process.env.MSG || "hello world"
   Users
   .get()
   .then(users => {
@@ -46,9 +47,7 @@ router.get('/', checkRole("admin"), (req, res) => {
 });
 
 router.get('/:id',validateUserId, (req, res) => {
-  res
-    .status(200)
-    .json(req.user);
+  res.status(200).json(req.user);
 });
 
 router.get('/:id/posts',validateUserId, (req, res) => {
@@ -66,7 +65,8 @@ router.get('/:id/posts',validateUserId, (req, res) => {
 router.delete('/:id', validateUserId, (req, res) => {
   Users.remove(req.params.id)
   .then(removed => {
-      res.status(200).json({errorMessage: "user deleted", removed})
+    easyErr(200, "user deleted", res)
+      // res.status(200).json({errorMessage: "user deleted", removed})
   })
   .catch(() => {
     easyErr(500, "i have no clue i cant force this to work something is wrong", res)
