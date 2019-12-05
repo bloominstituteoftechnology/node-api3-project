@@ -37,7 +37,7 @@ router.get('/', (req, res) => {
   // do your magic!
   db.get()
   .then(get => {
-    res.status(200).json(get)
+    res.status(200).json({messageOFTheDay: process.env.MOTD, get})
   })
   .catch(error => {
     console.log(error)
