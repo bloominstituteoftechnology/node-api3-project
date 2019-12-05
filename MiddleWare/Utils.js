@@ -11,12 +11,20 @@ const logger = (req,res,next)=>{
 
 //validates userid on request needing userID
 const validateUserId = (req,res,next)=>{
-    if(req.body.user_id){
-        next();
-    }else{
-        res.status(400).json({message:'invalid user id'})
-    }
-}
+    userDB.getById(req.params.id)
+    .then((post)=>{
+        if(post === undefined){
+            res.status(404).json({message:'id not found'})
+        }else{
+            next();
+        }
+    })
+    .catch(err=>{
+        res.status(500).json({err})
+    })
+  }
+    
+
 
 // validates the body on a User POST request
 const validateUser = (req,res,next)=>{
