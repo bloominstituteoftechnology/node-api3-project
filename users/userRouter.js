@@ -13,7 +13,7 @@ router.post('/', validateUser, (req, res) => {
   // do your magic!
   db.insert(req.body)
   .then(user => {
-    res.status(201).json({user})
+    res.status(201).json({message: `${req.body.name} was added`})
   })
   .catch(error => {
     console.log(error)
@@ -35,9 +35,9 @@ router.post('/', validateUser, (req, res) => {
 
 router.get('/', (req, res) => {
   // do your magic!
-  db.get(req.query)
+  db.get()
   .then(get => {
-    res.status.json({get})
+    res.status(200).json(get)
   })
   .catch(error => {
     console.log(error)
@@ -49,7 +49,7 @@ router.get('/:id', validateUserId, (req, res) => {
   // do your magic!
   db.getById(req.params.id)
   .then(get => {
-    res.status(200).json({get})
+    res.status(200).json(get)
   })
   .catch(error => {
     console.log(error)
@@ -61,7 +61,7 @@ router.get('/:id/posts', validateUserId, (req, res) => {
   // do your magic!
   db.getUserPosts(req.params.id)
   .then(post => {
-    res.status(201).json({post})
+    res.status(201).json(post)
   })
   .catch(error => {
     console.log(error)
@@ -74,13 +74,13 @@ router.delete('/:id',validateUserId, (req, res) => {
   db.remove(req.params.id)
   .then(gone => {
     if(gone !== 0){
-      res.status(200).json({ message: "The user has been deleted." })
+      res.status(200).json({ message: `The user  with id ${req.params.id}, ${req.body.name} has been deleted.` })
     }else{
       res.status(404).json({  message: "The user could not be found." })
     }
   })
   .catch(error => {
-    res.status(500).json({ message: "Error deleting the user." })
+    res.status(500).json({ error, message: "Error deleting the user." })
   })
 })
 
@@ -88,7 +88,7 @@ router.put('/:id', validateUserId, (req, res) => {
   // do your magic!
   db.update(req.params.id, req.body)
   .then(change => {
-      res.status(201).json({change})
+      res.status(201).json(change)
   })
   .catch(error => {
     console.log(error)

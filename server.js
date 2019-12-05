@@ -4,8 +4,9 @@ const logger = require('./middleware/logger');
 const server = express();
 const userRouter = require('./users/userRouter')
 
-server.use(logger)
 server.use(express.json())
+
+server.use(logger)
 server.use('/users', userRouter)
 
 server.get('/', (req, res) => {
