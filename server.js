@@ -20,8 +20,11 @@ const logger = (req, res, next) => {
   next();
 }
 server.use(express.json());
+
 server.use(logger)
+
 server.use("/api/users", userRoutes)
+
 server.get('/', (req, res) => {
   res.send(`<h2>Let's write some middleware!</h2>`);
 });
