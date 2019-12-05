@@ -32,6 +32,9 @@ router.post('/:id/posts', Utils.validateUserId, Utils.validatePost, (req, res) =
     .then(posts=>{
       res.status(200).json({posts})
     })
+    .catch(err=>{
+      res.status(500).json({err})
+    })
   })
 });
 
