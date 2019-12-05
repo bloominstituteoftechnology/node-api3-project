@@ -54,7 +54,6 @@ router.put('/:id', Utils.validatePostId, Utils.validatePost, (req, res) => {
   })
 });
 
-// custom middleware
 
 
 

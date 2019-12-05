@@ -51,7 +51,7 @@ const validatePost=(req,res,next) =>{
         }
     }
 }
-
+//This validates if a post ID exists
 function validatePostId(req, res, next) {
     postDB.getById(req.params.id)
     .then((post)=>{

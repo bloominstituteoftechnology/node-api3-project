@@ -99,18 +99,6 @@ router.put('/:id', Utils.validateUserId, Utils.validateUser, (req, res) => {
 
 });
 
-//custom middleware
 
-function validateUserId(req, res, next) {
-  // do your magic!
-}
-
-function validateUser(req, res, next) {
-  // do your magic!
-}
-
-function validatePost(req, res, next) {
-  // do your magic!
-}
 
 module.exports = router;
