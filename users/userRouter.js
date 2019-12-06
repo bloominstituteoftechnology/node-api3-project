@@ -7,6 +7,8 @@ const validateUser   = require('../middleware/validateUser');
 const router = express.Router();
 
 const db = require('./userDb')
+const dbPost = require('../posts/postDb')
+
 
 
 router.post('/', validateUser, (req, res) => {
@@ -23,9 +25,9 @@ router.post('/', validateUser, (req, res) => {
 
 // router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
 //   // do your magic!
-//   db.insert({...req.body})
+//   dbPost.insert({ ...req.body, user_id:req.user.id })
 //   .then(post => {
-//     res.status(201).json({post})
+//     res.status(201).json(post)
 //   })
 //   .catch(error => {
 //     console.log(error)
@@ -48,8 +50,8 @@ router.get('/', (req, res) => {
 router.get('/:id', validateUserId, (req, res) => {
   // do your magic!
   db.getById(req.params.id)
-  .then(get => {
-    res.status(200).json(get)
+  .then(gets => {
+    res.status(200).json(gets)
   })
   .catch(error => {
     console.log(error)
