@@ -3,34 +3,86 @@ const users = require("./userDb");
 
 const router = express.Router();
 
-router.post('/', (req, res) => {
-  // do your magic!
+router.post("/", validateUser, (req, res) => {
+  const user = req.body;
+  users
+    .insert(user)
+    .then(user => {
+      res.status(201).json(user);
+    })
+    .catch(error => {
+      res.status(500).json({
+        errorMessage: "there was an error saving user to db"
+      });
+    });
 });
 
-router.post('/:id/posts', (req, res) => {
-  // do your magic!
+router.post("/:id/posts", [validatePost, validateUserId], (req, res) => {
+
 });
 
-router.get('/', (req, res) => {
-  // do your magic!
+
+router.get("/", (req, res) => {
+  users
+    .get()
+    .then(users => {
+      res.status(200).json(users);
+    })
+    .catch(error => {
+      res.status(500).json({
+        errorMessage: " there was an error getting users"
+      });
+    });
+});
+router.get("/:id", validateUserId, (req, res) => {
+  const { id } = req.params;
+  res.status(200).json(req.user);
 });
 
-router.get('/:id', (req, res) => {
-  // do your magic!
+router.get("/:id/posts", validateUserId, (req, res) => {
+  const { id } = req.params;
+  users
+    .getUserPosts(id)
+    .then(post => {
+      res.status(200).json(post);
+    })
+    .catch(error => {
+      res.status(500).json({
+        errorMessage: "error retrieving user posts"
+      });
+    });
 });
 
-router.get('/:id/posts', (req, res) => {
-  // do your magic!
+router.delete("/:id", validateUserId, (req, res) => {
+  const { id } = req.params;
+  users
+    .remove(id)
+    .then(records => {
+      res.status(200).json({
+        message: "user deleted"
+      });
+    })
+    .catch(error => {
+      res.status(500).json({
+        errorMessage: " error deleting user"
+      });
+    });
 });
 
-router.delete('/:id', (req, res) => {
-  // do your magic!
+router.put("/:id", validateUserId, (req, res) => {
+  const changes = req.body;
+  const { id } = req.params;
+  users
+    .update(id, changes)
+    .then(records => {
+      res.status(201);
+    })
+    .catch(error => {
+      res.status(500).json({
+        error: "there was an error updating records"
+      });
+    });
 });
-
-router.put('/:id', (req, res) => {
-  // do your magic!
-});
-
 //custom middleware
 
 
