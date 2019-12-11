@@ -1,4 +1,4 @@
-function validatePost() {
+function validatePost(), async {
     return (req, res, next) => {
         try {
            post.insert(req.body)

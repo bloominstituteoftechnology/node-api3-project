@@ -1,4 +1,4 @@
-function validateUserId() {
+function validateUserId(), async {
     return (req, res, next) => {
         try {
             userId.getById(req.body.id)
