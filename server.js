@@ -1,5 +1,5 @@
 const express = require('express')
-
+const express = require('helmet')
 const server = express();
 
 server.get('/', (req, res) => {
@@ -8,6 +8,15 @@ server.get('/', (req, res) => {
 
 //custom middleware
 
-function logger(req, res, next) {}
+function logger(req, res, next) {
+  console.log(`${req.originalUrl} - ${req.protocol} - ${req.ip} - ${req.body}`)
+
+  next()
+}
+
+server.use(helmet())
+server.use(express.json())
+server.use(logger)
 
 module.exports = server;
+
