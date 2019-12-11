@@ -1,5 +1,9 @@
 const express = require('express');
 
+const validateUserId = require('../middleware/validateUserId')
+const validateUser = require('../middleware/validateUser')
+const validatePost = require('../middleware/validatePost')
+
 // const logger = require('../server')
 
 const router = express.Router();
@@ -47,4 +51,9 @@ function validatePost(req, res, next) {
   // do your magic!
 }
 
-module.exports = router;
+module.exports = {
+  router,
+  validatePost,
+  validateUser,
+  validateUserId
+}

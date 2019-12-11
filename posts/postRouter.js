@@ -1,20 +1,25 @@
 const express = require('express');
 
+const express = require('express');
+const validateUserId = require('../middleware/validateUserId')
+const validateUser = require('../middleware/validateUser')
+const validatePost = require('../middleware/validatePost')
+
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/', validateUser(), (req, res) => {
   // do your magic!
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', validateUserId(), (req, res) => {
   // do your magic!
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', validateUserId(), (req, res) => {
   // do your magic!
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validateUserId(), (req, res) => {
   // do your magic!
 });
 
@@ -24,4 +29,9 @@ function validatePostId(req, res, next) {
   // do your magic!
 }
 
-module.exports = router;
+module.exports = {
+  router,
+  validatePost,
+  validateUser,
+  validateUserId
+}

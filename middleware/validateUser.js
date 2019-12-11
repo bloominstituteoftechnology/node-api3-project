@@ -1,16 +1,21 @@
-import { userInfo } from "os"
+const userRouter = require('../users/userRouter')
+const postRouter = require('../posts/postRouter')
 
-function validateUser(), async {
+async function validateUser() {
     return (req, res, next) => {
         try {
             user.get(req.body)
             if (!user) {
+                req.user = user
+                next()
                 return res.status(400).json({ message: "missing user data" })
             }
 
             const userName = await db.get(req.body)
             if (!userName) {
-                return res.status(400).json({ "missing required name field" })
+                req.userName = userName
+                next()
+                return res.status(400).json({ message: "missing required name field" })
             }
 
             const userData = await db.get(req.body)
@@ -19,6 +24,9 @@ function validateUser(), async {
         catch (err) {
             return (err)
         }
-        next()
     }
+}
+
+module.exports = {
+    validateUser,
 }
