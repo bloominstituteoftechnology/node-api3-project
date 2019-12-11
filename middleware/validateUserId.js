@@ -22,7 +22,7 @@ async function validateUserId() {
             return res.status(200).json(newUser)
         }
         catch (err) {
-            return (err)//res.status(500).json({ errorMessage: "New User not setup." })
+            next(err)//res.status(500).json({ errorMessage: "New User not setup." })
         }
     }
 }

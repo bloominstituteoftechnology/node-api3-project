@@ -22,7 +22,7 @@ async function validatePost() {
            return res.status(200).json(newPost)
         }
         catch (err) {
-            return (err)
+            next(err)
         }
     }
 }

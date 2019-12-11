@@ -22,7 +22,7 @@ async function validateUser() {
             return res.status(200).json(userData)
         }
         catch (err) {
-            return (err)
+            next(err)
         }
     }
 }
