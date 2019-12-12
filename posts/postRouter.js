@@ -43,7 +43,8 @@ router.put('/:id', validatePost, async (req, res, next) => {
   // do your magic!
   try {
     const updatePost = {
-      name: req.body.name,
+      text: req.body.text,
+      id: req.body.id,
     }
 
     await posts.update(req.body.id, updatePost)
