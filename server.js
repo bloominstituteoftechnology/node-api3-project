@@ -1,5 +1,5 @@
 const express = require('express')
-const express = require('helmet')
+// const express = require('helmet')
 const server = express();
 
 server.get('/', (req, res) => {
@@ -14,7 +14,7 @@ function logger(req, res, next) {
   next()
 }
 
-server.use(helmet())
+// server.use(helmet())
 server.use(express.json())
 server.use(logger)
 

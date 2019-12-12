@@ -8,32 +8,74 @@ const validatePost = require('../middleware/validatePost')
 
 const router = express.Router();
 
-router.post('/', validateUser(), (req, res) => {
+router.post('/', validateUser(), async (req, res) => {
   // do your magic!
+  try {
+
+  }
+  catch (err) {
+
+  }
 });
 
-router.post('/:id/posts', validatePost(), (req, res) => {
+router.post('/:id/posts', validatePost(), async (req, res) => {
   // do your magic!
+  try {
+
+  }
+  catch (err) {
+
+  }
 });
 
-router.get('/', validateUser(), (req, res) => {
+router.get('/', validateUser(), async (req, res) => {
   // do your magic!
+  try {
+
+  }
+  catch (err) {
+
+  }
 });
 
-router.get('/:id', validateUserId(), (req, res) => {
+router.get('/:id', validateUserId(), async (req, res) => {
   // do your magic!
+  try {
+
+  }
+  catch (err) {
+
+  }
 });
 
-router.get('/:id/posts', validatePost(), (req, res) => {
+router.get('/:id/posts', validatePost(), async (req, res) => {
   // do your magic!
+  try {
+
+  }
+  catch (err) {
+
+  }
 });
 
-router.delete('/:id', validateUserId(), (req, res) => {
+router.delete('/:id', validateUserId(), async (req, res) => {
   // do your magic!
+  try {
+
+  }
+  catch (err) {
+
+  }
 });
 
-router.put('/:id', validateUserId(), (req, res) => {
+router.put('/:id', validateUserId(), async (req, res) => {
   // do your magic!
+  try {
+
+  }
+  catch(err) {
+
+  }
 });
 
 //custom middleware
