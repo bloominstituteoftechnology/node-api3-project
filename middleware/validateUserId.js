@@ -27,6 +27,4 @@ async function validateUserId() {
     }
 }
 
-module.export = {
-    validateUserId,
-}
+module.export = router

@@ -1,49 +1,56 @@
 const express = require('express');
 
-const express = require('express');
+const posts = require('../posts/postDb')
+
 const validateUserId = require('../middleware/validateUserId')
 const validateUser = require('../middleware/validateUser')
 const validatePost = require('../middleware/validatePost')
 
 const router = express.Router();
 
-router.get('/', validateUser(), async (req, res) => {
+router.get('/', async (req, res, next) => {
   // do your magic!
    try {
-
+    res.json(await posts.get())
   }
   catch (err) {
-
+     next(err)
   }
 });
 
-router.get('/:id', validateUserId(), async (req, res) => {
+router.get('/:id', validatePost, async (req, res, next) => {
   // do your magic!
   try {
-
+    res.json(await posts.getById(req.body.id))
   }
   catch (err) {
-
+    next(err)
   }
 });
 
-router.delete('/:id', validateUserId(), async (req, res) => {
+router.delete('/:id', validatePost, async (req, res, next) => {
   // do your magic!
   try {
-
+    await posts.remove(req.body.id)
+    res.status(204).end()
   }
   catch (err) {
-
+    next(err)
   }
 });
 
-router.put('/:id', validateUserId(), async (req, res) => {
+router.put('/:id', validatePost, async (req, res, next) => {
   // do your magic!
   try {
+    const updatePost = {
+      name: req.body.name,
+    }
 
+    await posts.update(req.body.id, updatePost)
+    res.json(await posts.getById(req.body.id))
   }
   catch (err) {
-
+    next(err)
   }
 });
 
@@ -53,9 +60,4 @@ function validatePostId(req, res, next) {
   // do your magic!
 }
 
-module.exports = {
-  router,
-  validatePost,
-  validateUser,
-  validateUserId
-}
+module.exports = router
