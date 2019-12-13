@@ -17,11 +17,11 @@ router.get('/:id', validatePostId(), (req, res) => {
   .catch(err => res.status(404).json({message: 'could not find posts with this ID'}))
 });
 
-router.post('/:id/posts',validatePostId(), validatePost(), (req, res) => {
-  posts.insert(req.text)
-  .then(data => res.json(data))
-  .catch(err => res.status(500).json({error: 'Post cannot be made'}))
-});
+// router.post('/:id/posts',validatePostId(), validatePost(), (req, res) => {
+//   posts.insert(req.text)
+//   .then(data => res.json(data))
+//   .catch(err => res.status(500).json({error: 'Post cannot be made'}))
+// });
 
 router.delete('/:id', validatePostId(), (req, res) => {
   posts.remove(req.params.id)
