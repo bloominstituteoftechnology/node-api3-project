@@ -1,5 +1,6 @@
 //code away!
 const express = require('express')
+const server = express()
 
 const postRouter = require("./posts/postRouter")
 const userRouter = require("./users/userRouter")

@@ -8,12 +8,6 @@ server.get('/', (req, res) => {
 
 //custom middleware
 
-function logger(req, res, next) {
-  console.log(`${req.originalUrl} - ${req.protocol} - ${req.ip} - ${req.body}`)
-
-  next()
-}
-
 // server.use(helmet())
 server.use(express.json())
 server.use(logger)

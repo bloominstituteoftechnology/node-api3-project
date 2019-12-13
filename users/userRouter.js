@@ -6,8 +6,6 @@ const validateUserId = require('../middleware/validateUserId')
 const validateUser = require('../middleware/validateUser')
 const validatePost = require('../middleware/validatePost')
 
-// const logger = require('../server')
-
 const router = express.Router();
 
 router.post('/', validateUser, async (req, res, next) => {
