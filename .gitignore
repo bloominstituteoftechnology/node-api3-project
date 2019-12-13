@@ -59,3 +59,8 @@ typings/
 
 # Mac files
 .DS_Store
+
+# node
+node_modules
+npm-*.log
+.env
