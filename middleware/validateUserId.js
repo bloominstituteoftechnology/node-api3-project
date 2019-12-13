@@ -1,17 +1,13 @@
 
     async function validateUserId(req, res, next) {
-        try {
-            const user = await users.getById(req.params.id)
-            
-            if (user) {
+            if (!user) {
                 req.user = user
-                next()
-            } else {
-                return res.status(400).json({ message: "invalid user id" })
             }
-        } catch (err) {
+       
+        if (!req.params.id) {
+            return res.status(400).json({ message: "invalid user id" })
+        } 
             next(err)
-        }
     }
  
     module.exports = validateUserId

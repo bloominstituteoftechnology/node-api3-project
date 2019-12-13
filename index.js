@@ -1,7 +1,6 @@
 //code away!
 const express = require('express')
 const server = express()
-const dotenv = require('dotenv')
 
 const postRouter = require("./posts/postRouter")
 const userRouter = require("./users/userRouter")
