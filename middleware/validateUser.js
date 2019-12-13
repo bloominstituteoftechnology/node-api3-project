@@ -1,6 +1,3 @@
-const userRouter = require('../users/userRouter')
-const postRouter = require('../posts/postRouter')
-
 async function validateUser() {
     return (req, res, next) => {
         try {
@@ -26,5 +23,3 @@ async function validateUser() {
         }
     }
 }
-
-module.exports = router

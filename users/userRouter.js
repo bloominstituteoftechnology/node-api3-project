@@ -17,7 +17,7 @@ router.post('/', validateUser, async (req, res, next) => {
       name: req.body.name
     }
 
-    res.json(await users.insert(user))
+    return res.json(await users.insert(user))
   }
   catch (err) {
     next(err)
@@ -27,12 +27,13 @@ router.post('/', validateUser, async (req, res, next) => {
 router.post('/:id/posts', validatePost, validateUser, async (req, res, next) => {
   // do your magic!
   try {
-    const userId ={
+    // payload = all the data that is required.
+    const post ={
       text: req.body.text,
       user_id: req.params.id,
     }
 
-    res.json(await posts.insert(userId))
+    return res.json(await posts.insert(post))
   }
   catch (err) {
     next(err)
@@ -42,7 +43,7 @@ router.post('/:id/posts', validatePost, validateUser, async (req, res, next) => 
 router.get('/', async (req, res, next) => {
   // do your magic!
   try {
-    res.json(await users.get())
+    return res.json(await users.get())
   }
   catch (err) {
     next(err)
@@ -62,7 +63,7 @@ router.get('/:id', validateUserId, async (req, res, next) => {
 router.get('/:id/posts', validateUserId, async (req, res, next) => {
   // do your magic!
   try { 
-    res.json(await users.getUserPosts(req.params.id))
+    return res.json(await users.getUserPosts(req.params.id))
   }
   catch (err) {
     next(err)
@@ -73,7 +74,7 @@ router.delete('/:id', validateUserId, async (req, res, next) => {
   // do your magic!
   try {
     await users.remove(req.params.id)
-    res.status(204).end()
+    return res.status(204).end()
   }
   catch (err) {
     next(err)
@@ -88,7 +89,7 @@ router.put('/:id', validateUser, validateUserId, async (req, res, next) => {
     }
 
     await users.update(req.params.id, updateUser)
-    res.json(await users.getById(req.params.id))
+    return res.json(await users.getById(req.params.id))
   }
   catch(err) {
     next(err)
