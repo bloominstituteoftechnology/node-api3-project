@@ -14,9 +14,9 @@ const validatePost = require('./middleware/validatePost')
 server.use(express.json())
 
 // server.use(logger())
-server.use(validateUserId())
-server.use(validateUser())
-server.use(validatePost())
+server.use(validateUserId)
+server.use(validateUser)
+server.use(validatePost)
 
 server.use('/api/posts', postRouter)
 server.use('/api/users', userRouter)
