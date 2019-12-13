@@ -18,6 +18,6 @@ server.use('/users', userRouter)
 
 
 
-server.listen(4000, ()=>{
-    console.log('\n*** Server listening on http://localhost:4000')
+server.listen(port, ()=>{
+    console.log(`\n*** Server listening on ${host}:${port}`)
 })
