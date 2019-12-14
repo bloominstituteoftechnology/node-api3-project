@@ -22,11 +22,11 @@ router.post('/', validateUser, async (req, res, next) => {
   }
 });
 
-router.post('/:id/posts', validatePost, validateUser, async (req, res, next) => {
+router.post('/:id/posts', validatePost, async (req, res, next) => {
   // do your magic!
   try {
-    // payload = all the data that is required.
-    const post ={
+    // const payload = all the data that is required.
+    const post = {
       text: req.body.text,
       user_id: req.params.id,
     }

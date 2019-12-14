@@ -13,9 +13,9 @@ const validatePost = require('./middleware/validatePost')
 server.use(express.json())
 
 // server.use(logger())
-server.use(validateUserId)
-server.use(validateUser)
-server.use(validatePost)
+// server.use(validateUserId)
+// server.use(validateUser)
+// server.use(validatePost)
 
 server.use('/api/posts', postRouter)
 server.use('/api/users', userRouter)
@@ -25,9 +25,9 @@ server.use((err, req, res, next) => {
     res.status(500).json({ message: "Internal error" })
 })
 
-const port = 4000
-// const host = 'http://localhost:'
+const port = process.env.PORT || 4000
+const host = process.env.HOST || "0.0.0.0"
 
-server.listen(port, () => {
-    console.log(`Server running at ${port}`)
+server.listen(port, host, () => {
+    console.log(`Server running at http://${host}:${port}`)
 })
