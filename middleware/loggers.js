@@ -1,6 +1,6 @@
 
 function logger(req, res, next) {
-    console.log(`${req.body} - ${req.params} - ${req.route} - ${req.ip}`)
+    console.log(`${req.method} - ${req.originalUrl} - ${req.ip} - ${req.body}`)
 
     next()
 }
