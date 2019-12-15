@@ -47,9 +47,9 @@ server.use('/', (req, res) => {
  
 
 
-const port = 5000;
+const port = process.env.PORT || 8080;
 
-const host = "127.0.0.1";
+const host = process.env.HOST || "0.0.0.0";
 
 // watch for connections on port 5000
 server.listen(port, host, () =>
