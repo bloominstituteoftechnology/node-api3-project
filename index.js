@@ -1,9 +1,13 @@
 // code away!
 const express = require('express');
 
-const dotenv = require('dotenv')
+//Instead of initiating dotenv config here,
+//we are adding a -r flag to the server initiator code
+//in the package.json file
 
-dotenv.config()
+// const dotenv = require('dotenv')
+
+// dotenv.config()
 
 const helmet = require('helmet');
 
