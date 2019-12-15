@@ -47,7 +47,7 @@ server.use('/', (req, res) => {
  
 
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8080; //yea
 
 const host = process.env.HOST || "0.0.0.0";
 
