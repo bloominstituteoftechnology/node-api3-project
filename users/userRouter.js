@@ -76,6 +76,25 @@ router.delete('/:id', (req, res) => {
 
 router.put('/:id', (req, res) => {
   // do your magic!
+  const usersId = req.params.id
+  const userBody = req.body
+
+  db.update(usersId, userBody)
+  .then(updatedUser => {
+    if (!usersId) {
+      res.status(404).json({
+        message: "The post with the specific ID does not exist"
+      })
+    } else {
+      res.status(200).json({ updatedUser })
+    }
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json({
+      error: "The post information could not be modified"
+    });
+  });
 });
 
 //custom middleware
