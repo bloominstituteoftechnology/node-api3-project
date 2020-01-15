@@ -28,6 +28,24 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
   // do your magic!
+const userId = req.params.id;
+
+  db.getById(userId)
+  .then(specificUser => {
+    if (userId) {
+      res.status(200).json(specificUser);
+    } else {
+      res.status(404).json({
+        message: "The post with the specific ID does not exist"
+      })
+    }
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json({
+      error: "The post information could not be retrieved"
+    });
+  });
 });
 
 router.get('/:id/posts', (req, res) => {
