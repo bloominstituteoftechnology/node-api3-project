@@ -6,6 +6,24 @@ const router = express.Router();
 
 router.post('/', (req, res) => {
   // do your magic!
+  const newUser = req.body;
+
+  db.insert(newUser)
+  .then(brandNewUser => {
+    if (newUser.id || newUser.name) {
+      res.status(201).json(brandNewUser);
+    } else {
+      res.status(400).json({
+        errorMessage: "Please proved an id and a name for the user"
+      })
+    }
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json({
+      error: "There was an error while saving to the database"
+    });
+  });
 });
 
 router.post('/:id/posts', (req, res) => {
