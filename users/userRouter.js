@@ -1,12 +1,22 @@
 const express = require('express');
+const Users = require("./userDb");
+const Posts = require("../posts/postDb");
+const db = require('./userDb');
 
 const router = express.Router();
 
-router.post('/', (req, res) => {
-  // do your magic!
+router.post('/', validateUser, (req, res) => {
+    db.insert(req.body)
+      .then(user => {
+        res.status(200).json(user);
+      })
+
+      .catch(error => {
+        res.status(500).json({error: "Error saving user to the database"}, error)
+      })
 });
 
-router.post('/:id/posts', (req, res) => {
+router.post('/:id/posts', validateUSer (req, res) => {
   // do your magic!
 });
 
@@ -37,8 +47,17 @@ function validateUserId(req, res, next) {
 }
 
 function validateUser(req, res, next) {
-  // do your magic!
+if (req.body){
+  if(!req.body.name){
+  res.status.json({message: "missing required name field"});
+} else {
+  next();
+   } 
+} else {
+  res.status(400).json({message: "missing user data"})
+   }
 }
+
 
 function validatePost(req, res, next) {
   // do your magic!
