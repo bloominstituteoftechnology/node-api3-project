@@ -1,16 +1,45 @@
 const express = require('express');
 
 const Users = require('./userDb.js')
-
+const Posts = require('../posts/postDb.js')
 const router = express.Router();
 
-router.post('/', (req, res) => {
+// works
+router.post('/', validateUser, (req, res) => {
   // do your magic!
+  // post the user
+  // let sql deal with the id
+  let user = req.body
+  // console.log('adding', user)
+  Users.insert(user)
+    .then(addedUser => {
+        res.status(200).json(addedUser)
+    })
+    .catch(err => {
+      res.status(500).json({ error: "The user could not be added." })
+
+    })
 });
 
-router.post('/:id/posts', validateUserId, (req, res) => {
+// works
+router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
   // do your magic!
+  console.log('the id and the post both exist')
+  let id = req.params.id
+  let post = req.body
+  // console.log(post)
+  // the post table needs the user_id and the text to insert
+  Posts.insert({...post, user_id: id})
+    .then(addedPost => {
+      console.log('added')
+      res.status(200).json(addedPost)
+    })
+    .catch(err => {
+      res.status(500).json({ error: "The post information could not be added." })
+    })
+  // res.status(404).json({error: "the id and the user both exist"})
 });
+
 
 router.get('/', (req, res) => {
   // do your magic!
@@ -27,17 +56,51 @@ router.get('/', (req, res) => {
 
 });
 
+// works
 router.get('/:id', validateUserId, (req, res) => {
   // do your magic!
+  let id = req.params.id
+  Users.getById(id)
+    .then(user => {
+      res.status(200).json(user)
+    })
+    .catch(err => {
+      res.status(500).json({ error: "The user could not be retrieved." })
+
+    })
 });
 
+// works
 router.get('/:id/posts', validateUserId, (req, res) => {
   // do your magic!
+
+  let id = req.params.id
+
+  Users.getUserPosts(id)
+    .then(userPost => {
+      res.status(200).json(userPost)
+    })
+    .catch(err => {
+      res.status(500).json({ error: "The posts could not be retrieved." })
+
+    })
 });
 
-router.delete('/:id', (req, res) => {
-  console.log('trying to delete')
+// works
+router.delete('/:id', validateUserId, (req, res) => {
   // do your magic!
+
+    
+  let id = req.params.id
+  // let user = req.body
+  Users.remove(id)
+    .then(deletedUser => {
+      res.status(200).json(deletedUser)
+    })
+    .catch(err => {
+      res.status(500).json({ error: "The user information could not be deleted." })
+
+    })
 });
 
 // works
@@ -67,18 +130,15 @@ function validateUserId(req, res, next) {
   Users.getById(id)
     .then(user => {
       // console.log(user)
+      // not used anywhere
       req.user = user
       next()
     })
     .catch(err => {
       res.status(400).json({ message: "invalid user id" })
     })
-  // console.log('here instead')
-  
-  // if user id is valid
-  // next
-    // else error
-}
+
+  }
 
 function validateUser(req, res, next) {
   // do your magic!
@@ -91,28 +151,32 @@ function validateUser(req, res, next) {
     if(!name) {
       // console.log('big problem')
       res.status(400).json({ message: "missing required name field" })
-      // next()
+
     } else {
       // console.log('can add')
       next()
     }
   }
-  // console.log("validate user", req.user)
-
-  // console.log(Object.keys(body).length)
-  // console.log('validate user')
-  // next()
-  // if user is valid
-  // next
-    // else error
 
 }
 
 function validatePost(req, res, next) {
-  // do your magic!
-    // if post is valid
-  // next
-    // else error
+  let { body } = req
+  // console.log('body', body)
+  if(Object.keys(body).length === 0) {
+    res.status(400).json({ message: "missing post data" })
+  } else {
+    let { text } = body
+    if(!text) {
+      // console.log('big problem')
+      res.status(400).json({ message: "missing required text field" })
+
+    } else {
+      // console.log('can add')
+      next()
+    }
+  }
+
 
 }
 
