@@ -19,4 +19,7 @@ server.get('/', (req, res) => {
   res.send(`<h2>Let's write some middleware!</h2>`);
 });
 
+server.get('*', (req, res) => {
+  res.status(404).json({ message: 'Not found, sorry about that' })
+})
 module.exports = server;
