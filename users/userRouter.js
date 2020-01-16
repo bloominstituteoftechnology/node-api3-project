@@ -1,7 +1,7 @@
 const express = require("express");
 
 const db = require("../users/userDb.js");
-const postDb = require("../posts/postRouter");
+const postDb = require("../posts/postDb.js");
 
 const router = express.Router();
 
@@ -29,6 +29,31 @@ router.post("/", (req, res) => {
 
 router.post("/:id/posts", (req, res) => {
   // do your magic!
+  const newBody = req.body;
+  // db.insert(newBody)
+  const user_id = req.params.id;
+  const newPost = {text: newBody.text, user_id}
+  postDb.insert(newPost)
+  .then(brandNewPost => {
+    res.status(200).json({ newPost })
+    // if (brandNewPost === 0) {
+    //   res.status(404).json({
+    //     message: "The post with the specific ID does not exist"
+    //   })
+    // } else if (!newBody.text) {
+    //   res.status(400).json({
+    //     errorMessage: "Please provide text for the post"
+    //   })
+    // } else {
+    //   res.status(201).json({ newBody })
+    // }
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json({
+      errorMessage: "There was an error while saving the post to the database"
+    });
+  });
 });
 
 router.get("/", (req, res) => {
