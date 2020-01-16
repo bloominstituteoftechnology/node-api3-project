@@ -1,8 +1,8 @@
 const express = require('express');
 
 const router = express.Router();
-const Users = require('./userDb.js');
-const Posts = require('../posts/postDb.js')
+const Users = require('./userDb')
+const Posts = require('../posts/postDb')
 const validateUser = require('../middleWare/validateUser.js')
 const validateUserId = require('../middleWare/validateUserId')
 
@@ -30,9 +30,10 @@ router.post('/', validateUser, (req, res) => {
       })  
 });
 
-// router.post('/:id/posts', (req, res) => {
-//   // do your magic!
-// });
+router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
+  // do your magic!
+  Posts.insert()
+});
 
 router.get('/', (req, res) => {
   Users.get()
@@ -55,11 +56,12 @@ router.get('/:id', validateUserId, (req, res) => {
     })
 });
 
-router.get('/:id/posts', validateUserId, validatePost, (req, res) => {
+router.get('/:id/posts', validateUserId, (req, res) => {
   // do your magic!
-  Users.getById(req.params.id)
-    .then(user=>{
-      user.
+  
+  Users.getUserPosts(req.params.id)
+    .then(posts=>{
+      res.status(200).json({posts})
     })
 });
 
