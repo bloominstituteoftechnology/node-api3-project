@@ -6,7 +6,7 @@ const db = require('./userDb')
 
 const postDB = require('../posts/postDb')
 
-router.post('/', (req, res) => {
+router.post('/',validateUser,  (req, res) => {
   db.insert(req.body)
   .then(hubs => {
     res.status(200).json(hubs)
@@ -17,7 +17,7 @@ router.post('/', (req, res) => {
   })
 });
 
-router.post('/:id/posts', (req, res) => {
+router.post('/:id/posts', validateUserId, (req, res) => {
   postDB.update(req.params.id, req.body)
   .then(hubs => {
     res.status(200).json(hubs)
@@ -38,7 +38,7 @@ router.get('/', (req, res) => {
   })
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id',validateUserId, (req, res) => {
   db.getById(req.params.id)
   .then(hubs => {
     res.status(200).json(hubs)
@@ -48,7 +48,7 @@ router.get('/:id', (req, res) => {
   })
 });
 
-router.get('/:id/posts', (req, res) => {
+router.get('/:id/posts', validateUserId, (req, res) => {
   postDB.getById(req.params.id)
   .then(hubs => {
     res.status(200).json(hubs)
@@ -58,7 +58,7 @@ router.get('/:id/posts', (req, res) => {
   })
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id',validateUserId, (req, res) => {
   db.remove(req.params.id)
   .then(hubs => {
     res.status(200).json(hubs)
@@ -68,7 +68,7 @@ router.delete('/:id', (req, res) => {
   })
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id',validateUserId, (req, res) => {
   db.update(req.params.id ,req.body)
   .then(hubs => {
     res.status(200).json(hubs)
@@ -82,11 +82,24 @@ router.put('/:id', (req, res) => {
 //custom middleware
 
 function validateUserId(req, res, next) {
-  // do your magic!
+db.getById(req.params.id)
+        .then(post => {
+           if(!post) {
+            res.status(404).json({message: "invalid user id"  });
+           } else {
+             next();
+           }
+        })
 }
 
 function validateUser(req, res, next) {
-  // do your magic!
+  if(!req.body || req.body.length<1){
+    res.status(400).json({message: "missing user data"})
+  } else if(!req.body.name || req.body.name.length<1) {
+    res.status(400).json({message: "missing required name field"})
+  } else{
+    next();
+  }
 }
 
 function validatePost(req, res, next) {
