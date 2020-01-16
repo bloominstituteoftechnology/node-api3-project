@@ -6,6 +6,8 @@ const server = express();
 
 server.use(express.json());
 
+server.use(logger);
+
 server.use("/api/users", userRouter);
 
 server.get('/', (req, res) => {
@@ -14,6 +16,11 @@ server.get('/', (req, res) => {
 
 //custom middleware
 
-function logger(req, res, next) {}
+function logger(req, res, next) {
+  const {method, originalUrl} = req;
+  console.log(`${method} to ${originalUrl}`)
+
+  next();
+}
 
 module.exports = server;
