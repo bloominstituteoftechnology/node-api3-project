@@ -1,9 +1,17 @@
 const express = require('express');
+const posts= require('./postDb')
 
 const router = express.Router();
 
 router.get('/', (req, res) => {
   // do your magic!
+  posts.get(req.body)
+    .then(post=>{
+      res.status(200).json(posts)
+    })
+    .catch(err=>{
+      res.status(500).json({error: 'the posts could not be fetched'})
+    })
 });
 
 router.get('/:id', (req, res) => {
