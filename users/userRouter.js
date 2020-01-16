@@ -70,18 +70,18 @@ router.get("/", (req, res) => {
     });
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", validateUserId, (req, res) => {
   // do your magic!
   const userId = req.params.id;
 
   db.getById(userId)
     .then(specificUser => {
-      if (userId) {
-        res.status(200).json(specificUser);
+      if (specificUser) {
+        res.status(200).json(specificUser)
       } else {
-        res.status(404).json({
-          message: "The user with the specific ID does not exist"
-        });
+        res.status(500).json({
+          error: "No user with that ID"
+        })
       }
     })
     .catch(err => {
@@ -164,6 +164,14 @@ router.put("/:id", (req, res) => {
 
 function validateUserId(req, res, next) {
   // do your magic!
+  const userId = Number(req.params.id);
+  if (typeof userId === "number") {
+    next()
+  } else {
+    res.status(404).json({
+      message: "The user with the specific ID does not exist"
+    });
+  }
 }
 
 function validateUser(req, res, next) {
