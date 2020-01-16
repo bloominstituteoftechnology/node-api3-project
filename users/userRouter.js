@@ -7,8 +7,8 @@ const validateUser = require('../middleWare/validateUser.js')
 const validateUserId = require('../middleWare/validateUserId')
 
 function validatePost(req, res, next) {
-  if (!req.body.text){
-    res.status(400).json({error: 'Sorry, we need some text in order to make a post'})
+  if (!req.body.text || !req.body.user_id){
+    res.status(400).json({error: 'Sorry, we need some text and an id in order to make a post'})
   } else {
     console.log('post validated')
     next()
@@ -32,7 +32,10 @@ router.post('/', validateUser, (req, res) => {
 
 router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
   // do your magic!
-  Posts.insert()
+  Posts.insert(req.body)
+    .then(post=>{
+      res.status(201).json({post})
+    })
 });
 
 router.get('/', (req, res) => {
