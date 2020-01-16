@@ -5,20 +5,13 @@ const postDb = require("../posts/postDb.js");
 
 const router = express.Router();
 
-router.post("/", (req, res) => {
+router.post("/", validateUser, (req, res) => {
   // do your magic!
   const newUser = req.body;
 
   db.insert(newUser)
     .then(brandNewUser => {
-      if (newUser.id || newUser.name) {
-        res.status(201).json(brandNewUser);
-      } else {
-        res.status(400).json({
-          errorMessage: "Please proved an id and a name for the user"
-        });
-      }
-    })
+    res.status(200).json(brandNewUser)
     .catch(err => {
       console.log(err);
       res.status(500).json({
@@ -27,7 +20,7 @@ router.post("/", (req, res) => {
     });
 });
 
-router.post("/:id/posts", (req, res) => {
+router.post("/:id/posts", validatePost, (req, res) => {
   // do your magic!
   const newBody = req.body;
   // db.insert(newBody)
@@ -36,17 +29,6 @@ router.post("/:id/posts", (req, res) => {
   postDb.insert(newPost)
   .then(brandNewPost => {
     res.status(200).json({ newPost })
-    // if (brandNewPost === 0) {
-    //   res.status(404).json({
-    //     message: "The post with the specific ID does not exist"
-    //   })
-    // } else if (!newBody.text) {
-    //   res.status(400).json({
-    //     errorMessage: "Please provide text for the post"
-    //   })
-    // } else {
-    //   res.status(201).json({ newBody })
-    // }
   })
   .catch(err => {
     console.log(err);
@@ -162,24 +144,46 @@ router.put("/:id", (req, res) => {
 
 //custom middleware
 
-function validateUserId(req, res, next) {
-  // do your magic!
-  const userId = Number(req.params.id);
-  if (typeof userId === "number") {
-    next()
-  } else {
-    res.status(404).json({
-      message: "The user with the specific ID does not exist"
-    });
-  }
-}
+// function validateUserId(req, res, next) {
+//   // do your magic!
+//   const userId = Number(req.params.id)
+//   if (typeof userId === "number") {
+//     next()
+//   } else {
+//     res.status(404).json({
+//       message: "The user with the specific ID does not exist"
+//     });
+//   }
+// }
 
-function validateUser(req, res, next) {
-  // do your magic!
-}
+// function validateUser(req, res, next) {
+//   // do your magic!
+//   if (!req.body) {
+//     res.status(400).json({
+//       message: "missing user data"
+//     });
+//   } else if (!req.body.name) {
+//     res.status(400).json({
+//       message: "missing required name field"
+//     });
+//   } else {
+//     next()
+//   }
+// }
 
 function validatePost(req, res, next) {
   // do your magic!
+  if (!req.body) {
+    res.status(400).json({
+      message: "missing post data"
+    })
+  } else if (!req.body.text) { 
+    res.status(400).json({
+      message: "missing required text field"
+    })
+  } else {
+    next()
+  }
 }
 
 module.exports = router;
