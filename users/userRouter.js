@@ -2,11 +2,15 @@ const express = require('express');
 const server = require ('../server')
 const router = express.Router();
 const Users = require('./userDb.js')
+const Posts = require('../posts/postDb')
 
 
  router.post('/', validateUser,(req, res) => {
   // do your magic!
-  Users.insert(req.body)
+
+  const user = (req.body);
+   
+  Users.insert(user)
   .then(user => {
     res.status(201).json(user)
   })
@@ -29,10 +33,9 @@ router.get('/', (req,res) => {
     })
   })
 })
-router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
+router.post('/:id/posts', validatePost,  (req, res) => {
   // do your magic!
-  console.log('MIDDLE')
-  Users.getUserPosts(req.params.id)
+   Posts.insert(req.body)
   .then(post => {
     res.status(201).json(post)
   })
@@ -42,8 +45,7 @@ router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
 
 });
 
-// server.use('api/users', userRouter);
-
+ 
 
 router.get('/:id', validateUserId, (req, res) => {
   // do your magic!
@@ -57,7 +59,7 @@ router.get('/:id', validateUserId, (req, res) => {
   })
 });
 
-router.get('/:id/posts', (req, res) => {
+router.get('/:id/posts', validateUserId,validatePost,(req, res) => {
   // do your magic!
   Users.getUserPosts(req.params.id)
   .then(post => {
@@ -73,24 +75,31 @@ router.delete('/:id', (req, res) => {
   Users.remove(req.params.id)
   .then(count => {
     if (count >0){
-      res.status(200).json({message: 'The post has been deleted'})
+      res.status(200).json({message: 'The userhas been deleted'})
     }else{
-      res.status(404).json({message: 'The post could not be found'})
+      res.status(404).json({message: 'The user could not be found'})
     }
   })
   
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validateUserId,(req, res) => {
   // do your magic!
-
-  Users.update(req.params.id, req.body)
+  const changes = req.body
+  Users.update(req.params.id,changes)
   .then(user => {
-    res.status(200).json(user.body)
+    if(user){
+      res.status(200).json(user)
+    }else{
+      res.status(404).json({message: 'User could not be found'})
+    }
   })
   .catch(err => {
-    res.status(500).json({messaage: 'error trying to update.'})
+    res.status(500).json({
+      message: 'Error updating the user'
+    })
   })
+   
 });
 
 //custom middleware
@@ -108,18 +117,18 @@ router.put('/:id', (req, res) => {
 
 function validateUser(req, res, next) {
   // do your magic!
-   const user = req.body;
+   const user = req.body.name;
     if(user){
      next();
    }else{
-     res.status(400).json({message: 'Must have User Name.'})
+     res.status(400).json({message: 'Missing User Data.'})
    }
 
 }
 
 function validatePost(req, res, next) {
   // do your magic!
-  const body = req.body;
+  const body = req.body.text;
   if(body){
     next();
   }else{
