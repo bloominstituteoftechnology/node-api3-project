@@ -14,14 +14,15 @@ router.post("/", validateUser, (req, res) => {
     });
 });
 
-router.post("/:id/posts", validatePost, (req, res) => {
+router.post("/:id/posts", (req, res) => {
   // do your magic!
-  Posts.insert(req.text)
+  const messageInfo = { ...req.body, user_id: req.params.id };
+  Posts.insert(messageInfo)
     .then(post => {
       res.status(200).json(post);
     })
     .catch(err => {
-      res.status(500).json({ Error: "Failed to load data ", err });
+      res.status(500).json({ Error: "failed", err });
     });
 });
 
