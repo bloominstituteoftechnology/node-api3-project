@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const userRouter = require("./users/userRouter.js");
@@ -19,8 +21,9 @@ server.use("/api/posts", postRouter);
 
 //=======end of Global Middleware=================
 
+const motd = process.env.MOTD;
 server.get("/", (req, res) => {
-  res.send(`<h2>Let's write some middleware!</h2>`);
+  res.send(`<h2>${motd}</h2>`);
 });
 
 //custom middleware
