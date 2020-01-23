@@ -23,7 +23,12 @@ server.use("/api/posts", postRouter);
 
 const motd = process.env.MOTD;
 server.get("/", (req, res) => {
-  res.send(`<h2 style="text-align: center; color: blue">${motd}</h2>`);
+  res.send(`
+  <h2 style="text-align: center; color: blue">${motd}</h2>
+  <p style="text-align: center; color: blue">Click to see the api <a href="/api/users">API Call</a></p>
+  
+  
+  `);
 });
 
 //custom middleware
