@@ -23,7 +23,7 @@ server.use("/api/posts", postRouter);
 
 const motd = process.env.MOTD;
 server.get("/", (req, res) => {
-  res.send(`<h2>${motd}</h2>`);
+  res.send(`<h2 style="text-align: center; color: blue">${motd}</h2>`);
 });
 
 //custom middleware
