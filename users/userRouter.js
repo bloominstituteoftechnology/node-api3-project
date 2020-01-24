@@ -26,7 +26,7 @@ router.post("/:id/posts", (req, res) => {
     });
 });
 
-router.get("/", validateUser, (req, res) => {
+router.get("/", (req, res) => {
   // do your magic!
   db.get(req.query)
     .then(user => {

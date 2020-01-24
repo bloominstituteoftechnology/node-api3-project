@@ -35,6 +35,7 @@ router.delete("/:id", validatePostId, (req, res) => {
 
 router.put("/:id", validatePostId, (req, res) => {
   // do your magic!
+
   db.update(req.params.id, req.body)
     .then(post => {
       if (post) {
