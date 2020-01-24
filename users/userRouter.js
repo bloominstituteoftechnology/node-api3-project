@@ -3,7 +3,7 @@ const db = require("./userDb");
 const router = express.Router();
 const Posts = require("../posts/postDb");
 
-router.post("/", validateUser, (req, res) => {
+router.post("/", validateUser(), (req, res) => {
   // do your magic!
   db.insert(req.body)
     .then(user => {
@@ -14,10 +14,10 @@ router.post("/", validateUser, (req, res) => {
     });
 });
 
-router.post("/:id/posts", (req, res) => {
+router.post("/:id/posts", validateUserId, validatePost(), (req, res) => {
   // do your magic!
-  const messageInfo = { ...req.body, user_id: req.params.id };
-  Posts.insert(messageInfo)
+  // const messageInfo = { ...req.body, user_id: req.params.id };
+  Posts.insert(req.text)
     .then(post => {
       res.status(200).json(post);
     })
@@ -72,18 +72,12 @@ router.delete("/:id", validateUserId, (req, res) => {
     });
 });
 
-router.put("/:id", validateUserId, validateUser, (req, res) => {
+router.put("/:id", validateUserId, validateUser(), (req, res) => {
   // do your magic!
-  db.update(req.params.id, req.body)
-    .then(user => {
-      if (user) {
-        res.status(200).json(user);
-      } else {
-        res.status(404).json({ message: "user with that ID does not exist" });
-      }
-    })
+  db.update(req.params.id, req.user)
+    .then(use => res.json(use))
     .catch(err => {
-      res.status(500).json({ Error: "could not update user", err });
+      res.status(500).json({ error: "failed to retrieve data", err });
     });
 });
 
@@ -102,33 +96,35 @@ function validateUserId(req, res, next) {
       }
     })
     .catch(err => {
-      res.status(500).json({ Error: "validator not working" });
+      res.status(500).json({ Error: "validator not working", err });
     });
 }
 
-function validateUser(req, res, next) {
-  // do your magic!
-  const { name } = req.body;
-  if (!name) {
-    res.status(404).json({ message: "user does not exist val" });
-  } else {
-    req.name = name;
-    next();
-  }
+function validateUser() {
+  return (req, res, next) => {
+    resource = {
+      name: req.body.name
+    };
+    if (!req.body.name) {
+      return res.status(404).json({ message: "could not retrieve user" });
+    } else {
+      req.user = resource;
+      next();
+    }
+  };
 }
 
 function validatePost() {
-  // do your magic!
   return (req, res, next) => {
     resource = {
       text: req.body.text,
       user_id: req.params.id
     };
     if (!req.body.text) {
-      return res.status(404).json({ message: "add post data val" });
+      return res.status(404).json({ error: "could not retrive post" });
     } else {
       req.text = resource;
-      next;
+      next();
     }
   };
 }

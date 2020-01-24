@@ -33,7 +33,7 @@ router.delete("/:id", validatePostId, (req, res) => {
     });
 });
 
-router.put("/:id", validatePostId, (req, res) => {
+router.put("/:id", validatePostId, validatePost(), (req, res) => {
   // do your magic!
 
   db.update(req.params.id, req.body)
@@ -50,6 +50,19 @@ router.put("/:id", validatePostId, (req, res) => {
 });
 
 // // custom middleware
+function validatePost() {
+  return (req, res, next) => {
+    resource = {
+      text: req.body.text
+    };
+    if (!req.body.text) {
+      return res.status(404).json({ error: "could not retrieve post data" });
+    } else {
+      req.text = resource;
+      next();
+    }
+  };
+}
 
 function validatePostId(req, res, next) {
   // do your magic!
