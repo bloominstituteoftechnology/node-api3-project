@@ -26,4 +26,13 @@ describe('userRouter', function() {
             })
         })
     })
+
+    // describe('DELETE a user', function() {
+    //     it('should return 200 and delete user', function() {
+    //         return request(server).delete('/:id')
+    //         .then(res => {
+    //             expect(res.status).toBe(200);
+    //         })
+    //     })
+    // })
 })
