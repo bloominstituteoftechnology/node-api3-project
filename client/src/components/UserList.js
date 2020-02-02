@@ -12,7 +12,7 @@ export default class UserList extends Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:3100/api/users")
+      .get("https://node-api3-project-lambda.herokuapp.com/api/users")
       .then(userList => {
         console.log(userList);
         this.setState({
@@ -23,13 +23,13 @@ export default class UserList extends Component {
   }
   render() {
     return (
-      <Card>
+      <>
         {this.state.users.map(user => (
-          <Card.Title bg="primary" key={user.id}>
+          <Card className="userCard" bg="success" key={user.id}>
             {user.name}{" "}
-          </Card.Title>
+          </Card>
         ))}
-      </Card>
+      </>
     );
   }
 }
