@@ -17,7 +17,6 @@ router.post('/', validateUser, (req, res) =>
   })
 });
 
-// /api/users/1/posts
 router.post('/:id/posts', validateUserId, validatePost, (req, res) => 
 {
   const newPost = {
@@ -74,14 +73,23 @@ router.get('/:id/posts', validateUserId, (req, res) =>
   })
 });
 
+// /api/users/:id
 router.delete('/:id', (req, res) => 
 {
-  // do your magic!
+  
 });
 
-router.put('/:id', (req, res) => 
+router.put('/:id', validateUserId, validateUser, (req, res) => 
 {
-  // do your magic!
+  userDatabase.update(req.user.id, req.body)
+  .then(updated =>
+  {
+    res.status(200).json({id: req.user.id, name: req.body.name});
+  })
+  .catch(err => 
+  {
+    res.status(500).json({message: 'error updating user'});
+  })
 });
 
 //custom middleware
