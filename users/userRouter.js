@@ -26,9 +26,9 @@ router.get('/', (req, res) =>
   })
 });
 
-router.get('/:id', (req, res) => 
+router.get('/:id', validateUserId, (req, res) => 
 {
-  // do your magic!
+  res.status(200).json(req.user);
 });
 
 router.get('/:id/posts', (req, res) => 
@@ -50,7 +50,23 @@ router.put('/:id', (req, res) =>
 
 function validateUserId(req, res, next) 
 {
-  
+  userDatabase.getById(req.params.id)
+  .then(user =>
+  {
+    if(user)
+    {
+      req.user = user;
+      next();
+    }
+    else
+    {
+      res.status(400).json({message: 'invalid user ID'});
+    }
+  })
+  .catch(err =>
+  {
+    res.status(500).json({message: 'Could not validate'});
+  })
 }
 
 function validateUser(req, res, next) 
