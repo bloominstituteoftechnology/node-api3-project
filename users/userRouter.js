@@ -39,9 +39,24 @@ router.get('/:id', validateUserId, (req, res) =>
   res.status(200).json(req.user);
 });
 
-router.get('/:id/posts', (req, res) => 
+router.get('/:id/posts', validateUserId, (req, res) => 
 {
-  // do your magic!
+  userDatabase.getUserPosts(req.user.id)
+  .then(userPosts =>
+  {
+    if(userPosts.length !== 0)
+    {
+      res.status(200).json(userPosts);
+    }
+    else
+    {
+      res.status(404).json({message: `user's posts does't exist`});
+    }
+  })
+  .catch(err =>
+  {
+    res.status(500).json({mesage: `could not retrieve user's posts`});
+  })
 });
 
 router.delete('/:id', (req, res) => 
