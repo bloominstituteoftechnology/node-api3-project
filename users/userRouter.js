@@ -74,9 +74,17 @@ router.get('/:id/posts', validateUserId, (req, res) =>
 });
 
 // /api/users/:id
-router.delete('/:id', (req, res) => 
+router.delete('/:id', validateUserId, (req, res) => 
 {
-  
+  userDatabase.remove(req.user.id)
+  .then(deletedUser =>
+  {
+    res.status(200).json({message: `${req.user.name} has been deleted from the database`});
+  })
+  .catch(err =>
+  {
+    res.status(500).json({message: 'Could not delete user from the database'});
+  })
 });
 
 router.put('/:id', validateUserId, validateUser, (req, res) => 
