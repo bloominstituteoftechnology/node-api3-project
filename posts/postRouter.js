@@ -28,9 +28,7 @@ router.put("/:id", validatePostId, validateUserpost, (req, res) => {
   const { id } = req.params;
   const body = req.body;
   Posts.update(id, body)
-    .then(post =>
-      !post ? console.log("hello") : res.status(200).json(req.userposts)
-    )
+    .then(post => (!post ? console.log("hello") : res.status(200).json(post)))
     .catch(
       err => console.log(err, "Hello") & res.status(500).json(err.message)
     );

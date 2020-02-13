@@ -55,9 +55,7 @@ router.put("/:id", validateUserId, validateUser, (req, res) => {
   const { id } = req.params;
   const body = req.body;
   Data.update(id, body)
-    .then(post =>
-      !post ? console.log("hello") : res.status(200).json(req.users)
-    )
+    .then(post => (!post ? console.log("hello") : res.status(200).json(post)))
     .catch(
       err => console.log(err, "Hello") & res.status(500).json(err.message)
     );

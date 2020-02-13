@@ -3,11 +3,13 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const userRouter = require("./users/userRouter");
 const postRouter = require("./posts/postRouter");
+const cors = require("cors");
 
 const server = express();
 server.use(express.json());
 server.use(morgan("dev"));
 server.use(helmet());
+server.use(cors());
 
 server.use("/api/users", logger, userRouter);
 server.use("/api/posts", logger, postRouter);
