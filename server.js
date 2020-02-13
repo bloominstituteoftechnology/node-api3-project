@@ -10,7 +10,7 @@ server.use(logger);
 
 server.use(express.json());
 
-server.use('/post', postRouter);
+server.use('/posts', postRouter);
 
 server.use('/users', userRouter)
 
