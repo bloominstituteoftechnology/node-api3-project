@@ -13,13 +13,22 @@ router.post('/', validateUser, (req, res) => {
     res.status(200).json(user)
   })
   .catch(err => {
-    res.status(500).json({ error: 'The was an error while saving the user to the database' })
+    res.status(500).json({ error: 'error adding user' })
   })
 });
 
-// router.post('/:id/posts', (req, res) => {
-//   // do your magic!
-// });
+router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
+  const post = { ...req.body, user_id: req.params.id };
+  Posts.insert(post)
+    .then(post => {
+      console.log(post);
+      res.status(201).json(post);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ message: "error adding post" });
+    });
+});
 
 router.get('/', (req, res) => {
   // do your magic!
