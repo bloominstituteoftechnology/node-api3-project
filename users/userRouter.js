@@ -43,9 +43,17 @@ router.get('/:id', validateUserId, (req, res) => {
   })
 });
 
-// router.get('/:id/posts', (req, res) => {
-//   // do your magic!
-// });
+router.get('/:id/posts', (req, res) => {
+  // do your magic!
+  const { id } = req.params;
+  Posts.getById(id)
+  .then(post => {
+    res.status(200).json(post);
+  })
+  .catch(err => {
+    res.status(500).json({ errorMessage: 'error retrieving posts'})
+  })
+});
 
 router.delete('/:id', (req, res) => {
   // do your magic!
