@@ -21,9 +21,17 @@ router.get('/:id', validatePostId, (req, res) =>
   res.status(200).json(req.post);
 });
 
-router.delete('/:id', (req, res) => 
+router.delete('/:id', validatePostId, (req, res) => 
 {
-  // do your magic!
+  postDatabase.remove(req.post.id)
+  .then(removed =>
+  {
+    res.status(200).json({message: `Post with id of ${req.post.id} has been deleted`});
+  })
+  .catch(err =>
+  {
+    res.status(500).json({message: 'could not remove post from the database'});
+  })
 });
 
 router.put('/:id', validatePostId, validatePost, (req, res) => 
