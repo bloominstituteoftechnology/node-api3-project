@@ -64,6 +64,19 @@ router.get('/:id/posts', validateUserId, validatePost, (req, res) => {
   })
 });
 
+router.get("/posts/:id", validateUserId, (req, res) => {
+  const { id } = req.params;
+  Users
+    .getUserPosts(id)
+    .then(userposts => {
+      res.status(200).json(userposts);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ errormessage: "error getting all posts by user id" });
+    });
+});
+
 router.delete('/:id', validateUserId, (req, res) => {
   // do your magic!
   const { id } = req.params;
