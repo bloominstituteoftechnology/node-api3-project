@@ -80,9 +80,8 @@ router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
 function validateUserId(req, res, next) {
   Db.getById(req.params.id)
     .then(user => {
-      if (user) {
-        req.user = user;
-        next();
+      if (!user) {
+        res.status(404).json({ message: "No user with that ID exists"})
       } else {
         res.status(500).json({ message: 'No user exists with that ID' })
       }
@@ -90,6 +89,7 @@ function validateUserId(req, res, next) {
     .catch(err => {
       res.status(500).json({ message: "Need to provide valid ID"})
     })
+    next();
 }
 
 function validateUser(req, res, next) {
@@ -103,7 +103,6 @@ function validateUser(req, res, next) {
       res.status(400).json({ message: 'Missing User Data' })
   }
 }
-
 
 function validatePost(req, res, next) {
   if (req.body) {
