@@ -52,7 +52,7 @@ router.get('/:id', validateUserId, (req, res) => {
   })
 });
 
-router.get('/:id/posts', (req, res) => {
+router.get('/:id/posts', validateUserId, validatePost, (req, res) => {
   // do your magic!
   const { id } = req.params;
   Posts.getById(id)
@@ -64,12 +64,29 @@ router.get('/:id/posts', (req, res) => {
   })
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', validateUserId, (req, res) => {
   // do your magic!
+  const { id } = req.params;
+  Users.remove(id)
+  .then(removed => {
+    res.status(200).json(removed)
+  })
+  .catch(err => {
+    res.status(500).json({ errorMessage: 'error removing user by id' })
+  })
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validateUserId, validateUser, (req, res) => {
   // do your magic!
+  const { id } = req.params;
+  const updates = req.body;
+  Users.update(id, updates)
+  .then(updated => {
+    res.status(404).json(updated)
+  })
+  .catch(err => {
+    res.status(500).json({ errorMessage: 'error updating the user' })
+  })
 });
 
 //custom middleware
