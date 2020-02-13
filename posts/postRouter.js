@@ -40,8 +40,12 @@ router.delete('/:id', validatePostId(), (req, res) => {
   })
 });
 
-router.put('/:id', (req, res) => {
-  // do your magic!
+router.put('/:id', validatePostId(), validatePost(), (req, res) => {
+  Posts
+  .update(req.params.id, req.body)
+  .then(post => {
+    res.status(201).json({ message: 'post has been updated by ID' })
+  }).catch()
 });
 
 // custom middleware

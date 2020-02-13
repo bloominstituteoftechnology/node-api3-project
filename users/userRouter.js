@@ -95,7 +95,7 @@ router.put('/:id', validateUserId, validateUser, (req, res) => {
   const updates = req.body;
   Users.update(id, updates)
   .then(updated => {
-    res.status(404).json(updated)
+    res.status(201).json(updated)
   })
   .catch(err => {
     res.status(500).json({ errorMessage: 'error updating the user' })
