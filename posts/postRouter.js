@@ -17,12 +17,27 @@ router.get('/', (req, res) => {
   })
 });
 
-router.get('/:id', (req, res) => {
-  // do your magic!
+router.get('/:id', validatePostId(), (req, res) => {
+  const { id } = req.params;
+  Posts
+  .getById(id)
+  .then(post => {
+    res.status(201).json(post)
+  })
+  .catch(err => {
+    res.status(500).json({ errorMessage: 'could not find post with this ID' })
+  })
 });
 
-router.delete('/:id', (req, res) => {
-  // do your magic!
+router.delete('/:id', validatePostId(), (req, res) => {
+  Posts
+  .remove(req.params.id)
+  .then(removed => {
+    res.status(200).json({ message: 'post has been removed' })
+  })
+  .catch(err => {
+    res.status(404).json({ message: 'could not delete this post by ID' })
+  })
 });
 
 router.put('/:id', (req, res) => {
