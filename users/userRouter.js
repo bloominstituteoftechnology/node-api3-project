@@ -156,11 +156,19 @@ function validateUserId(req, res, next) {
 }
 
 function validateUser(req, res, next) {
+	function isEmpty(obj) {
+		for (var key in obj) {
+			if (obj.hasOwnProperty(key)) return false;
+		}
+		return true;
+	}
+
 	console.log('validating', req.body);
 	console.log('name', req.body.name);
 	const body = { ...req.body };
 	console.log('bodyyyy', body);
-	if (req.body === {}) {
+
+	if (isEmpty(req.body)) {
 		res.status(400).json({ message: 'missing user data' });
 	} else if (!req.body.name) {
 		res.status(400).json({ message: 'missing required name field' });

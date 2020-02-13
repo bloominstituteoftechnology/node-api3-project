@@ -6,6 +6,8 @@ const Users = require('./../users/userDb');
 
 const router = express.Router();
 
+/* router.use('/id', validatePostId) */
+
 //RETURNS ALL POSTS ✔
 router.get('/', (req, res) => {
 	console.log('yo');

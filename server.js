@@ -16,8 +16,9 @@ server.get('/', (req, res) => {
 //custom middleware
 
 function logger(req, res, next) {
-	console.log('req', req);
-	console.log(`${req.method} Request to ${req.originalUrl}`);
+	console.log(
+		`[${new Date().toISOString()}] ${req.method} Request to ${req.originalUrl}`
+	);
 	next();
 }
 
