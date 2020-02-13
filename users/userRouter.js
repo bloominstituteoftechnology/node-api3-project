@@ -1,7 +1,7 @@
 const express = require('express');
 const userDatabase = require('./userDb');
 const postDatabase = require('../posts/postDb');
-
+const {validateUser, validateUserId, validatePost} = require('../utils');
 const router = express.Router();
 
 router.post('/', validateUser, (req, res) => 
@@ -99,62 +99,5 @@ router.put('/:id', validateUserId, validateUser, (req, res) =>
     res.status(500).json({message: 'error updating user'});
   })
 });
-
-//custom middleware
-
-function validateUserId(req, res, next) 
-{
-  userDatabase.getById(req.params.id)
-  .then(user =>
-  {
-    if(user)
-    {
-      req.user = user;
-      next();
-    }
-    else
-    {
-      res.status(400).json({message: 'invalid user ID'});
-    }
-  })
-  .catch(err =>
-  {
-    res.status(500).json({message: 'Could not validate'});
-  })
-}
-
-function validateUser(req, res, next) 
-{
-  if(req.body.constructor === Object && Object.keys(req.body).length === 0)
-  {
-    res.status(400).json({message: 'missing user data'});
-  }
-   
-  if(!req.body.name)
-  {
-    res.status(400).json({message: 'missing required name field'});
-  }
-  else
-  {
-    next();
-  }
-}
-
-function validatePost(req, res, next) 
-{
-  if(req.body.constructor === Object && Object.keys(req.body).length === 0)
-  {
-    res.status(400).json({message: 'missing post data'});
-  }
-   
-  if(!req.body.text)
-  {
-    res.status(400).json({message: 'missing required text field'});
-  }
-  else
-  {
-    next();
-  }
-}
 
 module.exports = router;
