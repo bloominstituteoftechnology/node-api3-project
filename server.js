@@ -2,12 +2,54 @@ const express = require('express');
 
 const server = express();
 
-server.get('/', (req, res) => {
+server.get('/', logger, (req, res) => {
   res.send(`<h2>Let's write some middleware!</h2>`);
 });
 
 //custom middleware
 
-function logger(req, res, next) {}
+function logger(req, res, next) {
+  console.log(`${req.method} Request to ${req.originalUrl}`);
+
+  next();
+}
+
+function validateUser(body) {
+  return function(req, res, next) {
+    const body = req.body;
+    const name = req.headers.name;
+
+    if (!body) {
+      res.status(400).json({errMessage: 'missing user data'});
+    }
+    if (!body.name) {
+      res.status(400).jsons({errMessage: 'The given name does not match'});
+    }
+  };
+}
+
+function validateUserId(id) {
+  return function(req, res, next) {
+    const realId = req.headers.id;
+    if (realId === id) {
+      next();
+    } else {
+      res.status(401).json({errMessage: 'Invalid user'});
+    }
+  };
+  next();
+}
+
+function validatePost() {
+  return function(req, res, next) {
+    const body = req.body;
+    if (!body) {
+      res.status(400).json({errorMessage: 'Missing post data'});
+    }
+    if (!body.text) {
+      res.status(400).json({errorMessage: 'Missing required text field'});
+    }
+  };
+}
 
 module.exports = server;
