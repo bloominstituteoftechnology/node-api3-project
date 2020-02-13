@@ -1,25 +1,15 @@
 const User = require("../../users/userDb");
 
 function validateUser(req, res, next) {
-  const { body } = req.body;
+  const { body } = req;
 
   if (!body) {
-    res.status(400).json({ message: "missing user data" });
+    status(400).json({ message: "missing user data" });
+  } else if (!body.name) {
+    status(400).json({ message: "missing required name field" });
   } else {
-    User.get(body)
-      .then(userName => {
-        if (!userName) {
-          res.status(400).json({ message: "missing required name field" });
-        }
-      })
-      .catch(err => {
-        res.status(500).json({
-          errorMessage: "beep beep boop?"
-        });
-      });
-  
+    next();
   }
-  next();
 }
 
-module.exports = validateUser
+module.exports = validateUser;

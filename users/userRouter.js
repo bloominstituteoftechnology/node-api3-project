@@ -1,5 +1,5 @@
 const express = require("express");
-const post = require('../posts/postDb')
+const post = require("../posts/postDb");
 const vUserId = require("../data/middleware/validateUserId");
 const vUser = require("../data/middleware/validateUser");
 const vPosts = require("../data/middleware/validatePost");
@@ -7,17 +7,22 @@ const udb = require("../users/userDb");
 const router = express.Router();
 
 router.post("/", vUser, (req, res) => {
-  // do your magic!
-  res.status(200).json("YAY!");
+  const { body } = req;
+
+  udb.insert(body).then(newUser => {
+    res.status(200).json(newUser);
+  });
 });
 
-router.post("/:id/posts", vUser, vUserId, vPosts, (req, res) => {
-  // needs to use post db
-  res.status(200).json("YAY!");
-  // do your magic!
+router.post("/:id/posts", vUserId, vPosts, (req, res) => { //THIS ONE TOO!
+  const { body } = req;
+
+  post.insert(body).then(newPost => {
+    res.status(200).json(newPost);
+  });
 });
 
-router.get("/", vUserId, (req, res) => {
+router.get("/", (req, res) => {
   udb
     .get()
     .then(user => {
@@ -31,8 +36,9 @@ router.get("/", vUserId, (req, res) => {
 });
 
 router.get("/:id", vUserId, (req, res) => {
+  const { id } = req.params;
   udb
-    .get()
+    .getById(id)
     .then(user => {
       res.status(200).json(user);
     })
@@ -41,17 +47,25 @@ router.get("/:id", vUserId, (req, res) => {
     });
 });
 
-router.get("/:id/posts", vUser, vUserId, vPosts, (req, res) => {
-  //will need post db
-  // do your magic!
+router.get("/:id/posts", vUserId, vPosts, (req, res) => { //THIS ONE
+  const { id } = req.params;
+  // const { body } = req;
+  post.getById(id)
+ .then(user => {
+      res.status(200).json(user);
+    })
+    .catch(err => {
+      res.status(500).json({ error: "beep beep boop?" });
+    });
 });
 
 router.delete("/:id", vUserId, (req, res) => {
- udb.remove()
+  const { id } = req.params;
+  udb
+    .remove(id)
     .then(deathga => {
-      res.status(200).json({
-        message: "Delete Spell Critical Hit!!! It was Super Effective!"
-      });
+      console.log("Delete Spell Critical Hit!!! It was Super Effective!");
+      res.status(200).json(deathga);
     })
     .catch(err => {
       res
@@ -62,21 +76,19 @@ router.delete("/:id", vUserId, (req, res) => {
 });
 
 router.put("/:id", vUser, vUserId, (req, res) => {
-  // do your magic!
+  const { id } = req.params;
+  const { body } = req;
+  udb
+    .update(id, body)
+    .then(updatega => {
+      console.log("Update Spell Critical Hit!!! It was Super Effective!");
+      res.status(200).json(updatega);
+    })
+    .catch(err => {
+      status(404).json({ message: "Booooooop? " });
+    });
 });
 
 //custom middleware
-
-function validateUserId(req, res, next) {
-  // do your magic!
-}
-
-function validateUser(req, res, next) {
-  // do your magic!
-}
-
-function validatePost(req, res, next) {
-  // do your magic!
-}
 
 module.exports = router;
