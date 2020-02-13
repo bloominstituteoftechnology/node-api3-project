@@ -1,7 +1,7 @@
 const express = require('express');
 
 const Users = require('./userDb');
-// const Posts = require('../posts/postDb')
+const Posts = require('../posts/postDb')
 
 const router = express.Router();
 
@@ -17,9 +17,9 @@ router.post('/', validateUser, (req, res) => {
   })
 });
 
-router.post('/:id/posts', (req, res) => {
-  // do your magic!
-});
+// router.post('/:id/posts', (req, res) => {
+//   // do your magic!
+// });
 
 router.get('/', (req, res) => {
   // do your magic!
@@ -28,16 +28,24 @@ router.get('/', (req, res) => {
   .then(user => {
     res.status(200).json(user)
   })
-  .catch(err => res.status(404).json({ message: "could not find users" }));
+  .catch(err => res.status(404).json({ errorMessage: "error retrieving users" }));
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', validateUserId, (req, res) => {
   // do your magic!
+  const { id } = req.params;
+  Users.getById(id)
+  .then(user => {
+    res.status(201).json(user)
+  })
+  .catch(err => {
+    res.status(500).json({ errorMessage: 'error retrieving user by id' })
+  })
 });
 
-router.get('/:id/posts', (req, res) => {
-  // do your magic!
-});
+// router.get('/:id/posts', (req, res) => {
+//   // do your magic!
+// });
 
 router.delete('/:id', (req, res) => {
   // do your magic!
@@ -51,7 +59,8 @@ router.put('/:id', (req, res) => {
 
 function validateUserId(req, res, next) {
   // do your magic!
-  Users.getById(req.params.id)
+  const { id } = req.params;
+  Users.getById(id)
   .then(user => {
     if (user) {
       req.user = user;
@@ -67,11 +76,10 @@ function validateUserId(req, res, next) {
 
 function validateUser(req, res, next) {
   // do your magic!
-  console.log(req)
-  const body = req.body;
-    if (!body) {
+  const user = req.body;
+    if (!user) {
       res.status(400).json({ message: 'missing user data' })
-    } else if (!body.name) {
+    } else if (!user.name) {
     res.status(400).json({ message: 'missing required name field' })
   }
   next();
@@ -79,14 +87,14 @@ function validateUser(req, res, next) {
 
 function validatePost(req, res, next) {
   // do your magic!
-  if (req.body) {
-    if (!req.body.text) {
+  const post = req.body;
+    if (!post) {
+      res.status(400).json({ message: 'missing post' })
+    } 
+    if(!post.text) {
       res.status(400).json({ message: 'missing required text field' })
     }
-  } else {
-    res.status(400).json({ message: 'missing post' })
-  }
-  console.log('Post validated');
+  // console.log('Post validated');
   next();
 }
 
