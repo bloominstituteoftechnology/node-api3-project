@@ -5,7 +5,7 @@ const router = express.Router();
 const db = require('./userDb')
 const postDB = require('../posts/postDb');
 
-router.post('/', (req, res) => {
+router.post('/',validateUser, (req, res) => {
   // do your magic!
   db.insert(req.body)
   .then(user =>{
@@ -19,7 +19,7 @@ router.post('/', (req, res) => {
   })
 });
 
-router.post('/:id/posts', (req, res) => {
+router.post('/:id/posts', validateUserId, (req, res) => {
   // do your magic!
   postDB.update(req.params.id, req.body)
   .then(post =>{
@@ -46,7 +46,7 @@ router.get('/', (req, res) => {
     })
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', validateUserId, (req, res) => {
   // do your magic!
   db.getById(req.params.id)
     .then(user =>{
@@ -59,7 +59,7 @@ router.get('/:id', (req, res) => {
     })
 });
 
-router.get('/:id/posts', (req, res) => {
+router.get('/:id/posts', validateUserId, (req, res) => {
   // do your magic!
   postDB.getById(req.params.id)
     .then(post =>{
@@ -72,7 +72,7 @@ router.get('/:id/posts', (req, res) => {
     })
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', validateUserId, (req, res) => {
   // do your magic!
   db.remove(req.params.id)
     .then(user =>{
@@ -85,7 +85,7 @@ router.delete('/:id', (req, res) => {
     })
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validateUserId, (req, res) => {
   // do your magic!
   db.update(req.params.id, req.body)
     .then(user =>{
@@ -103,10 +103,31 @@ router.put('/:id', (req, res) => {
 
 function validateUserId(req, res, next) {
   // do your magic!
+  db.getById(req.params.id)
+    .then(user =>{
+      if(!user) {
+        res.status(404).json({
+          message: "invalid user id"
+        })
+      } else {
+        next();
+      }
+    })
 }
 
 function validateUser(req, res, next) {
   // do your magic!
+  if(!req.body || req.body.length<1){
+    res.status(400).json({
+      message: "missing user data"
+    })
+  } else if (!req.body.name || req.body.name.length<1) {
+    res.status(400).json({
+      message: "missing required name field input"
+    })
+  } else {
+    next();
+  }
 }
 
 function validatePost(req, res, next) {
