@@ -1,27 +1,29 @@
+//imports
 const express = require('express');
+const postData = require('./postDb');
 
-const router = express.Router();
+const postRouter = express.Router();
 
-router.get('/', (req, res) => {
-  // do your magic!
+postRouter.get('/', (req, res) => {
+	// do your magic!
 });
 
-router.get('/:id', (req, res) => {
-  // do your magic!
+postRouter.get('/:id', (req, res) => {
+	// do your magic!
 });
 
-router.delete('/:id', (req, res) => {
-  // do your magic!
+postRouter.delete('/:id', (req, res) => {
+	// do your magic!
 });
 
-router.put('/:id', (req, res) => {
-  // do your magic!
+postRouter.put('/:id', (req, res) => {
+	// do your magic!
 });
 
 // custom middleware
 
 function validatePostId(req, res, next) {
-  // do your magic!
+	// do your magic!
 }
 
 module.exports = router;
