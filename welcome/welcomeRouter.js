@@ -1,18 +1,13 @@
 const express = require('express');
 
-const router = express.Router();
+const welcomeRouter = express.Router();
 
-router.get('/', (req, res) => {
-	res.send(`
-		<h1>Middleware API</h1>
-		<p>Checkout the Middleware API</p>
-	`);
+welcomeRouter.get('/', async (req, res, next) => {
+	res.status(200).json({ message: process.env.MESSAGE || 'Welcome to the APP' });
 });
 
-router.get('/api', (req, res) => {
-	res.json({
-		message: 'You have entered the API'
-	});
+welcomeRouter.get('/api', (req, res, next) => {
+	res.status(200).json({ message: process.env.API_MESSAGE || 'This is the API homepage' });
 });
 
-module.exports = router;
+module.exports = welcomeRouter;

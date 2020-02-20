@@ -2,7 +2,11 @@
 const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
+
+//Router Imports
 const welcomeRouter = require('./welcome/welcomeRouter');
+const userRouter = require('./users/userRouter');
+const postRouter = require('./posts/postRouter');
 
 //defining server and routes here.
 const server = express();
@@ -34,7 +38,8 @@ function logger(format) {
 
 		if (format === 'short') {
 			console.log(`${method} ${url}`);
-		} else {
+		}
+		else {
 			console.log(`${ip} ${method} ${url} ${agent}`);
 		}
 		next();
