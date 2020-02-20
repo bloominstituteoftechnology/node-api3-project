@@ -14,7 +14,7 @@ router.get('/:id', validatePostId(), (req, res) => {
   res.status(200).json(req.post)
 });
 
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', validatePostId(), (req, res, next) => {
   // do your magic!
   posts.remove(req.params.id)
     .then(() => {
@@ -28,16 +28,10 @@ router.delete('/:id', (req, res, next) => {
 router.put('/:id', validatePostId(), (req, res, next) => {
   // do your magic!
   posts.update(req.params.id, req.body)
-    .then(post => {
-      if(post){
+    .then(() => {
         res.status(200).json({
           message: "Post is updated"
         })
-      } else {
-        res.status(404).json({
-          message : "The post is not found"
-        })
-      }
     })
     .catch(next)
 });

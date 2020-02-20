@@ -15,14 +15,6 @@ router.post('/', validateUser(), (req, res, next) => {
 
 router.post('/:id/posts', validateUserId(), validatePost(), (req, res, next) => {
   // do your magic!
-  // const { text } = req.body
-  
-  if(!req.text){
-    return res.status(400).json({
-      message: "Need Text values"
-    })
-  }
-
     db.insert(req.text)
       .then(newPost => {
         res.status(201).json(newPost)
@@ -58,32 +50,21 @@ router.get('/:id/posts',validateUserId(), (req, res, next) => {
 router.delete('/:id', validateUserId(), (req, res, next) => {
   // do your magic!
   userDb.remove(req.params.id)
-    .then(count => {
-      if(count > 0) {
+    .then(() => {
         res.status(200).json({
           message: "The user is deleted"
         })
-      } else {
-        res.status(400).json({})
-        message: "The user is not found"
-      }
     })
     .catch(next);
 });
 
-router.put('/:id', validateUser(), validateUserId(), (req, res, next) => {
+router.put('/:id', validateUserId(), validateUser(), (req, res, next) => {
   // do your magic!
     userDb.update(req.params.id, req.body)
-      .then(user => {
-        if(user){
+      .then(() => {
           res.status(200).json({
             message: "Name is updated"
           })
-        } else {
-          res.status(404).json({
-            message: "The user is not found"
-          })
-        }
       })
       .catch(next)
 });
@@ -116,10 +97,9 @@ function validateUser() {
   return(req, res, next) => {
     if(!req.body.name) {
       return res.status(400).json({
-        message: "Missing user name"
+        message: "Missing Name Input"
       })
     }
-
     next()
   }
 }
@@ -128,7 +108,7 @@ function validatePost() {
   // do your magic!
   return(req, res, next) => {
 
-    resource = {
+    body = {
       text: req.body.text,
       user_id: req.params.id
     };
@@ -138,7 +118,7 @@ function validatePost() {
         message: "Missing text input"
       })
     } else {
-      req.text = resource;
+      req.text = body;
       next()
     }
   }

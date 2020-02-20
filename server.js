@@ -30,7 +30,9 @@ server.use((err, req, res, next) => {
 server.listen(port, () => {
 	console.log(`Server running at http://localhost:${port}`)
 })
+
 //custom middleware
 
-function logger(req, res, next) {}
+function logger(req, res, next) {
+}
 
