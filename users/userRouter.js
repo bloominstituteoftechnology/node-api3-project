@@ -1,13 +1,12 @@
 const express = require('express');
 const userDb = require('./userDb');
-const postDb = require('../posts/postRouter');
+const postDb = require('../posts/postDb');
 
 const router = express.Router();
 
 router.post('/', validateUser, (req, res) => {
  userDb.insert(req.body)
   .then((u) => {
-    console.log("user:", u);
     res.status(201).json(u);
   })
   .catch(() => {
@@ -17,15 +16,14 @@ router.post('/', validateUser, (req, res) => {
   })
 });
 
-router.post('/:id/posts', validatePost, (req, res) => {
+router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
   postDb.insert(req.body)
   .then((p) => {
-    console.log("user:", p);
     res.status(201).json(p);
   })
   .catch(() => {
     res.status(500).json({
-      message: "couldn't post a user"
+      message: "couldn't post a post"
     })
   })
 });
@@ -61,8 +59,7 @@ router.get('/:id/posts', validateUserId, (req, res) => {
 router.delete('/:id', validateUserId, (req, res) => {
   userDb.remove(req.user.id)
   .then((u) => {
-    console.log("user:", u);
-    res.status(200).json(u)
+    res.status(200).json(u);
   })
   .catch(() => {
     res.status(500).json({
@@ -74,8 +71,7 @@ router.delete('/:id', validateUserId, (req, res) => {
 router.put('/:id', validateUserId, (req, res) => {
   userDb.update(req.user.id, req.body)
   .then((u) => {
-    console.log("user:", u);
-    res.status(200).json(u)
+    res.status(200).json(u);
   })
   .catch(() => {
     res.status(500).json({
@@ -90,7 +86,7 @@ function validateUserId(req, res, next) {
   userDb.getById(req.params.id)
   .then(u => {
     if (u) {
-      req.user = u
+      req.user = u;
       next();
     } else {
       res.status(400).json({
@@ -98,8 +94,7 @@ function validateUserId(req, res, next) {
       })
     }
   })
-  .catch((error) => {
-    console.log(error)
+  .catch(() => {
     res.status(500).json({
       message: "error retrieving the user id"
     })
@@ -120,6 +115,10 @@ function validateUser(req, res, next) {
 }
 
 function validatePost(req, res, next) {
+  response = {
+    text: req.body.text,
+    user_id: req.params.id
+  }
   if(!req.body) {
     res.status(400).json({
       message: "missing post data"
@@ -128,7 +127,10 @@ function validatePost(req, res, next) {
     res.status(400).json({
       message: "missing required text field"
     })
+  } else {
+    req.body = response;
+    next();
   }
-  next();}
+}  
 
 module.exports = router;
