@@ -4,20 +4,42 @@ const postDb = require('./postDb');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  // do your magic!
+  postDb.get()
+  .then((p) => {
+    res.status(200).json(p);
+  })
+  .catch(() => {
+    res.status(500).json({
+      message: "couldn't get users"
+    })
+  })
 });
 
 router.get('/:id', validatePostId, (req, res) => {
-  // do your magic!
+  res.status(200).json(req.post);
 });
 
 router.delete('/:id', validatePostId, (req, res) => {
-  // do your magic!
-});
+  postDb.remove(req.user.id)
+  .then((p) => {
+    res.status(200).json(p);
+  })
+  .catch(() => {
+    res.status(500).json({
+      message: "couldn't delete post"
+    })
+  })});
 
 router.put('/:id', validatePostId, (req, res) => {
-  // do your magic!
-});
+  postDb.update(req.user.id, req.body)
+  .then((p) => {
+    res.status(200).json(p);
+  })
+  .catch(() => {
+    res.status(500).json({
+      message: "couldn't update post"
+    })
+  })});
 
 // custom middleware
 
