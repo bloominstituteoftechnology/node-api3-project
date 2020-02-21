@@ -3,7 +3,7 @@ const postRouter = require("./posts/postRouter")
 const userRouter = require("./users/userRouter")
 
 const server = express();
-const port = 4000
+const port = process.env.PORT || 4000
 
 server.use(express.json())
 
@@ -11,7 +11,7 @@ server.use("/api/users", userRouter)
 server.use("/api/posts", postRouter)
 
 server.get('/', (req, res) => {
-  res.send(`<h2>Let's write some middleware!</h2>`);
+  res.send(process.env.SECRET_MESSAGE || `<h2>Let's write some middleware!</h2>`);
 });
 
 server.use((req, res) => {
@@ -34,5 +34,6 @@ server.listen(port, () => {
 //custom middleware
 
 function logger(req, res, next) {
+
 }
 

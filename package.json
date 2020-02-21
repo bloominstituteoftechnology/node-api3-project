@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "watch": "nodemon server.js"
+    "watch": "nodemon -r dotenv/config server.js"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
     "sqlite3": "^4.1.1"
   },
   "devDependencies": {
+    "dotenv": "^8.2.0",
     "knex-cleaner": "^1.3.0",
     "nodemon": "^2.0.1"
   }
