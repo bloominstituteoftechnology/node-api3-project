@@ -20,7 +20,7 @@ router.get('/:id', validatePostId, (req, res) => {
 });
 
 router.delete('/:id', validatePostId, (req, res) => {
-  postDb.remove(req.user.id)
+  postDb.remove(req.post.id)
   .then((p) => {
     res.status(200).json(p);
   })
@@ -31,7 +31,7 @@ router.delete('/:id', validatePostId, (req, res) => {
   })});
 
 router.put('/:id', validatePostId, (req, res) => {
-  postDb.update(req.user.id, req.body)
+  postDb.update(req.post.id, req.body)
   .then((p) => {
     res.status(200).json(p);
   })
