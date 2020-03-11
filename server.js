@@ -5,6 +5,11 @@ const server = express();
 // plug in the body parsing ability
 server.use(express.json())
 
+// connect it here, a m. that writes a more generic X-Powered-By
+server.use(function (req, res, next) {
+  
+})
+
 server.get('/friend', (req, res) => {
   res.send(`<h2>Hello, friend!</h2>`);
 })
