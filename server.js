@@ -7,13 +7,14 @@ server.use(express.json())
 
 // connect it here, a m. that writes a more generic X-Powered-By
 server.use(function (req, res, next) {
+  req.friend = { id: 1, name: 'Alison' }
   res.header('X-Powered-By', 'Do not be nosy')
   res.header('Lambda-Header', 'Have fun')
   next()
 })
 
 server.get('/friend', (req, res) => {
-  res.send(`<h2>Hello, friend!</h2>`);
+  res.send(`<h2>Hello, friend ${req.friend.name}</h2>`);
 })
 
 server.get('/:id', (req, res) => {
@@ -22,6 +23,6 @@ server.get('/:id', (req, res) => {
 
 //custom middleware
 
-function logger(req, res, next) {}
+function logger(req, res, next) { }
 
 module.exports = server;
