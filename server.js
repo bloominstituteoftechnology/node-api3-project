@@ -1,5 +1,8 @@
 const express = require('express')
 const helmet = require('helmet')
+const postRouter = require('./posts/postRouter')
+const userRouter = require('./users/userRouter')
+
 const server = express()
 
 // plug in the body parsing ability
@@ -16,6 +19,9 @@ server.use(function (req, res, next) {
   // res.header('Lambda-Header', 'Have fun')
   next()
 })
+
+server.use('/posts', postRouter)
+server.use('/users', userRouter)
 
 const users = [] // each user has { name: 'Gabe', age: 43 }
 server.post('/users', validateName, validateAge, (req, res) => {
