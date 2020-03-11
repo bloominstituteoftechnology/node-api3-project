@@ -12,8 +12,8 @@ server.use(helmet())
 // connect it here, a m. that writes a more generic X-Powered-By
 server.use(function (req, res, next) {
   req.friend = { id: 1, name: 'Alison' }
-  res.header('X-Powered-By', 'Do not be nosy')
-  res.header('Lambda-Header', 'Have fun')
+  // res.header('X-Powered-By', 'Do not be nosy')
+  // res.header('Lambda-Header', 'Have fun')
   next()
 })
 
