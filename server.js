@@ -17,6 +17,12 @@ server.use(function (req, res, next) {
   next()
 })
 
+const users = [] // each user has { name: 'Gabe', age: 43 }
+server.post('/users', (req, res) => {
+  users.push(req.body)
+  res.status(201).json(users)
+})
+
 server.get('/friend', (req, res) => {
   res.send(`<h2>Hello, friend ${req.friend.name}</h2>`);
 })
