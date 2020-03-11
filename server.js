@@ -39,6 +39,15 @@ server.get('/:id', (req, res) => {
 })
 
 //custom middleware
+function validateAge(req, res, next) {
+  req.cleanAge = 45
+  next()
+}
+
+function validateName(req, res, next) {
+  req.cleanName = 'Lady Gaga'
+  next()
+}
 
 function logger(req, res, next) { }
 
