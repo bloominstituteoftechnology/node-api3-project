@@ -7,7 +7,8 @@ server.use(express.json())
 
 // connect it here, a m. that writes a more generic X-Powered-By
 server.use(function (req, res, next) {
-  
+  res.header('X-Powered-By', 'Do not be nosy')
+  next()
 })
 
 server.get('/friend', (req, res) => {
