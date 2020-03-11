@@ -1,3 +1,7 @@
-// code away!
-// pull in the server
-// spin it up!
+const server = require('./server')
+
+const PORT = 4000
+
+server.listen(PORT, () => {
+  console.log(`listening on ${PORT}`);
+})
