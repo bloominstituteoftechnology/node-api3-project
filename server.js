@@ -1,9 +1,13 @@
-const express = require('express');
-
-const server = express();
+const express = require('express')
+const helmet = require('helmet')
+const server = express()
 
 // plug in the body parsing ability
 server.use(express.json())
+
+// plug in the header overrides with the helmet lib
+// the helmet variable, as imported, is a FUNCTION THAT RETURNS A FUNCTION MIDDLEWARE
+server.use(helmet())
 
 // connect it here, a m. that writes a more generic X-Powered-By
 server.use(function (req, res, next) {
