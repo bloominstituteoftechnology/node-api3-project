@@ -53,8 +53,14 @@ function validateAge(req, res, next) {
 }
 
 function validateName(req, res, next) {
-  req.cleanName = 'Lady Gaga'
-  next()
+  if (!req.body.name) {
+    res.status(422).json({ message: "name is required" })
+  } else if (req.body.name.trim().length < 5) {
+    res.status(400).json({ message: "name should be at least 5 characters" })
+  } else {
+    req.cleanName = req.body.name.trim()
+    next()
+  }
 }
 
 function logger(req, res, next) { }
