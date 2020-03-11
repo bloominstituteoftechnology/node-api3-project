@@ -6,22 +6,24 @@ router.get('/', (req, res) => {
   // do your magic!
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', validateIdParameter, (req, res) => {
   // do your magic!
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', validateIdParameter, (req, res) => {
   // do your magic!
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validateIdParameter, (req, res) => {
   // do your magic!
 });
 
 // custom middleware
 
-function validatePostId(req, res, next) {
-  // do your magic!
+function validateIdParameter(req, res, next) {
+  // checkt that id is numbah
+  // check that it corresponds ot actual existing post in the ebd
+  // next()
 }
 
 module.exports = router;
