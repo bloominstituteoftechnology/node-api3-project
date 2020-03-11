@@ -2,9 +2,16 @@ const express = require('express');
 
 const server = express();
 
-server.get('/', (req, res) => {
-  res.send(`<h2>Let's write some middleware!</h2>`);
+// plug in the body parsing ability
+server.use(express.json())
+
+server.get('/:id', (req, res) => {
+  res.send(`<h2>That is a nice id: </h2>`);
 });
+
+server.get('/friend', (req, res) => {
+  res.send(`<h2>Hello, friend!</h2>`);
+})
 
 //custom middleware
 
