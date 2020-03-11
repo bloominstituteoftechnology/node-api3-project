@@ -20,8 +20,8 @@ server.use(function (req, res, next) {
   next()
 })
 
-server.use('/posts', postRouter)
-server.use('/users', userRouter)
+// server.use('/posts', postRouter)
+// server.use('/users', userRouter)
 
 const users = [] // each user has { name: 'Gabe', age: 43 }
 server.post('/users', validateName, validateAge, (req, res) => {
