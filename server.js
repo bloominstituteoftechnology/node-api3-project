@@ -40,8 +40,16 @@ server.get('/:id', (req, res) => {
 
 //custom middleware
 function validateAge(req, res, next) {
-  req.cleanAge = 45
-  next()
+  if (!req.body.age) {
+    res.status(422).json({ message: 'age is required' })
+  } else if (isNaN(req.body.age)) {
+    res.status(422).json({ message: 'that age does not look lika a number' })
+  } else if (Number(req.body.age) < 18) {
+    res.status(422).json({ message: 'that age is too young' })
+  } else {
+    req.cleanAge = Number(req.body.age)
+    next()
+  }
 }
 
 function validateName(req, res, next) {
