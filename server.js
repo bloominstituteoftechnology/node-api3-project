@@ -18,8 +18,15 @@ server.use(function (req, res, next) {
 })
 
 const users = [] // each user has { name: 'Gabe', age: 43 }
-server.post('/users', (req, res) => {
-  users.push(req.body)
+server.post('/users', validateName, validateAge, (req, res) => {
+  // has to have body
+  // hast to have body.name
+  // has to have body.age
+  // name has to be over three chars
+  // age has to be a number
+  // age has to be a number over 18
+
+  users.push({ name: req.cleanName, age: req.cleanAge })
   res.status(201).json(users)
 })
 
