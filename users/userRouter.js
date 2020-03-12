@@ -1,63 +1,85 @@
+  
 const express = require('express');
-const Users = require('./userDb.js')
+const Users = require('./userDb');
+const Posts = require('../posts/postDb');
 const router = express.Router();
 
-router.post('/', validateUser, (req, res) => {
-  res.status(201).json(req.body);
-});
-
-router.post('/:id/posts', validateUser, (req, res) => {
-  res.status(201).json(req.post)
-});
 
 router.get('/', (req, res) => {
   Users.get()
-  .then(users => {
-    users 
-    ? res.status(200).json(users)
-    : res.status(404).json({ error: "Users not found" })
-  })
-  .catch(err => {
-    res.status(500).json({ error: "Unable to retrience users at this time" })
-  })
+    .then(users => {
+      users
+        ? res.status(200).json(users)
+        : res.status(404).json({ error: "Fellowship not found" })
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({ error: "Error on our side, sorry" })
+    })
 });
+
 
 router.get('/:id', validateUserId, (req, res) => {
   const user = req.user;
   res.status(200).json(user)
 });
 
+
 router.get('/:id/posts', validateUserId, (req, res) => {
   const user = req.user;
-  res.status(200).json(user)
+  Users.getUserPosts(user.id)
+    .then(posts => {
+      res.status(200).json(posts);
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({ error: "Error on our side, sorry" })
+    })
 });
 
-router.delete('/:id', (req, res) => {
+
+router.post('/', validateUser, (req, res) => {
+  res.status(201).json(req.body);
+});
+
+
+router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
+  res.status(201).json(req.post);
+});
+
+
+
+router.delete('/:id', validateUserId, (req, res) => {
   const user = req.user;
+
   Users.remove(user.id)
-  .then(removed => {
-    removed === 1
-    ? res.status(200).json(removed)
-    : res.status(404).json({ error: "User does not exist" })
-  })
-  .catch(err => {
-    res.status(500).json({ error: "Unable to delete user at this time" })
-  })
+    .then(removedUser => {
+      removedUser === 1
+        ? res.status(200).json(removedUser)
+        : res.status(404).json({ message: "That user doesn't exist" })
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({ error: "Error on our side, sorry" })
+    })
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validateUserId, (req, res) => {
   const user = req.user;
   const payload = req.body;
 
-  payload.name
-  ? Users.update(user.id, payload)
-    .then(updated => {
-      res.status(200).json(payload)
-    })
-    .catch(err => {
-      res.status(500).json({ error: "Unable to update user at this time" })
-    })
-  : res.status(400).json({ error: "Please include the user name" })
+  if (payload.name) {
+    Users.update(user.id, payload)
+      .then(updatedUser => {
+        res.status(200).json(payload)
+      })
+      .catch(err => {
+        console.log(err)
+        res.status(500).json({ error: "Error on our side, sorry" })
+      })
+  } else {
+    res.status(400).json({ error: "Please include the name" })
+  }
 });
 
 //custom middleware
@@ -68,32 +90,52 @@ function validateUserId(req, res, next) {
     .then(user => {
       req.user = user
       user === undefined
-      ? res.status(404).json({ error: "User not found" })
-      : next();
+        ? res.status(404).json({ error: "User not found" })
+        : next()
     })
     .catch(err => {
-      res.status(500).json({ error: "Error on backend, please contact the sysadmin" })
+      console.log(err)
+      res.status(500).json({ error: "Error on our side, sorry" })
     })
 }
 
 function validateUser(req, res, next) {
   const payload = req.body;
+  console.log(payload)
 
-  payload.name === ''
-  ? res.status(401).json({ error: "Missing user name" })
-  : !payload.name ? res.status(401).json({ error: "Missing user data" })
-  : Users.insert(payload)
-    .then(user => {
-      req.body = user;
+  if (payload.name === '') {
+    res.status(401).json({ message: "Missing user name" });
+  } else if (!payload.name) {
+    res.status(401).json({ message: "missing user data" })
+  } else {
+    Users.insert(payload)
+      .then(user => {
+        req.body = user;
+        next();
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({ error: "Error on our side, sorry" });
+      });
+  }
+
+};
+
+function validatePost(req, res, next) {
+  const { id } = req.params;
+  const payload = { ...req.body, user_id: id }
+
+  payload.text
+  ?Posts.insert(payload)
+    .then(post => {
+      req.post = post;
       next();
     })
     .catch(err => {
-      res.status(500).json({ error: "Error on backend, please contact the sysadmin" })
+      console.log(err)
+      res.status(500).json({ error: "Error on our side, sorry" })
     })
-}
-
-function validatePost(req, res, next) {
-  // do your magic!
+  : res.status(400).json({ error: "Please enter post text" })
 }
 
 module.exports = router;
