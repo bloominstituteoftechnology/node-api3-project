@@ -1,18 +1,18 @@
 const express = require('express');
+const userRouter = require('./users/userRouter');
+const {logger} = require('./utils/logger');
 
 const server = express();
+
+server.use('/api/users', userRouter);
+
+server.use(logger);
 
 server.get('/', logger, (req, res) => {
   res.send(`<h2>Let's write some middleware!</h2>`);
 });
 
 //custom middleware
-
-function logger(req, res, next) {
-  console.log(`${req.method} Request to ${req.originalUrl}`);
-
-  next();
-}
 
 function validateUser(body) {
   return function(req, res, next) {

@@ -1,10 +1,10 @@
 const express = require('express');
-
-const Hubs = './userDb.js';
+const {validateUserId, validateUser, validatePost} = require('../utils/validation');
+const Hubs = require('./userDb.js');
 
 const router = express.Router();
 
-router.post('/', (req, res) => {
+router.post('/', validateUser, (req, res) => {
   // do your magic!
   const post = req.body;
   Hubs.insert(post)
@@ -89,45 +89,5 @@ router.put('/:id', (req, res) => {
 });
 
 //custom middleware
-
-function validateUserId(req, res, next) {
-  // do your magic!
-  return function(req, res, next) {
-    const realId = req.headers.id;
-    if (realId === id) {
-      next();
-    } else {
-      res.status(401).json({errMessage: 'Invalid user'});
-    }
-  };
-}
-
-function validateUser(req, res, next) {
-  // do your magic!
-  return function(req, res, next) {
-    const body = req.body;
-    const name = req.headers.name;
-
-    if (!body) {
-      res.status(400).json({errMessage: 'missing user data'});
-    }
-    if (!body.name) {
-      res.status(400).jsons({errMessage: 'The given name does not match'});
-    }
-  };
-}
-
-function validatePost(req, res, next) {
-  // do your magic!
-  return function(req, res, next) {
-    const body = req.body;
-    if (!body) {
-      res.status(400).json({errorMessage: 'Missing post data'});
-    }
-    if (!body.text) {
-      res.status(400).json({errorMessage: 'Missing required text field'});
-    }
-  };
-}
 
 module.exports = router;
