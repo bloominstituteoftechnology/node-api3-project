@@ -32,13 +32,15 @@ router.get('/', (req, res) => {
   })
 });
 
-router.get('/:id', (req, res) => {
-  Users.getById(req.params.id)
+router.get('/:id', validateUserId, (req, res) => {
+  const validId = req.user ? `${req.user}` : ""
+  console.log(validId)
+  Users.getById(validId)
     .then( users => {
       if(users){
-      res.status(200).json(users)
+        res.status(200).json(users)
       } else {
-      res.status(404).json({"message": "the user by that Id could not be found"})
+        res.status(404).json({"message": "the user by that Id could not be found"})
       }
     })
     .catch( error => {
@@ -94,7 +96,16 @@ router.put('/:id', (req, res) => {
 //custom middleware
 
 function validateUserId(req, res, next) {
-  // do your magic!
+  Users.getById(req.params.id)
+  .then(user => {
+    if(user){
+      req.user = req.params.id;
+      next();
+    } else {
+      res.status(400).json({ "message": "invalid user id" })
+    }
+
+  })
 }
 
 function validateUser(req, res, next) {
@@ -102,7 +113,6 @@ function validateUser(req, res, next) {
 }
 
 function validatePost(req, res, next) {
-  // do your magic!
 }
 
 module.exports = router;
