@@ -1,5 +1,6 @@
 const express = require('express');
 const users = require('./userDb');
+const posts = require('../posts/postDb');
 
 const router = express.Router();
 
@@ -24,7 +25,7 @@ router.post('/:id/posts', validateUserId, (req, res) => {
 		text: req.body.text
 	};
 
-	users
+	posts
 		.insert(newPost)
 		.then(change => {
 			res.status(201).json({ change });
