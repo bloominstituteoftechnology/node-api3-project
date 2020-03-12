@@ -1,10 +1,12 @@
 const express = require('express');
+const userRouter = require('./users/userRouter')//import userRouter
 
 const server = express();
 
 //apply middleware(both express.json & logger)
 server.use(express.json())
 server.use(logger)
+server.use('/api/users', userRouter)
 
 
 server.get('/', (req, res) => {
@@ -15,7 +17,7 @@ server.get('/', (req, res) => {
 
 function logger(req, res, next) {
 const method = req.method
-const endpoint = req.originalurl 
+const endpoint = req.url 
 const date = Date.now()
 console.log(`${date} ${method} to ${endpoint}`)
 next()  //next() is to jump to next middleware and prevent timeouts
