@@ -32,11 +32,31 @@ router.get('/:id', validatePostId, (req, res) => {
 router.delete('/:id', validatePostId, (req, res) => {
   // do your magic!
 const{id} = req.params
-db.rem
+db.remove(id)
+.then(()=>{
+  res.status(204).json({message: "post is removed successfully!"})
+})
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validatePostId, (req, res) => {
   // do your magic!
+  const {id} = req.params
+  const{text, user_id}= req.body
+  db.update(id, {text,user_id})
+  .then(updated=>{
+    if(updated){ 
+       db.getById(id)
+      .then(post=>{
+        res.status(200).json(post) 
+      })
+       .catch(err=>{
+         console.log(err)
+         res.status(400).json({error:"post is not updated!"})
+       })      
+    }else{
+
+    }    
+  })
 });
 
 // custom middleware
