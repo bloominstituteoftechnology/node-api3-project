@@ -41,7 +41,7 @@ router.get('/', (req, res) => {
 	users
 		.get()
 		.then(user => {
-			res.status(201).json(user);
+			res.status(201).json({ motd: process.env.MOTD, user });
 		})
 		.catch(err => {
 			console.log(err);
