@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.post('/', validateUser, (req, res) => {
   // do your magic!
+
   const post = req.body;
   Hubs.insert(post)
     .then(hubs => {
@@ -29,6 +30,8 @@ router.post('/:id/posts', (req, res) => {
 });
 
 router.get('/', (req, res) => {
+  const enviroment = process.env;
+  const prot = process.env.PORT;
   // do your magic!
   Hubs.get()
     .then(hubs => {
