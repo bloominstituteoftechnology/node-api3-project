@@ -15,13 +15,11 @@ router.get('/', (req, res) => {
   })
 });
 
-// verified
 
 router.get('/:id', validatePostId, (req, res) => {
   res.status(200).json(req.post);
 });
 
-// verified via middleware
 
 router.delete('/:id', validatePostId, (req, res) => {
   Posts.remove(req.post.id)
@@ -34,7 +32,6 @@ router.delete('/:id', validatePostId, (req, res) => {
     })
 });
 
-// verified
 
 router.put('/:id', validatePostId, (req, res) => {
   const id = req.post.id;
@@ -50,7 +47,6 @@ router.put('/:id', validatePostId, (req, res) => {
     })
 });
 
-// verified
 
 // custom middleware
 

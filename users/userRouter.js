@@ -1,29 +1,25 @@
-  
 const express = require('express');
 const Users = require('./userDb');
 const Posts = require('../posts/postDb');
 const router = express.Router();
-
 
 router.get('/', (req, res) => {
   Users.get()
     .then(users => {
       users
         ? res.status(200).json(users)
-        : res.status(404).json({ error: "Fellowship not found" })
+        : res.status(404).json({ error: "404 not found, go home" })
     })
     .catch(err => {
       console.log(err)
-      res.status(500).json({ error: "Error on our side, sorry" })
+      res.status(500).json({ error: "Backend error, contact SOMEBODY" })
     })
 });
-
 
 router.get('/:id', validateUserId, (req, res) => {
   const user = req.user;
   res.status(200).json(user)
 });
-
 
 router.get('/:id/posts', validateUserId, (req, res) => {
   const user = req.user;
@@ -33,21 +29,17 @@ router.get('/:id/posts', validateUserId, (req, res) => {
     })
     .catch(err => {
       console.log(err)
-      res.status(500).json({ error: "Error on our side, sorry" })
+      res.status(500).json({ error: "Backend error, contact SOMEBODY" })
     })
 });
-
 
 router.post('/', validateUser, (req, res) => {
   res.status(201).json(req.body);
 });
 
-
 router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
   res.status(201).json(req.post);
 });
-
-
 
 router.delete('/:id', validateUserId, (req, res) => {
   const user = req.user;
@@ -56,11 +48,11 @@ router.delete('/:id', validateUserId, (req, res) => {
     .then(removedUser => {
       removedUser === 1
         ? res.status(200).json(removedUser)
-        : res.status(404).json({ message: "That user doesn't exist" })
+        : res.status(404).json({ message: "That user does not exist" })
     })
     .catch(err => {
       console.log(err)
-      res.status(500).json({ error: "Error on our side, sorry" })
+      res.status(500).json({ error: "Backend error, contact SOMEBODY" })
     })
 });
 
@@ -75,10 +67,10 @@ router.put('/:id', validateUserId, (req, res) => {
       })
       .catch(err => {
         console.log(err)
-        res.status(500).json({ error: "Error on our side, sorry" })
+        res.status(500).json({ error: "Backend error, contact SOMEBODY" })
       })
   } else {
-    res.status(400).json({ error: "Please include the name" })
+    res.status(400).json({ error: "missing required name field" })
   }
 });
 
@@ -90,12 +82,12 @@ function validateUserId(req, res, next) {
     .then(user => {
       req.user = user
       user === undefined
-        ? res.status(404).json({ error: "User not found" })
+        ? res.status(400).json({ message: "Invalid user id" })
         : next()
     })
     .catch(err => {
       console.log(err)
-      res.status(500).json({ error: "Error on our side, sorry" })
+      res.status(500).json({ error: "Backend error, contact SOMEBODY" })
     })
 }
 
@@ -104,9 +96,9 @@ function validateUser(req, res, next) {
   console.log(payload)
 
   if (payload.name === '') {
-    res.status(401).json({ message: "Missing user name" });
+    res.status(400).json({ message: "missing required name field" });
   } else if (!payload.name) {
-    res.status(401).json({ message: "missing user data" })
+    res.status(400).json({ message: "missing user data" })
   } else {
     Users.insert(payload)
       .then(user => {
@@ -115,7 +107,7 @@ function validateUser(req, res, next) {
       })
       .catch(err => {
         console.log(err);
-        res.status(500).json({ error: "Error on our side, sorry" });
+        res.status(500).json({ error: "Backend error, contact SOMEBODY" });
       });
   }
 
@@ -133,9 +125,9 @@ function validatePost(req, res, next) {
     })
     .catch(err => {
       console.log(err)
-      res.status(500).json({ error: "Error on our side, sorry" })
+      res.status(500).json({ error: "Backend error, contact SOMEBODY" })
     })
-  : res.status(400).json({ error: "Please enter post text" })
+  : res.status(400).json({ error: "missing required text field" })
 }
 
 module.exports = router;
