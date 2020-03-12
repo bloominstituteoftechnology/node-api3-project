@@ -35,7 +35,7 @@ router.get('/', (req, res) => {
   // do your magic!
   Hubs.get()
     .then(hubs => {
-      res.status(200).json(hubs);
+      res.status(200).json({motd: process.env.MOTD, hubs});
     })
     .catch(err => {
       res.status(500).json({message: 'There is something wrong with url'});
