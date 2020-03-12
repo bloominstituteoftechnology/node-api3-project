@@ -2,7 +2,14 @@ const express = require('express');
 
 const router = express.Router();
 
-const db = require('./postDb');
+const postDB = require('./postDb');
+
+const {
+  validatePostId,
+  validateUserId,
+  validateUser,
+  validatePost
+} = require('../customMiddleware.js');
 
 router.get('/', async (req, res) => {
   try {
@@ -14,34 +21,30 @@ router.get('/', async (req, res) => {
   }
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', validatePostId, (req, res) => {
+  res.status(200).json(req.post)
+});
+
+router.delete('/:id', validatePostId, async (req, res) => {
   try {
-    let posts = await db.getById(req.params.id);
-    if (posts.length > 0) {
-      res.status(200).json(posts[0])
-    }
-    else {
-      res.status(400).json({error: "Could not find any posts with that id."})
-    }
+    await postDB.remove(req.params.id)
+    res.status(200).json(req.post)
   }
-  catch(err) {
+  catch (err) {
     console.error(err)
-    res.status.apply(500).json({ error: "The post information could not be retrieved." })
-  } 
+    res.status(500).json({ error: "Couldn't remove post, internal server error." })
+  }
 });
 
-router.delete('/:id', (req, res) => {
-  // do your magic!
-});
-
-router.put('/:id', (req, res) => {
-  // do your magic!
-});
-
-// custom middleware
-
-function validatePostId(req, res, next) {
-  // do your magic!
+router.put('/:id', validatePostId, async (req, res) => {
+  try {
+    await postDB.update(req.params.id, req.body);
+    let post = await postDB.getById(req.params.id);
+    res.status(201).json(post);
+} catch(err) {
+    console.error(err)
+    res.status(500).json({ error: "The post could not be updated." })
 }
+});
 
 module.exports = router;
