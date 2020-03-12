@@ -12,13 +12,13 @@ const {
   validatePost
 } = require('../customMiddleware');
 
-router.post('/', validateUser, (req, res) => {
+router.post('/', validateUser, async (req, res) => {
   try {
-    let user = userDB.insert(user);
+    let user = await userDB.insert(req.body);
     res.status(201).json(user)
   }
-  catch (err) {
-    console.err(err)
+  catch(err) {
+    console.error(err)
     res.status(500).json({ error: "Could not post that user, internal server error." })
   }
 });
@@ -28,8 +28,8 @@ router.post('/:id/posts', validatePost, async (req, res) => {
     let post = postDB.insert(req.body)
     res.status(201).json(post)
   }
-  catch (err) {
-    console.err(err)
+  catch(err) {
+    console.error(err)
     res.status(500).json({ error: "Could not post that user, internal server error." })
   }
 });
