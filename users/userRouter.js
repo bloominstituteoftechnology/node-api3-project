@@ -37,7 +37,7 @@ router.post('/:id/posts', validatePost, async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     let users = await userDB.get()
-    res.status(200).json(users)
+    res.status(200).json({motd: process.env.MOTD, users})
 } catch(err) {
     console.error(err)
     res.status(500).json({ error: "The users information could not be retrieved." })

@@ -14,6 +14,7 @@ server.get('/', (req, res) => {
 });
 
 server.use('/api/users', userRouter)
+server.use('/api/posts', postRouter)
 
 //custom middleware
 

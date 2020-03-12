@@ -13,8 +13,8 @@ const {
 
 router.get('/', async (req, res) => {
   try {
-      let posts = await db.get()
-      res.status(200).json(posts)
+      let posts = await postDB.get()
+      res.status(200).json({motd: process.env.MOTD, posts})
   } catch(err) {
       console.error(err)
       res.status(500).json({ error: "The posts information could not be retrieved." })
