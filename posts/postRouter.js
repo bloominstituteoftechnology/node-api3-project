@@ -64,11 +64,13 @@ function validatePostId(req, res, next) {
 	// do your magic!
 	const { id } = req.params;
 
-	if (!id) {
-		res.status(500).json({ message: 'Please make sure you have a post ID' });
-	}
-
-	next();
+	posts.getById(id).then(post => {
+		if (!post) {
+			return res.status(400).json({ message: 'No post found' });
+		} else {
+			next();
+		}
+	});
 }
 
 module.exports = router;
