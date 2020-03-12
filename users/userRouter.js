@@ -2,11 +2,11 @@ const express = require('express');
 const Users = require('./userDb.js')
 const router = express.Router();
 
-router.post('/', (req, res) => {
+router.post('/', validateUser, (req, res) => {
   res.status(201).json(req.body);
 });
 
-router.post('/:id/posts', (req, res) => {
+router.post('/:id/posts', validateUser, (req, res) => {
   res.status(201).json(req.post)
 });
 
@@ -22,12 +22,12 @@ router.get('/', (req, res) => {
   })
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', validateUserId, (req, res) => {
   const user = req.user;
   res.status(200).json(user)
 });
 
-router.get('/:id/posts', (req, res) => {
+router.get('/:id/posts', validateUserId, (req, res) => {
   const user = req.user;
   res.status(200).json(user)
 });
@@ -63,11 +63,33 @@ router.put('/:id', (req, res) => {
 //custom middleware
 
 function validateUserId(req, res, next) {
-  // do your magic!
+  const { id } = req.params;
+  Users.getById(id)
+    .then(user => {
+      req.user = user
+      user === undefined
+      ? res.status(404).json({ error: "User not found" })
+      : next();
+    })
+    .catch(err => {
+      res.status(500).json({ error: "Error on backend, please contact the sysadmin" })
+    })
 }
 
 function validateUser(req, res, next) {
-  // do your magic!
+  const payload = req.body;
+
+  payload.name === ''
+  ? res.status(401).json({ error: "Missing user name" })
+  : !payload.name ? res.status(401).json({ error: "Missing user data" })
+  : Users.insert(payload)
+    .then(user => {
+      req.body = user;
+      next();
+    })
+    .catch(err => {
+      res.status(500).json({ error: "Error on backend, please contact the sysadmin" })
+    })
 }
 
 function validatePost(req, res, next) {
