@@ -1,5 +1,7 @@
 const express = require('express');
 
+const Hubs = require('./postDb');
+
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -20,8 +22,12 @@ router.put('/:id', (req, res) => {
 
 // custom middleware
 
-function validatePostId(req, res, next) {
-  // do your magic!
+function validatePost(req, res, next) {
+  const body = req.body;
+
+  if (!body || body === {}) {
+    res.status(400).json({ message: 'Missing post data!' })
+  }
 }
 
 module.exports = router;
