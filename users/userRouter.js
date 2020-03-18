@@ -56,11 +56,11 @@ router.get('/:id/posts', validateUserId, validatePost, (req, res) => {
 
 router.delete('/:id', validateUserId, (req, res) => {
   Users.remove(req.params.id)
-    .then(post => {
-      if (post > 0) {
-        res.status(200).json({message: 'post deleted'})
+    .then(user => {
+      if (user > 0) {
+        res.status(200).json({message: 'user deleted'})
       } else {
-        res.status(404).json({message: 'post id could not be found'})
+        res.status(404).json({message: 'user id could not be found'})
       }
     })
     .catch(err => {
