@@ -14,6 +14,7 @@ server.get('/', (req, res) => {
 function logger(req, res, next) {
   console.log(`${req.method} Request`);
   console.log(`Endpoint URL: ${req.url}`)
+  console.log(`Timestamp: ${new Date().toLocaleTimeString()}`)
   next();
 };
 
