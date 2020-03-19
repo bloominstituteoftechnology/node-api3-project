@@ -5,8 +5,6 @@ const morgan = require('morgan');
 
 const helmet= require('helmet');
 
-const userRouter = require('./users/userRouter');
-
 server.use(morgan('dev'));
 
 server.use(helmet());

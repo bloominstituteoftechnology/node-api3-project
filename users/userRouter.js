@@ -84,8 +84,21 @@ router.get('/:id/posts', async (req, res) => {
 }
 });
 
-router.delete('/:id', (req, res) => {
-  // do your magic!
+router.delete('/:id', validateUserId, (req, res) => {
+  User.remove(req.params.id)
+    .then(user => {
+        if (user > 0) {
+            res.status(200).json({message: 'The user has been nuked'});
+        } else {
+            res.status(404).json({message: ' The user with the specified ID does not exist.'})
+        }
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({
+            error: 'The user could not be removed.'
+        })
+    })
 });
 
 router.put('/:id', (req, res) => {
@@ -95,7 +108,20 @@ router.put('/:id', (req, res) => {
 //custom middleware
 
 function validateUserId(req, res, next) {
-  // do your magic!
+  const { id } = req.params;
+  User.findById(id)
+  .then(user => {
+    if(user) {
+      req.user= user;
+      next();
+    } else{
+      next(new Error('does not exist'));
+    }
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json({message: 'exception', err});
+  })
 }
 
 function validateUser(req, res, next) {
