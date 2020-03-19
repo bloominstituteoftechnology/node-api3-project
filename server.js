@@ -6,7 +6,7 @@ const server = express();
 // Implemented Middleware
 server.use(express.json());
 server.use(logger);
-server.use('users/', userRouter);
+server.use('/users', userRouter);
 
 server.get('/', (req, res) => {
   res.send(`<h2>Let's write some middleware!</h2>`);
