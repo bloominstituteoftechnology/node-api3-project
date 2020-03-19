@@ -6,7 +6,7 @@ const server = express();
 // Implemented Middleware
 server.use(express.json());
 server.use(logger);
-server.use('api/users', userRouter);
+server.use('users/', userRouter);
 
 server.get('/', (req, res) => {
   res.send(`<h2>Let's write some middleware!</h2>`);
@@ -15,9 +15,7 @@ server.get('/', (req, res) => {
 // Middleware Functions
 
 function logger(req, res, next) {
-  console.log(`${req.method} Request`);
-  console.log(`Endpoint URL: ${req.url}`);
-  console.log(`Timestamp: ${new Date().toLocaleTimeString()}`);
+  console.log(`${req.method} ${req.url} Request ${new Date().toLocaleTimeString()}`);
   next();
 };
 

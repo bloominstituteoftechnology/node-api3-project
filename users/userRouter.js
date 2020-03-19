@@ -3,6 +3,8 @@ const db = require('./userDb');
 
 const router = express.Router();
 
+router.use(express.json());
+
 router.post('/', validateUser, (req, res) => {
   db.insert(req.body)
     .then(user => {
