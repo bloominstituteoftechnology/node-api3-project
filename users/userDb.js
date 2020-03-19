@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 const db = require('../data/dbConfig.js');
 
 module.exports = {
@@ -29,9 +30,7 @@ function getUserPosts(userId) {
 function insert(user) {
   return db('users')
     .insert(user)
-    .then(ids => {
-      return getById(ids[0]);
-    });
+    .then((ids) => getById(ids[0]));
 }
 
 function update(id, changes) {
