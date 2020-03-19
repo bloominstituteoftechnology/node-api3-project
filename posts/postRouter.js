@@ -1,9 +1,7 @@
-/* eslint-disable no-use-before-define */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable no-unused-expressions */
 const express = require('express');
 
 const Posts = require('./postDb');
+const { validatePostId, validatePostBody } = require('../middleweare/mwFunctions');
 
 const router = express.Router();
 
@@ -46,43 +44,16 @@ router.delete('/:id', validatePostId, (req, res) => {
 });
 
 
-router.put('/:id', [validatePost, validatePostId], (req, res) => {
+router.put('/:id', [validatePostBody, validatePostId], (req, res) => {
   const { id } = req.params;
 
   Posts.update(id, req.body)
     .then(() => {
-      res.status(200).json({ success: 'Info Updated!', info: req.body });
+      res.status(200).json({ success: 'The post was successfuly updated!', info: req.body });
     })
     .catch((err) => {
-      res.status(500).json({ error: 'I cannot provide any info from the inner server, try again!', err });
+      res.status(500).json({ error: 'Cannot save the updates!', err });
     });
 });
-
-// custom middleware
-function validatePost(req, res, next) {
-  const { text } = req.body;
-
-  Object.entries(req.body).length === 0
-    ? res.status(400).json({ message: 'No User Data' })
-    : !text
-      ? res.status(400).json({ message: 'Missing required name field' })
-      : next();
-}
-
-function validatePostId(req, res, next) {
-  const { id } = req.params;
-  Posts.getById(id)
-    .then((post) => {
-      if (post) {
-        req.post = post;
-        next();
-      } else {
-        res.status(404).json({ message: 'Invalid post ID' });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({ message: 'Invalid post ID 500', err });
-    });
-}
 
 module.exports = router;
