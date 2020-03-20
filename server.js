@@ -18,8 +18,8 @@ server.use('/api/posts', postRouter);
 server.use('/api/users', userRouter);
 
 server.get('/', (req, res) => {
-  res.send(`<h2>Let's write some middleware !</h2>
-  <p>The browser server is running fine</p>`);
+  // res.send(`<h2>Let's write some middleware !</h2>
+  // <p>The browser server is running fine</p>`);
   res.status(200).json({ message: process.env.MOTD });
 });
 
