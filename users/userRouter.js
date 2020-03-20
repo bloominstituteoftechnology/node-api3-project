@@ -81,7 +81,7 @@ router.delete('/:id', validateUserId, (req, res) => {
     });
 });
 
-router.put('/:id', [validateUserId, validatePostBody], (req, res) => {
+router.put('/:id', validateUserId, validateUserBody, (req, res) => {
   const { id } = req.params;
 
   Users.update(id, req.body)

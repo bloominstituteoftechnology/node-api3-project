@@ -12,16 +12,17 @@ import axios from 'axios';
 import AddUser from './AddUser';
 
 const UserList = () => {
-  const [usersList, setPostList] = useState([]);
+  const [usersList, setUsersList] = useState([]);
 
   useEffect(() => {
+  console.log("hi from the useEffect")
     axios
       .get('http://localhost:4000/api/users/')
       .then((response) => {
-        setPostList(response.data);
+        setUsersList(response.data)
       })
       .catch((err) => (err));
-  }, [usersList]);
+  }, []);
 
   const deleteUser = (id) => {
     axios
@@ -32,7 +33,7 @@ const UserList = () => {
 
   return (
     <div>
-      <AddUser usersList={usersList} setPostList={setPostList} />
+      <AddUser usersList={usersList} setUsersList={setUsersList} />
       <div className="cards-wrapper">
         <CardColumns>
           {usersList.map((post) => (

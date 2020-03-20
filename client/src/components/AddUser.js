@@ -11,6 +11,7 @@ import {
 } from 'reactstrap';
 
 import axios from 'axios';
+import Navigation from './Navigation';
 
 const AddUser = () => {
   const [newUser, setNewUser] = useState('');
@@ -30,7 +31,9 @@ const AddUser = () => {
       .catch((err) => (err));
   };
   return (
-    <Container>
+   <div>
+     <Navigation/>
+     <Container>
       <Row>
         <Col xs="12" md={{ size: 8, offset: 3 }}>
           <Form onSubmit={handleAdd}>
@@ -58,6 +61,7 @@ const AddUser = () => {
         </Col>
       </Row>
     </Container>
+   </div>
   );
 };
 export default AddUser;
