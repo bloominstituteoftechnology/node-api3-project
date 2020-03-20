@@ -1,10 +1,13 @@
 const express = require('express');
 
 const User = require('./userDb');
+const Post = require('../posts/postDb');
 
 const router = express.Router();
 
 router.post('/', validateUser, (req, res) => {
+  const body = req.body;
+  console.log(req.body);
   User.insert(req.body)
   .then(user => {
     if(user) {
@@ -21,17 +24,19 @@ router.post('/', validateUser, (req, res) => {
       error: 'There was an error while saving the user to the database.'
     })
   })
-});
+})
 
-router.post('/:id/user', [validateUserId, validateUser], async (req, res) => {
-  const userInfo = {...req.body, user_id: req.params.id};
+//works on Postman
+
+router.post('/:id/posts', [validateUserId, validatePost], async (req, res) => {
+  const userInfo = req.body
 
     try {
-        const user = await User.insert(userInfo);
+        const user = await Post.insert(userInfo);
         res.status(201).json(user);
     } catch (err) {
         console.log(err);
-        res.status(500).json({err})
+        res.status(500).json({errorMessage: "status 500 error"})
 }});
 
 
@@ -46,6 +51,8 @@ router.get('/', (req, res) => {
     });
   });
 });
+
+//works on Postman
 
 router.get('/:id', validateUserId, (req, res) => {
   User.getById(req.params.id)
@@ -66,20 +73,18 @@ router.get('/:id', validateUserId, (req, res) => {
     })
 });
 
-router.get('/:id/user', [validateUserId], async (req, res) => {
+//works on Postman
+
+router.get('/:id/posts', validateUserId, async (req, res) => {
   try {
     const user_id = Number(req.params.id);
     console.log(typeof user_id);
-    const users = await User.getById(user_id);
-    if(user_id) {
-        res.status(200).json(users);
-    } else {
-        res.status(404).json({message: 'The user with the specified ID does not exist'})
-    }
+    const users = await User.getUserPosts(user_id);
+    res.status(200).json(users);
 } catch(err) {
     console.log(err);
     res.status(500).json({
-        message: 'Error retriving the messages for this hub.'
+        message: 'Cannot get this post.'
     })
 }
 });
@@ -101,12 +106,12 @@ router.delete('/:id', validateUserId, (req, res) => {
     })
 });
 
-router.put('/:id', [validateUserId, validateUser], (req, res) => {
+router.put('/:id', validateUserId, (req, res) => {
   const changes = req.body;
     User.update(req.params.id, changes)
     .then(user => {
         if(user) {
-            res.status(200),json(user);
+            res.status(200).json(user);
         } else if (!user) {
             res.status(404).json({message: 'The user with the specified ID does not exist.'})
         } else {
@@ -131,7 +136,7 @@ function validateUserId(req, res, next) {
       req.user= user;
       next();
     } else{
-      next(new Error(' User does not exist'));
+      res.status(404).json({message: 'User is not available.'});
     }
   })
   .catch(err => {
@@ -146,14 +151,17 @@ function validateUser(req, res, next) {
   } else if (!req.body.name) {
     res.status(400).json({message: "Missing required name field"})
   }
+  next();
 }
 
-// function validatePost(req, res, next) {
-//   if(!req.body) {
-//     res.status(400).json({message: 'Missing post data'})
-//   } else if (!req.body.text) {
-//     res.status(400).json({message: "missing required text field"})
-//   }
-// }
+function validatePost(req, res, next) {
+  const {id: user_id} = req.params;
+  const {text} = req.body;
+  if(!req.body || !{text}) {
+    return res.status(400).json({message: 'Missing post data'})
+  } 
+  req.body = {user_id, text};
+  next();
+}
 
 module.exports = router;

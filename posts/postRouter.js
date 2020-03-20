@@ -16,26 +16,14 @@ router.get('/', (req, res) => {
   });
 });
 
+//works on Postman
+
 router.get('/:id', validatePostId, (req, res) => {
-  const post_id = req.params.id;
-  console.log(typeof post_id);
-  Post.getById(req.params.id)
-    .then(post => {
-        if(post) {
-            res.status(200).json(post);
-        } else {
-            res.status(404).json({
-                message: 'The post with the specified ID does not exist.'
-            })
-        }
-    })
-    .catch(err => {
-        console.log(err);
-        res.status(500).json({
-            error: 'The post information could not be retrieved.'
-        })
-    })
-});
+      res.status(200).json(req.post);
+    }
+);
+
+//works on Postman
 
 router.delete('/:id', validatePostId, (req, res) => {
   Post.remove(req.params.id)
@@ -54,25 +42,15 @@ router.delete('/:id', validatePostId, (req, res) => {
     })
 });
 
+//works on Postman
+
 router.put('/:id', [validatePostId, validatePost], (req, res) => {
   const changes = req.body;
     Post.update(req.params.id, changes)
-    .then(post => {
-        if(post) {
-            res.status(200),json(post);
-        } else if (!post) {
-            res.status(404).json({message: 'The post with the specified ID does not exist.'})
-        } else {
-            res.status(400).json({errorMessage: 'Please provide the text for the post.'})
-        }
-    })
-    .catch(err => {
-        console.log(err);
-        res.status(500).json({
-            error: 'The post information could not be modified.'
-        });
-    });
+    res.status(200).json(req.post)
 });
+
+//works on Postman
 
 // custom middleware
 
@@ -83,6 +61,7 @@ function validatePost(req, res, next) {
   } else if (!req.body.text) {
     res.status(400).json({message: "missing required text field"})
   }
+  next();
 }
 
 function validatePostId(req, res, next) {
@@ -91,15 +70,17 @@ function validatePostId(req, res, next) {
   .then(post => {
     if(post) {
       req.post= post;
+      console.log('req.post promise', req.post)
       next();
     } else{
-      next(new Error('does not exist'));
+      res.status(404).json({message: 'Post is not available.'})
     }
   })
   .catch(err => {
     console.log(err);
     res.status(500).json({message: 'exception', err});
   })
+  console.log('req.post', req.post)
 }
 
 module.exports = router;

@@ -1,17 +1,24 @@
 // code away!
-const express = require('express');
+const server = require('./server');
 
-const morgan = require('morgan');
+const PORT = 5500;
+server.listen(PORT, () => {
+    console.log(`\n*** Server Running on http://localhost:${PORT} ***\n`)
+});
 
-const helmet= require('helmet');
+// const express = require('express');
 
-server.use(morgan('dev'));
+// const morgan = require('morgan');
 
-server.use(helmet());
+// const helmet= require('helmet');
 
-server.use(express.json());
+// server.use(morgan('dev'));
 
-module.exports = server;
+// server.use(helmet());
+
+// server.use(express.json());
+
+//
 
 
 
