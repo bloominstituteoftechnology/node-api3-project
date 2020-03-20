@@ -1,15 +1,21 @@
 const express = require('express');
 const db = require('./userDb')
 
+
+
 const router = express.Router();
 
 router.use('/:id', validateUserId);
 
-router.post('/', (req, res) => {
-  // do your magic!
+router.post('/', validateUser, (req, res) => {
+  db.insert(req.body)
+  .then(data => {
+    res.status(201).json(data);
+  })
+  .catch(err => res.status(500).json({message: 'internal server error'}))
 });
 
-router.post('/:id/posts', (req, res) => {
+router.post('/:id/posts', validatePost, (req, res) => {
   // do your magic!
 });
 
@@ -18,6 +24,7 @@ router.get('/', (req, res) => {
   .then(data => {
     data ? res.status(200).json(data) : res.status(404).json({message: "There are currently no users"})
   })
+  .catch(err => res.status(500).json({message: 'internal server error'}))
 });
 
 router.get('/:id', (req, res) => {
@@ -25,11 +32,19 @@ router.get('/:id', (req, res) => {
 });
 
 router.get('/:id/posts', (req, res) => {
-  // do your magic!
+  db.getUserPosts(req.params.id)
+  .then(data => {
+    res.status(200).json(data)
+  }) 
+  .catch(err => res.status(500).json({message: "server error"}))
 });
 
 router.delete('/:id', (req, res) => {
-  // do your magic!
+  db.remove(req.params.id)
+  .then(data => {
+    res.status(204).json(data)
+  })
+  .catch(err => res.status(500).json({message: "server error"}))
 });
 
 router.put('/:id', validateUser, (req, res) => {
@@ -65,7 +80,13 @@ function validateUser(req, res, next) {
 }
 
 function validatePost(req, res, next) {
-  // do your magic!
+  if (Object.entries(req.body).length === 0) {
+    res.status(400).json({ message: "missing post data" })
+  } else if (!req.body.text){
+    res.status(400).json({ message: "missing required text field" })
+  } else {
+    next()
+  } 
 }
 
 module.exports = router;
