@@ -40,6 +40,7 @@ const AddUser = () => {
             <FormGroup style={{ display: 'flex', flexDirection: 'column' }}>
               <Label for="name">Name</Label>
               <Input
+                required
                 type="text"
                 name="name"
                 placeholder="Name"
