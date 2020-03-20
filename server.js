@@ -14,7 +14,8 @@ server.use('/api/users', userRouter);
 server.use('/api/posts', postsRouter);
 
 server.get('/', (req, res) => {
-  res.send(`<h2>Let's write some middleware!</h2>`);
+  const test = process.env.TEST;
+  res.send(`<h2>Let's write some middleware!</h2>, ${test}`);
 });
 
 //custom middleware
