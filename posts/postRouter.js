@@ -19,7 +19,11 @@ router.get('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  // do your magic!
+  db.remove(req.params.id).remove(req.params.id)
+  .then(data => {
+    res.status(204).json(data)
+  })
+  .catch(err => res.status(500).json({message: "server error"}))
 });
 
 router.put('/:id', (req, res) => {
