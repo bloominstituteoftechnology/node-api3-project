@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-  // do your magic!
+  res.status(200).json(req.post);
 });
 
 router.delete('/:id', (req, res) => {
@@ -40,7 +40,7 @@ function validatePostId(req, res, next) {
       req.post = data;
       next();
     }
-  }).catch(res.status(500).json({message: "internal server error"}))
+  }).catch(err => res.status(500).json({message: "internal server error"}))
 }
 
 module.exports = router;
