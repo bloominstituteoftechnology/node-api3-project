@@ -25,6 +25,7 @@
   "homepage": "https://github.com/LambdaSchool/node-api3-project#readme",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "env": "0.0.2",
     "express": "^4.17.1",
     "helmet": "^3.21.3",
