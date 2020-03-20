@@ -1,0 +1,12 @@
+.App {
+  text-align: center;
+}
+
+.btn{
+  background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
+  color: black;
+  margin: 5px;
+}
+.card{
+  background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
+}

@@ -23,6 +23,9 @@
   },
   "homepage": "https://github.com/LambdaSchool/node-api3-project#readme",
   "dependencies": {
+    "client": "0.0.1",
+    "cors": "^2.8.5",
+    "create-react-app": "^3.4.0",
     "express": "^4.17.1",
     "knex": "^0.20.11",
     "morgan": "^1.9.1",
