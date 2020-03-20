@@ -43,7 +43,6 @@ router.delete('/:id', validatePostId, (req, res) => {
 });
 
 //works on Postman
-
 router.put('/:id', [validatePostId, validatePost], (req, res) => {
   const changes = req.body;
     Post.update(req.params.id, changes)
