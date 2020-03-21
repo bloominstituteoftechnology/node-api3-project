@@ -7,6 +7,7 @@ module.exports = {
   insert,
   update,
   remove,
+  insertPost
 };
 
 function get() {
@@ -32,6 +33,12 @@ function insert(user) {
     .then(ids => {
       return getById(ids[0]);
     });
+}
+
+function insertPost(post) {
+  return db('posts')
+    .insert(post)
+    .then(ids => ({ id: ids[0] }));
 }
 
 function update(id, changes) {
