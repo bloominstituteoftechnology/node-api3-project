@@ -30,7 +30,7 @@ function logger(req, res, next) {
 }
 
 function greeter(req, res, next) {
-  req.cohort = 'Web 26';
+  req.cohort = 'Web 28';
   next();
 }
 
