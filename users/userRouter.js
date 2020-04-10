@@ -7,18 +7,15 @@ const router = express.Router();
 
 // POST Requests:
 router.post('/', validateUser, (req, res) => {
-  // do your magic!
   res.status(200).json(req.user);
 });
 
 router.post('/:id/posts', validatePost, (req, res) => {
-  // do your magic!
   res.status(200).json(req.userposts);
 });
 
 // GET Requests:
 router.get('/', (req, res) => {
-  // do your magic!
   Users.get()
     .then(user => {
       res.status(200).json(user);
@@ -30,12 +27,10 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', validateUserId, (req, res) => {
-  // do your magic!
   res.status(200).json(req.user);
 });
 
 router.get('/:id/posts', validateUserId, (req, res) => {
-  // do your magic!
   const { id } = req.params;
 
   Users.getUserPosts(id)
@@ -65,7 +60,6 @@ router.delete('/:id', validateUserId, (req, res) => {
 // PUT Requests
 
 router.put('/:id', validateUserId, (req, res) => {
-  // do your magic!
   const { id } = req.params;
   const changes = req.body;
   if (!changes.name) {
@@ -85,7 +79,6 @@ router.put('/:id', validateUserId, (req, res) => {
 //custom middleware
 
 function validateUserId(req, res, next) {
-  // do your magic!
   const { id } = req.params;
   console.log(id);
   Users.getById(id)
@@ -104,7 +97,6 @@ function validateUserId(req, res, next) {
 }
 
 function validateUser(req, res, next) {
-  // do your magic!
   const user = req.body;
   Users.insert(user)
     .then(users =>
@@ -120,7 +112,6 @@ function validateUser(req, res, next) {
 }
 
 function validatePost(req, res, next) {
-  // do your magic!
   const { id } = req.params;
   const user = { ...req.body, user_id: id };
   Posts.insert(user)
