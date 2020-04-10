@@ -17,7 +17,7 @@ server.use('/api/users', logger, userRouter);
 server.use('/api/posts', postsRouter);
 
 server.get('/', greeter, (req, res) => {
-  res.send(`<h2>Let's write some middleware ${req.cohort}!</h2>`);
+  res.send(`<h2>Get to Coding With ${req.cohort}!</h2>`);
 });
 
 //custom middleware
