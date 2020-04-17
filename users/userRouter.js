@@ -15,7 +15,7 @@ router.post('/', validateUser(), (req, res) => {
   })
 });
 
-router.post('/:id/posts', validateUser, validatePost, (req, res) => {
+router.post('/:id/posts',  validatePost(), (req, res) => {
   // do your magic!
   const {text} = req.body
   const {id: user_id} = req.params
@@ -39,23 +39,24 @@ router.get('/', (req, res) => {
   })
 });
 
-router.get('/:id', validateUserId, (req, res) => {
+router.get('/:id', validateUserId(), (req, res) => {
   // do your magic!
+  console.log(req.user)
   res.status(200).json(req.user)
 });
 
-router.get('/:id/posts', validateUserId, (req, res) => {
+router.get('/:id/posts', validateUserId(), (req, res, next) => {
   // do your magic!
   userdb.getUserPosts(req.params.id)
   .then((post) => {
-    resizeTo.status(200).json(post)
+    res.status(200).json(post)
   })
   .catch((error) => {
     next(error)
   })
 });
 
-router.delete('/:id', validateUser, validateUserId, (req, res) => {
+router.delete('/:id', validateUserId(), (req, res) => {
   // do your magic!
   userdb.remove(req.params.id)
   .then ((count) => {
@@ -68,7 +69,7 @@ router.delete('/:id', validateUser, validateUserId, (req, res) => {
   })
 });
 
-router.put('/:id', validateUser, validateUserId, (req, res) => {
+router.put('/:id', validateUser(), validateUserId(), (req, res) => {
   // do your magic!
   userdb.update(req.params.id, req.body)
   .then ((user) => {
@@ -84,8 +85,9 @@ router.put('/:id', validateUser, validateUserId, (req, res) => {
 function validateUserId() {
   // do your magic!
   return (req, res, next) => {
-  userdb.getById(req.params)
+  userdb.getById(req.params.id)
   .then((user) => {
+    console.log(user)
     if (user) {
       req.user = user
       next()

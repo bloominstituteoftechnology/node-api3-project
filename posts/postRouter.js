@@ -19,7 +19,7 @@ router.get('/:id', validatePostId(), (req, res) => {
       res.status(200).json(req.user)
 })
 
-router.delete('/:id', validatePostId, (req, res) => {
+router.delete('/:id', validatePostId(), (req, res) => {
   // do your magic!
   postdb.remove(req.params.id)
   .then((post) => {
@@ -32,7 +32,7 @@ router.delete('/:id', validatePostId, (req, res) => {
   })
 });
 
-router.put('/:id', validatePostId, (req, res) => {
+router.put('/:id', validatePostId(), (req, res) => {
   // do your magic!
   postdb.update(req.params.id, req.body)
   .then((post) => {
@@ -51,7 +51,7 @@ function validatePostId(req, res, next) {
     postdb.getById(req.params.id)
     .then((post) => {
       if (post) {
-        req.user = post;
+        req.user = post
         next()
       } else {
         res.status(404).json({
