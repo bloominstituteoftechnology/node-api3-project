@@ -13,7 +13,10 @@ server.use("/users", userRouter);
 server.use("/posts", postRouter);
 
 server.get("/", (req, res) => {
-  res.send(`<h2>Let's write some middleware!</h2>`);
+  res.status(200).json({
+    message: `Welcome ${process.env.COHORT}`,
+    fact: process.env.FUN_FACT || "I have no fun facts",
+  });
 });
 
 //custom middleware
