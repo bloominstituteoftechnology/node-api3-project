@@ -12,13 +12,6 @@ server.use(logger);
 server.use("/users", userRouter);
 server.use("/posts", postRouter);
 
-server.get("/", (req, res) => {
-  res.status(200).json({
-    message: `Welcome ${process.env.COHORT}`,
-    fact: process.env.FUN_FACT || "I have no fun facts",
-  });
-});
-
 //custom middleware
 
 function logger(req, res, next) {
