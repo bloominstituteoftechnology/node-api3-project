@@ -4,8 +4,8 @@
   "description": "Node API 3 Project",
   "main": "index.js",
   "scripts": {
-    "watch": "nodemon --require dotenv/config index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "watch": "nodemon --require dotenv/config index.js"
   },
   "repository": {
     "type": "git",
