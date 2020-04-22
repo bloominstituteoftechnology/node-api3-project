@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const userRouter = require("./users/userRouter");
@@ -30,4 +32,7 @@ function logger(req, res, next) {
   next();
 }
 
+server.listen(port, () => {
+  console.log(`\n* Server Running on http://localhost:${port} *\n`);
+});
 module.exports = server;
