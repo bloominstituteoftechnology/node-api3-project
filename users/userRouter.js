@@ -52,7 +52,10 @@ router.delete("/:id", (req, res) => {
 });
 
 router.put("/:id", (req, res) => {
-  // do your magic!
+  users
+    .update(req.params.id, req.body)
+    .then((user) => res.status(200).json(user))
+    .catch((err) => res.status(500).json({ message: err }));
 });
 
 //custom middleware
