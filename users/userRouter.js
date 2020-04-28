@@ -45,7 +45,10 @@ router.get("/:id/posts", (req, res) => {
 });
 
 router.delete("/:id", (req, res) => {
-  // do your magic!
+  users
+    .remove(req.params.id)
+    .then((user) => res.status(200).json(user))
+    .catch((err) => res.status(500).json({ message: err }));
 });
 
 router.put("/:id", (req, res) => {
