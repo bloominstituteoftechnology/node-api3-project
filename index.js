@@ -1,4 +1,6 @@
 // code away!
+const dotenv = require("dotenv");
+
 const { server, port } = require("./server");
 
 server.listen(port, () => {
