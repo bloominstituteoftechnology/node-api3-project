@@ -6,6 +6,7 @@ const server = express();
 const port = 5600;
 
 server.use(logger());
+server.use(express.json());
 server.get("/", (req, res) => {
   res.send(`<h2>Let's write some middleware!</h2>`);
 });
