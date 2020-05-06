@@ -29,7 +29,20 @@ router.get("/:id", validateUserId, (req, res) => {
 });
 
 router.get("/:id/posts", validateUserId, (req, res) => {
-  // do your magic!
+  Users.getUserPosts(req.user.id)
+    .then((article) => {
+      if (article === undefined || article === "") {
+        res
+          .status(404)
+          .json({ Error: "This user doesn't seem to have any posts made" });
+      } else {
+        res.status(200).json(article);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({ Error: "error has occured" });
+    });
 });
 
 router.delete("/:id", validateUserId, (req, res) => {
