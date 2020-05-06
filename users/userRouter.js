@@ -8,38 +8,58 @@ router.post("/", (req, res) => {
   // do your magic!
 });
 
-router.post("/:id/posts", (req, res) => {
+router.post("/:id/posts", validateUserId, (req, res) => {
   // do your magic!
 });
 
 router.get("/", (req, res) => {
+  Users.get()
+    .then((person) => {
+      res.status(200).json(person);
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: "Error retreieving the posts",
+      });
+    });
+});
+
+router.get("/:id", validateUserId, (req, res) => {
+  res.status(200).json(req.user);
+});
+
+router.get("/:id/posts", validateUserId, (req, res) => {
   // do your magic!
 });
 
-router.get("/:id", (req, res) => {
+router.delete("/:id", validateUserId, (req, res) => {
   // do your magic!
 });
 
-router.get("/:id/posts", (req, res) => {
-  // do your magic!
-});
-
-router.delete("/:id", (req, res) => {
-  // do your magic!
-});
-
-router.put("/:id", (req, res) => {
+router.put("/:id", validateUserId, (req, res) => {
   // do your magic!
 });
 
 //custom middleware
 
 function validateUserId(req, res, next) {
-  // do your magic!
+  Users.getById(req.params.id)
+    .then((person) => {
+      if (person === undefined) {
+        res.status(400).json({ message: "invalid user id" });
+      } else {
+        req.user = person;
+        next();
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({ error: "error occured" });
+    });
 }
 
 function validateUser(req, res, next) {
-  // do your magic!
+  Users.get(req.body);
 }
 
 function validatePost(req, res, next) {

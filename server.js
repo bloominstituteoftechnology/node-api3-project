@@ -15,6 +15,8 @@ server.get("/", (req, res) => {
 });
 
 //custom middleware
+server.use("/api/posts", postRouter);
+server.use("/api/users", userRouter);
 
 function logger(req, res, next) {
   const today = new Date().toISOString();
