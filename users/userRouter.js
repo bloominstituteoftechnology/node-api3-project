@@ -43,7 +43,7 @@ router.get('/', (req, res) => {
       res.status(200).json(users);
     })
     .catch(err => {
-      console.error("Error getting users from DB...", err);
+      console.error("Error getting users from DB", err);
       res.status(500).json({
         message: "Error adding user DB"
       })
