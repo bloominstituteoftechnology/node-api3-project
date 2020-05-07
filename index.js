@@ -5,5 +5,6 @@ const server = require('./server')
 //server.use(express.json());
 //server.use("/api/posts", postsRouter)
 
+const port = (process.env.PORT || 8000)
 
-server.listen(8000, ()=> console.log('server is up'))
+server.listen(port, ()=> console.log('server is up'))
