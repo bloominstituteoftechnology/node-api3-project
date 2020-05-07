@@ -1,8 +1,6 @@
 
-// export const logger =   logger(req,res, next)
-
 module.exports = function logger(req, res, next) {
-  console.log(req);
+  // console.log(req);
   const method = req.method;
   const endpoint = req.originalURL;
   const time = Date();

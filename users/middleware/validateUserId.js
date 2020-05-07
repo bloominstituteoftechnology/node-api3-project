@@ -1,17 +1,22 @@
 const Users = require("../userDb");
 
-module.export = function validateUserId(req, res, next) {
+module.exports = function validateUserId(req, res, next) {
   const { id } = req.params;
+
+  if (!id || isNaN(parseInt(id, 10))) {
+    return res.status(404).json({ message: 'invalid user id' });
+  }
+
   Users
   .getById(id)
   .then(user => {
     if (user) {
       req.user = user;
       next();
-    } else if (!user) {
+    } else {
       res.status(404).json({
-        message: "invalid user id"
-      })
+        message: "invalid user"
+      });
     }
   })
 }

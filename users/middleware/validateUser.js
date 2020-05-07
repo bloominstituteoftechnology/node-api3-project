@@ -1,5 +1,5 @@
-module.export = function validateUser(req, res, next) {
-  if (Object.keys(req.body).length === 0) {
+module.exports = function validateUser(req, res, next) {
+  if (!req.body || Object.keys(req.body).length === 0) {
     res.status(400).json({
       message: "missing user data"
     })
