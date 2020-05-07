@@ -1,5 +1,6 @@
 const express = require('express');
 const Users = require("./userDb.js");
+const Posts = require('../posts/postDb');
 const router = express.Router();
 
 
@@ -16,9 +17,17 @@ router.post('/', validateUser, (req, res) => {
   })
 });
 
-router.post('/:id/posts', (req, res) => {
+router.post('/:id/posts', validatePost, validateUserId, (req, res) => {
   // do your magic!
-});
+  Posts.insert({...req.body, user_id: req.params.id})
+    .then(newPost => {
+      res.status(201).json(newPost)
+    })
+    .cath(error => {
+      console.log(error)
+      res.status(500).json({message: "there was an issue adding user."})
+    })
+  });
 
 router.get('/', (req, res) => {
   // do your magic!
