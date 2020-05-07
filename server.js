@@ -7,6 +7,8 @@ const validatePost = require('./users/middleware/validatePost');
 
 const userRouter = require('./users/userRouter');
 
+
+
 const server = express();
 server.use(express.json());
 
