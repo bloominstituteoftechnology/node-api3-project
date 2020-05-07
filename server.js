@@ -17,9 +17,9 @@ server.get('/', (req, res) => {
 function logger(req, res, next) {
 
   const today = new Date().toISOString(); // YYYY-MM-DD
-    console.log(`[${today}] ${req.method} to ${req.url}`);
+    console.log(`[${today}] ${req.method} to ${req.originalUrl}`);
   
-    next();
+   next();
 }
 
 module.exports = server;
