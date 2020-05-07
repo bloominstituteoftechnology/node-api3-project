@@ -3,7 +3,7 @@ const Users = require("../userDb");
 module.exports = function validateUserId(req, res, next) {
   const { id } = req.params;
 
-  if (!id || isNaN(parseInt(id, 10))) {
+  if (!id) {
     return res.status(404).json({ message: 'invalid user id' });
   }
 
