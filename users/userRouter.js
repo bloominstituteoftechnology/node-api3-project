@@ -21,7 +21,7 @@ router.post ('/:id/posts', validatePost, validateUserId, (req, res) => {
     .then (newPost => {
       res.status (201).json (newPost);
     })
-    .cath (error => {
+    .catch (error => {
       console.log (error);
       res.status (500).json ({message: 'there was an issue adding posts.'});
     });
