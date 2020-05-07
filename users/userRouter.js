@@ -9,7 +9,7 @@ router.post ('/', validateUser, (req, res) => {
     .then (newUser => {
       res.status (201).json (newUser);
     })
-    .cath (error => {
+    .catch (error => {
       console.log (error);
       res.status (500).json ({message: 'there was an issue adding user.'});
     });
@@ -53,6 +53,12 @@ router.get ('/:id', (req, res) => {
 
 router.get ('/:id/posts', (req, res) => {
   // do your magic!
+  Users.getUserPosts(req.params.id).then(userPosts=>{
+    res.status(200).json(userPosts);
+  })
+  .catch(err=>{
+    res.status(500).json({error: "error not able to get user posts!!"});
+  })
 });
 
 router.delete ('/:id', (req, res) => {
@@ -63,7 +69,7 @@ router.put ('/:id', (req, res) => {
   // do your magic!
 });
 
-//custom middleware
+//custom middleware **********************************************************
 
 function validateUserId(req, res, next) {
     // do your magic!
@@ -96,6 +102,13 @@ function validateUser (req, res, next) {
 
 function validatePost (req, res, next) {
   // do your magic!
+  if(!req.body){
+    res.status(400).json({ message: "missing post data"})
+  } else if(!req.body.text){
+    res.status(400).json({ message: "missing required text please"})
+  } else {
+    next();
+  }
 }
 
 module.exports = router;
