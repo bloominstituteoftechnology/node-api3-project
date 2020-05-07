@@ -1,7 +1,7 @@
 const express = require('express');
 
 const User = require('./userDb.js');
-const postDb = require('../posts/postDb.js');
+const Post = require('../posts/postDb.js');
 
 const router = express.Router();
 
@@ -19,9 +19,19 @@ router.post('/',validateUser, (req, res) => {
   })
 });
 
-router.post('/:id/posts', (req, res) => {
+router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
   // do your magic!
-  const {id: post_id} = req.param
+  const { id} = req.params;
+  const { text } = req.body;
+
+  Post.insert({id, text})
+  .then(post => {
+    res.status(201).json(post);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json({error:"Error adding post"})
+  })
 });
 
 router.get('/', (req, res) => {
@@ -132,6 +142,18 @@ function validateUser(req, res, next) {
 
 function validatePost(req, res, next) {
   // do your magic!
+  const {id} = req.param
+  const { text } = req.body;
+
+  if (!req.body) {
+    return res.status(400).json({error: "Post requires body"})
+  }
+  if (!text) {
+    return res.status(400).json({error: "Post requires text"})
+  }
+
+  // req.body = {user_id, text };
+  next();
 }
 
 module.exports = router;
