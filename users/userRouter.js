@@ -1,18 +1,27 @@
 const express = require('express');
 
-const User = require('./userDb');
-const postDb = require('../posts/postDb');
+const User = require('./userDb.js');
+const postDb = require('../posts/postDb.js');
 
 const router = express.Router();
 
 router.post('/',validateUser, (req, res) => {
   // do your magic!
-  db.get()
-  .then()
+ const user = req.body;
+
+ User.insert(user)
+  .then(user => {
+    res.status(201).json(user);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json({error: "Error inserting user"});
+  })
 });
 
 router.post('/:id/posts', (req, res) => {
   // do your magic!
+  const {id: post_id} = req.param
 });
 
 router.get('/', (req, res) => {
@@ -108,7 +117,18 @@ function validateUserId(req, res, next) {
 
 function validateUser(req, res, next) {
   // do your magic!
+  const { name } = req.body;
+  if (!name) {
+    return res.status(400).json({error: "Name required"});
+  }
+  if (typeof name !== 'string'){
+    return  res.status(400).json({error: "Name must be letters/string"});
+  }
+  req.body = { name };
+  next();
 }
+
+
 
 function validatePost(req, res, next) {
   // do your magic!
