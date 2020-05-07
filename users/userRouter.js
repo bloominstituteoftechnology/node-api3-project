@@ -3,11 +3,12 @@ const express = require("express");
 const router = express.Router();
 
 const Users = require("./userDb");
+const PostDb = require("../posts/postDb");
 
 router.post("/", validateUser, (req, res) => {
   Users.insert(req.body)
     .then((person) => {
-      console.log("person:", { person });
+      // console.log("person:", { person });
       res.status(200).json(person);
     })
     .catch((err) => {
@@ -16,8 +17,18 @@ router.post("/", validateUser, (req, res) => {
     });
 });
 
-router.post("/:id/posts", validateUser, validateUserId, (req, res) => {
-  // do your magic!
+router.post("/:id/posts", validateUserId, validatePost, (req, res) => {
+  let newPost = req.body;
+  newPost.user_id = req.user.id;
+
+  PostDb.insert(newPost)
+    .then((article) => {
+      res.status(200).json(article);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 router.get("/", (req, res) => {
@@ -54,11 +65,37 @@ router.get("/:id/posts", validateUserId, (req, res) => {
 });
 
 router.delete("/:id", validateUserId, (req, res) => {
-  // do your magic!
+  Users.remove(req.user.id)
+    .then((deleteThis) => {
+      console.log(deleteThis);
+      Users.get().then((personInfo) => {
+        console.log(`Delete Success`);
+        res.status(200).json(personInfo);
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json("");
+    })
+    .then();
 });
 
 router.put("/:id", validateUserId, (req, res) => {
-  // do your magic!
+  Users.update(req.user.id, req.body)
+    .then((updated) => {
+      console.log("put:", updated);
+      Users.getById(req.user.id)
+        .then((person) => {
+          res.status(200).json(person);
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json({ Errormessage: "Error is occurred" });
+        });
+    })
+    .catch((err) => {
+      res.status(500).json({ Error: "updated error occured" });
+    });
 });
 
 //custom middleware
@@ -70,6 +107,8 @@ function validateUserId(req, res, next) {
         res.status(400).json({ message: "invalid user id" });
       } else {
         req.user = person;
+        // console.log("user?:", req.user);
+
         next();
       }
     })
