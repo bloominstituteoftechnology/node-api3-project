@@ -35,7 +35,7 @@ router.get('/', (req, res) => {
     .then(users => {
     res.status(200).json(users)
   })
-  .cath(error => {
+  .catch(error => {
     console.log(error)
     res.status(500).json({message: "failed to get users."})
   })
