@@ -71,8 +71,15 @@ router.delete ('/:id', validateUserId, (req, res) => {
   })
 });
 
-router.put ('/:id', (req, res) => {
+router.put ('/:id', validateUserId, (req, res) => {
   // do your magic!
+  const updatedInfo = req.body;
+  Users.update(req.params.id, updatedInfo).then(updatesUser=>{
+    res.status(201).json(updatesUser);
+  })
+  .catch(err =>{
+    res.status(500).json({error: "Unable to select your user!!!"})
+  })
 });
 
 //custom middleware **********************************************************
