@@ -6,15 +6,15 @@ router.get('/', (req, res) => {
   // do your magic!
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:postid', (req, res) => {
   // do your magic!
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:postid', (req, res) => {
   // do your magic!
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:postid', (req, res) => {
   // do your magic!
 });
 
