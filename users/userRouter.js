@@ -65,20 +65,34 @@ router.put ('/:id', (req, res) => {
 
 //custom middleware
 
-function validateUserId (req, res, next) {
-  // do your magic!
-}
+function validateUserId(req, res, next) {
+    // do your magic!
+    const id = req.params.id
+    console.log('id inside of validate user id', id)
+    Users.getById(id)
+    .then(user => {
+      if(!user){
+        res.status(400).json({message: "Invalid user id"})
+      }else {
+         req.user = user
+        next();
+      }
+    })
+    .catch(err => {
+      res.status(500).json({message: "There was an error finding that user"})
+    })
+  }
 
 function validateUser (req, res, next) {
   // do your magic!
-  if(!req.body){
-    res.status(400).json({message: "missing user data"})
-  }else if(!req.body.name){
-    res.status(400).json({message : "missing required name feild"})
-  }else{
-    next();
+  if (!req.body) {
+    res.status (400).json ({message: 'missing user data'});
+  } else if (!req.body.name) {
+    res.status (400).json ({message: 'missing required name feild'});
+  } else {
+    next ();
   }
-  }
+}
 
 function validatePost (req, res, next) {
   // do your magic!
