@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("./userDb");
 const Post = require("../posts/postDb");
+const restricted = require("../restricted-middlewares/restricted");
 
 const router = express.Router();
 
@@ -30,7 +31,7 @@ router.post("/:id/posts", validateUserId, validatePost, (req, res) => {
     });
 });
 
-router.get("/", (req, res) => {
+router.get("/", restricted, (req, res) => {
   // do your magic!
   User.get()
     .then((users) => {
@@ -45,6 +46,7 @@ router.get("/", (req, res) => {
 
 router.get("/:id", validateUserId, (req, res) => {
   // do your magic!
+  console.log("user here ", req.user.name);
   res.status(200).json(req.user);
 });
 

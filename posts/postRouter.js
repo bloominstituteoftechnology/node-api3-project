@@ -1,9 +1,10 @@
 const express = require("express");
 const Post = require("./postDb");
+const restricted = require("../restricted-middlewares/restricted");
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
+router.get("/", restricted, (req, res) => {
   // do your magic!
   Post.get()
     .then((users) => {

@@ -4,7 +4,7 @@ const userRouter = require("./users/userRouter");
 
 const server = express();
 server.use(express.json());
-
+server.use(logger);
 server.use("/api/posts", postRouter);
 server.use("/api/users", userRouter);
 
@@ -14,6 +14,9 @@ server.get("/", (req, res) => {
 
 //custom middleware
 
-function logger(req, res, next) {}
+function logger(req, res, next) {
+  console.log(`${new Date().toDateString()} | ${req.method} | ${req.url}`);
+  next();
+}
 
 module.exports = server;
