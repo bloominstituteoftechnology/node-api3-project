@@ -21,10 +21,10 @@ router.post('/',validateUser, (req, res) => {
 
 router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
   // do your magic!
-  const { id} = req.params;
+  const { id:user_id} = req.params;
   const { text } = req.body;
 
-  Post.insert({id, text})
+  Post.insert({user_id, text})
   .then(post => {
     res.status(201).json(post);
   })
@@ -142,7 +142,7 @@ function validateUser(req, res, next) {
 
 function validatePost(req, res, next) {
   // do your magic!
-  const {id} = req.param
+  const {id: user_id} = req.param
   const { text } = req.body;
 
   if (!req.body) {
@@ -152,7 +152,7 @@ function validatePost(req, res, next) {
     return res.status(400).json({error: "Post requires text"})
   }
 
-  // req.body = {user_id, text };
+  req.body = {user_id, text };
   next();
 }
 
