@@ -25,12 +25,20 @@ router.post('/:id/posts', validatePost, validateUserId, (req, res) => {
     })
     .cath(error => {
       console.log(error)
-      res.status(500).json({message: "there was an issue adding user."})
+      res.status(500).json({message: "there was an issue adding posts."})
     })
   });
 
 router.get('/', (req, res) => {
   // do your magic!
+  Users.get()
+    .then(users => {
+    res.status(200).json(users)
+  })
+  .cath(error => {
+    console.log(error)
+    res.status(500).json({message: "failed to get users."})
+  })
 });
 
 router.get('/:id', (req, res) => {
