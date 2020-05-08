@@ -4,6 +4,7 @@
   "description": "Node API 3 Project",
   "main": "index.js",
   "scripts": {
+    "server": "nodemon index.js",
     "start": "node index.js"
   },
   "repository": {
