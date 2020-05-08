@@ -18,12 +18,12 @@ function getById(id) {
     .first();
 }
 
-function insert(post) {
+function insert(posts) {
   return db('posts')
-    .insert(post)
-    .then(ids => {
-      return getById(ids[0]);
-    });
+      .insert(posts)
+      .then(ids => {
+        return getById(ids[0]);
+      });
 }
 
 function update(id, changes) {

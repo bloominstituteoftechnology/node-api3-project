@@ -1,6 +1,6 @@
 exports.seed = function(knex, Promise) {
   return knex('users').insert([
-    { name: 'Frodo Baggins' }, // 1
+    { name: 'Frodo Baggins' ,age:20}, // 1
     { name: 'Samwise Gamgee' }, // 2
     { name: 'Meriadoc Brandybuck' }, // 3
     { name: 'Peregrin Took' }, // 4
