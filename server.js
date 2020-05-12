@@ -1,13 +1,20 @@
 const express = require('express');
 
+// adds/edit secure default headers.
+const helmet = require('helmet');
+// const morgan = require('morgan');
+const middleware = require('./middleware')
+const postRouter = require('./posts/postRouter')
+const userRouter = require('./users/userRouter')
+
 const server = express();
 
-server.get('/', (req, res) => {
-  res.send(`<h2>Let's write some middleware!</h2>`);
-});
+server.use(express.json());
+// server.use(morgan('dev'))
+server.use(helmet());
+server.use(middleware.logger)
+server.use('/post', postRouter)
+server.use('/user', userRouter)
 
-//custom middleware
-
-function logger(req, res, next) {}
 
 module.exports = server;
