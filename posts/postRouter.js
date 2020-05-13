@@ -3,7 +3,8 @@ const express = require('express');
 const { 
   validateUserId,
   validateUser,
-  validatePost
+  validatePost,
+  validatePostId
 } = require("../middleware")
 
 const DB = require("./postDb");
@@ -15,8 +16,8 @@ router.get('/', (req, res) => {
   .catch(err => res.status(500).json("sum ting wong"))
 });
 
-router.get('/:id', (req, res) => {
-
+router.get('/:id', validatePostId, (req, res) => {
+  res.status(200).json(req.post)
 });
 
 router.post('/', validatePost, async (req, res) => {
@@ -27,18 +28,16 @@ router.post('/', validatePost, async (req, res) => {
   res.status(500).json("Oof.")
 })
 
-router.delete('/:id', (req, res) => {
-  // do your magic!
+router.delete('/:id', validatePostId, async (req, res) => {
+  const post = await DB.remove(req.post.id)
+  if (post > 0) {  return res.status(201).json(`${post} post has been removed`) }
+  res.status(404).json({ message: 'No post removed' })
 });
 
-router.put('/:id', (req, res) => {
-  // do your magic!
+router.put('/:id', validatePost, async (req, res) => {
+  const post = await DB.update(req.params.id, req.body)
+  if (post > 0) {  return res.status(201).json(`${post} post has been Updated`) }
+  res.status(404).json({ message: 'No post updated' })
 });
-
-// custom middleware
-
-function validatePostId(req, res, next) {
-  // do your magic!
-}
 
 module.exports = router;
