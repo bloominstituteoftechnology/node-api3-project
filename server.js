@@ -1,11 +1,13 @@
 const express = require('express');
 const userRouter = require('./users/userRouter.js');
+const cors = require('cors')
 
 const server = express();
 server.use(express.json());
 server.use(logger);
+server.use(cors())
 
-server.use('/api/users', userRouter);
+server.use('/users', userRouter);
 
 server.get('/', (req, res) => {
   res.send(`Server is Running 🏃`);
@@ -18,7 +20,7 @@ function logger(req, res, next) {
   next();
 }
 
-server.use(function(req, res) {
+server.use(function (req, res) {
   res.status(404).send('No Data to Display 😔');
 });
 module.exports = server;

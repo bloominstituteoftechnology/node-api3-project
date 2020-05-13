@@ -1,10 +1,58 @@
 const express = require('express');
 
 const Users = require('./userDb.js');
-const Posts = require('../posts/postDb.js');
 
 const router = express.Router();
 
+//------------------------------------------------------------------------//
+//      Custom MiddleWare
+//------------------------------------------------------------------------//
+
+function validateUserId(req, res, next) {
+  const numbers = req.url.match(/[0-9]+/)
+  if ((req.method === 'GET' || req.method === 'DELETE' || req.method === 'PUT') && numbers) {
+    Users.getById(numbers[0])
+      .then(user => {
+        req.user = user
+        if (user) {
+          next()
+        } else {
+          res.status(400).json({ errorMessage: 'invalid user id' });
+        }
+      })
+      .catch(error => {
+        res.status(500).json({ errorMessage: 'Unable getting User' })
+      })
+  } else {
+    res.status(400).json({ errorMessage: 'Only numbers 0-9' })
+  }
+}
+
+function validateUser(req, res, next) {
+  const body = req.body;
+  if (req.method === 'POST' || req.method === 'PUT') {
+    !body.name
+      ?
+      res.status(400).json({ errorMessage: 'Missing required name.' })
+      :
+
+      !Object.keys(body).length
+        ? res.status(400).json({ errorMessage: 'Missing user Data' })
+        :
+        next()
+  } else {
+    next();
+  }
+}
+
+
+
+router.use(validateUser)
+
+
+//------------------------------------------------------------------------//
+//      POST new User
+//------------------------------------------------------------------------//
 router.post('/', async (req, res) => {
   try {
     await Users.insert(req.body);
@@ -13,7 +61,9 @@ router.post('/', async (req, res) => {
     res.status(500).json({ errorMessage: 'Error Posting new User' });
   }
 });
-
+//------------------------------------------------------------------------//
+//      GET * Users
+//------------------------------------------------------------------------//
 router.get('/', (req, res) => {
   Users.get(req.body)
     .then(user => {
@@ -29,27 +79,16 @@ router.get('/', (req, res) => {
         .json({ errorMessage: 'Something is wrong with our Database' });
     });
 });
-
+//------------------------------------------------------------------------//
+//      GET User by ID
+//------------------------------------------------------------------------//
 router.get('/:id', validateUserId, (req, res) => {
-  const { id } = req.params;
-  try {
-    res.status(200).json(req.user);
-    // const user = await Users.getById(id);
-    // if (user) {
-    //   res.status(200).json(user);
-    // } else {
-    //   res.status(404).json('No User in Database!');
-    // }
-  } catch {
-    res
-      .status(500)
-      .json({ errorMessage: 'Something is wrong with our Database' });
-  }
+  res.status(200).json(req.user);
 });
 
-//---------------------------------------------------------------------/
-//Delete
-//---------------------------------------------------------------------/
+//------------------------------------------------------------------------//
+//      DELETE User by ID
+//------------------------------------------------------------------------//
 router.delete('/:id', validateUserId, (req, res) => {
   Users.remove(req.params.id)
     .then(user => {
@@ -67,26 +106,11 @@ router.delete('/:id', validateUserId, (req, res) => {
         .json({ message: 'Something is wrong with our Database', error });
     });
 });
-// router.delete('/:id', async (req, res) => {
-//   const { id } = req.params;
-//   try {
-//     const user = Users.getById(id);
-//     if (user) {
-//       await Users.remove(user);
-//       res
-//         .status(200)
-//         .json({ message: `User With Id ${id} Deleted from Database` });
-//     } else {
-//       res.status(404).json({ errorMessage: 'No User to Delete' });
-//     }
-//   } catch {
-//     res
-//       .status(500)
-//       .json({ errorMessage: 'Something is wrong with our Database' });
-//   }
-// });
+//------------------------------------------------------------------------//
+//      EDIT User by ID
+//------------------------------------------------------------------------//
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', validateUserId, async (req, res) => {
   const { id } = req.params;
   const changes = req.body;
   try {
@@ -103,49 +127,18 @@ router.put('/:id', async (req, res) => {
       .json({ errorMessage: 'Something is wrong with our Database' });
   }
 });
+//------------------------------------------------------------------------//
+//      GET Post by ID of User
+//------------------------------------------------------------------------//
 
-router.get('/id:/posts', async (req, res) => {
-  const { id } = req.params;
-  try {
-    const post = await Users.getUserPosts(id);
-    if (post) {
-      res.status(200).json(post);
-    } else {
-      res.status(404).json({ errorMessage: 'No Post to Display' });
-    }
-  } catch {
-    res
-      .status(500)
-      .json({ errorMessage: 'Something is wrong with our Database' });
-  }
+router.get('/:id/posts', (req, res) => {
+  Users.getUserPosts(req.params.id)
+    .then(posts => {
+      res.status(200).json(posts)
+    })
+    .catch(err => {
+      res.status(500).json({ errorMessage: "Could not retrieve posts from user", err })
+    })
 });
-
-//custom middleware
-
-function validateUserId(req, res, next) {
-  const { id } = req.params;
-  Users.getById(id).then(user => {
-    if (user) {
-      req.user = user;
-      next();
-    } else {
-      res.status(400).json({ message: 'invalid user id' });
-    }
-  });
-}
-
-function validateUser(req, res, next) {
-  const body = req.body;
-
-  if (!body || body === {}) {
-    res.status(400).json({ message: 'missing user data' });
-  } else {
-    next();
-  }
-}
-
-function validatePost(req, res, next) {
-  // do your magic!
-}
 
 module.exports = router;
