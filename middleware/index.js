@@ -27,10 +27,10 @@ function validateUser(req, res, next) {
 
 function validatePost(req, res, next) {
     if (Object.keys(req.body).length > 0) {
-        if (req.body.text) {
+        if (req.body.text && req.body.user_id) {
             return next()
         }
-        return res.status(400).json({ message: "missing required text field" })
+        return res.status(400).json({ message: "missing required text and user_id field" })
     }
     res.status(400).json({ message: "missing post data" })
 }

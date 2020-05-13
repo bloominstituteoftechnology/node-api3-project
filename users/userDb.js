@@ -7,6 +7,7 @@ module.exports = {
   insert,
   update,
   remove,
+  getByName
 };
 
 function get() {
@@ -18,6 +19,13 @@ function getById(id) {
     .where({ id })
     .first();
 }
+
+function getByName(name) {
+  return db('users')
+    .where({ name })
+    .first();
+}
+
 
 function getUserPosts(userId) {
   return db('posts as p')

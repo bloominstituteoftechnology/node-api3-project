@@ -10,11 +10,20 @@ const DB = require("./userDb");
 const router = express.Router();
 
 router.post('/', validateUser, async (req, res) => {
-  const user = await DB.insert(req.body)
-  if (user) {
-    return res.status(201).json(user)
-  }
-  res.status(500).json('Self-destruct sequence activated.')
+  try {
+    const user = await DB.insert(req.body)
+    if (user) {
+      return res.status(201).json(user)
+    }
+  } catch(e) {
+    if (e.code === `SQLITE_CONSTRAINT`) {
+      const user = await DB.getByName(req.body.name)
+      if (user) {
+        return res.status(201).json(user)
+      }
+    }
+    res.status(500).json('Self-destruct sequence activated.')
+  }  
 });
 
 router.post('/:id/posts', validateUserId, async (req, res) => {
