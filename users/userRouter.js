@@ -1,9 +1,24 @@
 const express = require('express');
 
+const users = require('./userDb')
+const posts = require('../posts/postDb');
+
 const router = express.Router();
+
+router.use(express.json())
+router.use('/:id' , validateUserId)
+
 
 router.post('/', (req, res) => {
   // do your magic!
+  users.insert(req.body)
+  .then(item => {
+    res.status.json(item)
+  }).catch(err => {
+    res.status(500).json(() => {
+      message:"server error"
+    })
+  })
 });
 
 router.post('/:id/posts', (req, res) => {
