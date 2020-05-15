@@ -133,9 +133,9 @@ router.put('/:id', validateUserId, async (req, res) => {
 
 router.get('/:id/posts', (req, res) => {
   Users.getUserPosts(req.params.id)
-    .then(posts => {
+    .then(post => {
       if (post) {
-        res.status(200).json(posts)
+        res.status(200).json(post)
       } else {
         res.status(404).json({ message: `No Post for User ${post}` })
       }
