@@ -134,7 +134,11 @@ router.put('/:id', validateUserId, async (req, res) => {
 router.get('/:id/posts', (req, res) => {
   Users.getUserPosts(req.params.id)
     .then(posts => {
-      res.status(200).json(posts)
+      if (post) {
+        res.status(200).json(posts)
+      } else {
+        res.status(404).json({ message: `No Post for User ${post}` })
+      }
     })
     .catch(err => {
       res.status(500).json({ errorMessage: "Could not retrieve posts from user", err })

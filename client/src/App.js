@@ -11,7 +11,7 @@ class App extends React.Component {
   componentDidMount() {
 
     axios
-      .get('http://localhost:4000/users/')
+      .get('https://firstlambdaschool.herokuapp.com/users/')
       .then(response => {
         this.setState({
           name: response.data.map(item => {
