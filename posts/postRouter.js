@@ -1,27 +1,57 @@
 const express = require('express');
-
+const Post = require('./postDb');
 const router = express.Router();
 
+const mw = require('../build/middleware')
+const validPostId = mw.validPostId
+const validPost = mw.validPost
+
 router.get('/', (req, res) => {
-  // do your magic!
-});
+	Posts.get()
+		.then(post => {
+			res.status(200).json(post)
+		})
+		.catch(err => {
+			res.status(500).json({ error: 'You found me but I cannot provide any info, try again!', err })
+		})
+})
 
-router.get('/:id', (req, res) => {
-  // do your magic!
-});
+router.get('/:id', validPostId, (req, res) => {
+	const { id } = req.params
+	Post.getById(id)
+		.then(post => {
+			res.status(200).json(post)
+		})
+		.catch(err => {
+			res.status(500).json({ error: 'You found me but I cannot provide any info, try again!', err })
+		})
+})
 
-router.delete('/:id', (req, res) => {
-  // do your magic!
-});
+router.delete('/:id', validPostId, (req, res) => {
+	const { id } = req.params
+	Post.getById(id)
+		.then(post => {
+			post
+				? Posts.remove(id).then(deleted => {
+						deleted ? res.status(200).json({ success: `Post ${id} was deleted!`, info: post }) : null
+				  })
+				: null
+		})
+		.catch(err => {
+			res.status(500).json({ error: 'You found me but I cannot provide any info, try again!', err })
+		})
+})
 
-router.put('/:id', (req, res) => {
-  // do your magic!
-});
+router.put('/:id', validPostId, validPost, (req, res) => {
+	const { id } = req.params
 
-// custom middleware
+	Post.update(id, req.body)
+		.then(post => {
+			res.status(200).json({ success: 'Info Updated!', info: req.body })
+		})
+		.catch(err => {
+			res.status(500).json({ error: 'You found me but I cannot provide any info, try again!', err })
+		})
+})
 
-function validatePostId(req, res, next) {
-  // do your magic!
-}
-
-module.exports = router;
+module.exports = router
