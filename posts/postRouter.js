@@ -7,7 +7,8 @@ const validPostId = mw.validPostId
 const validPost = mw.validPost
 
 router.get('/', (req, res) => {
-	Posts.get()
+
+	Post.get()
 		.then(post => {
 			res.status(200).json(post)
 		})

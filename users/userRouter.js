@@ -75,26 +75,43 @@ router.put('/:id', validUserId, (req, res) => {
 		})
 })
 
-router.post('/:id/posts', (req, res) => {
+router.post('/:id/posts',validUserId, validPost, (req, res) => {
   // do your magic!
+  const { text } = req.body
+	const user_id = req.params.id
+
+	Users.getById(user_id)
+		.then(post => {
+			if (!post) {
+				null
+			} else {
+				let newPost = {
+					text,
+					user_id, 
+				}
+
+				Posts.insert(newPost).then(post => {
+					res.status(201).json({ success: post })
+				})
+			}
+		})
+		.catch(err => {
+			res.status(500).json({ error: 'You found me but I cannot provide any info, try again!', err })
+		})
 });
 
-router.get('/:id/posts', (req, res) => {
+router.get('/:id/posts', validUserId,(req, res) => {
   // do your magic!
+  const { id } = req.params
+
+	Users.getUserPosts(id)
+		.then(data => {
+			data ? res.status(200).json(data) : null
+		})
+		.catch(err => {
+			res.status(500).json({ error: 'You found me but I cannot provide any info, try again!', err })
+		})
 });
 
-//custom middleware 
-
-function validateUserId(req, res, next) {
-  // do your magic!
-}
-
-function validateUser(req, res, next) {
-  // do your magic!
-}
-
-function validatePost(req, res, next) {
-  // do your magic!
-}
 
 module.exports = router;
