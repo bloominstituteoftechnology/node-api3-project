@@ -15,10 +15,12 @@ router.param('id', validateUserId);
 
 //request handlers
 router.post('/', validateUser, (req, res) => {
-  const id = req.params.id;
-  const newPost = { body: req.body.text, id };
+  // const id = req.params.id;
+  // const newPost = { body: req.body.text, id };
   db.insert(req.body)
-    .then((post) => {})
+    .then((post) => {
+      res.status(200).json({ created: post });
+    })
     .catch((error) => {
       console.log(error.message);
     });
@@ -96,12 +98,9 @@ function getUsers(req, res, next) {
 }
 
 function deleteUser(req, res, next) {
-  db.remove(req.params.id).then((deletedId) =>
-    res
-      .status(204)
-      .end()
-      .catch((error) => console.log(error))
-  );
+  db.remove(req.params.id)
+    .then((deletedId) => res.status(204).end())
+    .catch((error) => console.log(error));
   next();
 }
 
