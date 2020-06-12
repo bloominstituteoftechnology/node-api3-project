@@ -74,3 +74,4 @@ function validatePostId(req, res, next) {
   })
 }
 
+module.exports = router;

@@ -1,5 +1,5 @@
 const express = require("express")
-const server = express()
+const server = require("./server")
 const port = process.env.port || 4000
 const postRouter = require("./posts/postRouter")
 const logger = require("./middleware/logger")
