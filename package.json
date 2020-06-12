@@ -4,7 +4,7 @@
   "description": "Node API 3 Project",
   "main": "index.js",
   "scripts": {
-    "watch": "nodemon index.js",
+    "watch": "nodemon --require dotenv/config index.js",
     "start": "node index.js"
   },
   "repository": {
@@ -30,6 +30,8 @@
     "sqlite3": "^4.1.1"
   },
   "devDependencies": {
+    "cross-env": "^7.0.2",
+    "dotenv": "^8.2.0",
     "knex-cleaner": "^1.3.0",
     "nodemon": "^2.0.4"
   }
