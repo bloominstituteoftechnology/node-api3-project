@@ -65,7 +65,7 @@ router.get("/users/:id", validateUserId, (req, res) => {
 });
 
 //--------------------------
-// GET posts
+// GET posts by user ID
 //--------------------------
 
 router.get("/:id/posts", (req, res, next) => {
@@ -76,7 +76,7 @@ router.get("/:id/posts", (req, res, next) => {
     })
     .catch((error) => {
       console.log(error);
-      res.status(500).json({
+        res.status(500).json({
         message: "Could not get user posts",
       });
     });
