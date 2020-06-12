@@ -15,7 +15,7 @@ server.use(welcome);
 server.use(logger("long"));
 
 server.get("/", logger, (req, res) => {
-  res.send(`<h2>iiiiiiiiiiiiii !</h2>`);
+  res.send(`<h2>Let's write some middleware class ${process.env.COHORT}!</h2>`);
 });
 
 server.use((err, req, res, next) => {
