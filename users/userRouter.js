@@ -1,47 +1,158 @@
-const express = require('express');
+const express = require("express");
+
+const userDb = require("./userDb");
+const postDb = require("../posts/postDb");
 
 const router = express.Router();
+router.use(express.json());
 
-router.post('/', (req, res) => {
-  // do your magic!
+//--------------------------
+// add user
+//--------------------------
+
+router.post("/", validateUser, (req, res) => {
+  userDb
+    .insert(req.body)
+    .then((newUser) => {
+      res.status(201).json(newUser);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ errorMessage: "Could not post user data" });
+    });
 });
 
-router.post('/:id/posts', (req, res) => {
-  // do your magic!
+//--------------------------
+// POST posts by userID
+//--------------------------
+
+router.post("/:id/posts", validateUserId, validatePost, (req, res) => {
+  postDb
+    .insert({ ...req.body, user_id: req.params.id })
+    .then((post) => {
+      res.status(201).json(post);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ errorMessage: "Could not post data." });
+    });
 });
 
-router.get('/', (req, res) => {
-  // do your magic!
+//--------------------------
+// GET Users
+//--------------------------
+
+router.get("/", (req, res) => {
+  userDb.get(req.body).then((users) => {
+    res.status(200).json(users);
+  });
 });
 
-router.get('/:id', (req, res) => {
-  // do your magic!
+//--------------------------
+// GET user By ID
+//--------------------------
+
+router.get("/users/:id", validateUserId, (req, res) => {
+  userDb
+    .getById(req.params.id)
+    .then((user) => {
+      res.status(200).json(user);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ errorMessage: "Could not retrieve specified ID" });
+    });
 });
 
-router.get('/:id/posts', (req, res) => {
-  // do your magic!
+//--------------------------
+// GET posts
+//--------------------------
+
+router.get("/:id/posts", (req, res, next) => {
+  userDb
+    .getUserPosts(req.params.id)
+    .then((posts) => {
+      res.status(200).json(posts);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({
+        message: "Could not get user posts",
+      });
+    });
+  next();
 });
 
-router.delete('/:id', (req, res) => {
-  // do your magic!
+//--------------------------
+// DELETE User
+//--------------------------
+
+router.delete("/:id", (req, res, next) => {
+  userDb.remove(req.params.id).then((count) => {
+    if (count > 0) {
+      res.status(200).json({
+        message: "The User has been NUKED",
+      });
+    } else {
+      res.status(404).json({
+        message: "The user couldn't be found",
+      });
+    }
+  });
+  next();
 });
 
-router.put('/:id', (req, res) => {
-  // do your magic!
+//--------------------------
+// UPDATE user
+//--------------------------
+
+router.put("/:id", (req, res) => {
+  userDb.update(req.params.id, req.body).then((user) => {
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(404).json({
+        message: "The user couldn't be found",
+      });
+    }
+  });
 });
 
+//--------------------------
 //custom middleware
+//--------------------------
 
 function validateUserId(req, res, next) {
-  // do your magic!
+  userDb.getById(req.params.id).then((user) => {
+    if (!user) {
+      res.status(404).json({ error: "The specified ID does not exist." });
+    } else {
+      next();
+    }
+  });
 }
 
 function validateUser(req, res, next) {
-  // do your magic!
+  if (!req.body) {
+    res.status(400).json({ message: "missing user data." });
+  } else if (!req.body.name) {
+    res.status(400).json({
+      message: "missing required name field.",
+    });
+  } else {
+    next();
+  }
 }
 
 function validatePost(req, res, next) {
-  // do your magic!
+  postDb.getById(req.params.id).then((post) => {
+    if (!post) {
+      res.status(404).json({
+        error: "The specified post does not exist.",
+      });
+    } else {
+      next();
+    }
+  });
 }
-
 module.exports = router;
