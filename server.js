@@ -13,6 +13,7 @@ server.use(logger) // could use morgan for this instead?
 server.use("/api/users", userRouter)
 
 
+
 function logger(req, res, next) {
 
   console.log(
