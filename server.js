@@ -4,7 +4,6 @@ const server = express();
 
 const port = process.env.PORT || 5000;
 
-const postRouter = require("./posts/postRouter");
 const userRouter = require("./users/userRouter");
 
 server.use(express.json());
@@ -28,7 +27,6 @@ function validateUserId(req, res, next) {}
 function validateUser(req, res, next) {}
 function validatePost(req, res, next) {}
 
-server.use("/api/posts", postRouter);
 server.use("/api/users", userRouter);
 
 server.listen(port, () => {
