@@ -6,6 +6,8 @@ const port = process.env.PORT || 5000;
 
 const userRouter = require("./users/userRouter");
 
+const postRouter = require("./posts/postRouter");
+
 server.use(express.json());
 
 server.get("/", (req, res) => {
@@ -28,6 +30,7 @@ function validateUser(req, res, next) {}
 function validatePost(req, res, next) {}
 
 server.use("/api/users", userRouter);
+server.use("/api/posts", postRouter);
 
 server.listen(port, () => {
   console.log(`Server is listening on http://localhost:${port}`);
