@@ -1,26 +1,53 @@
 const express = require('express');
 const Helpers = require('./userDb.js');
+const Posts = require('../posts/postDb.js');
 
 const router = express.Router();
 
-router.post('/', (req, res) => {
-  // do your magic!
+router.use((req, res, next)=>{
+  console.log("in the users router!");
+  next()
+})
+
+router.post('/',validateUser, (req, res) => {
+ Helpers.insert(req.body)
+ .then(user =>{
+   res.status(201).json(user);
+ })
+ .catch(erro=>{
+   res.status(500).json({message: 'Error adding user to database'})
+ })
 });
 
-router.post('/:id/posts', validateUserId, (req, res) => {
-  // do your magic!
+router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
+  console.log('req.body', req.body)
 });
 
 router.get('/', (req, res) => {
-  // do your magic!
+  
+  Helpers.get()
+  .then(users =>{
+    res.status(200).json(users);
+  })
+  .catch(error =>{
+    console.log(error);
+    res.status(500).json({message: 'error retrieving users'});
+  })
 });
 
 router.get('/:id', validateUserId, (req, res) => {
-  // do your magic!
+  res.status(200).json(req.user);
 });
 
-router.get('/:id/posts', (req, res) => {
-  // do your magic!
+router.get('/:id/posts', validateUserId, (req, res) => {
+  Posts.getById(req.params.id)
+  .then(posts =>{
+    res.status(200).json(posts);
+  })
+  .catch(error =>{
+    console.log(error);
+    res.status(500).json({message: 'error retrieving post'})
+  })
 });
 
 router.delete('/:id', validateUserId, (req, res) => {
