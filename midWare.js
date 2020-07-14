@@ -11,7 +11,7 @@ module.exports = {
     next();
   },
 
-  validateId: function (req, res, next) {
+  validateUserId: function (req, res, next) {
     const { id } = req.params;
     Users.getById(id)
       .then((users) => {
@@ -27,13 +27,28 @@ module.exports = {
       });
   },
 
-  requireBody: function (req, res, next) {
-    if (req.body && Object.keys(req.body).length > 0) {
+  validateUser: function (req, res, next) {
+    if (Object.keys(req.body).length > 0) {
       next();
     } else {
       res.status(400).json({ message: " please include a body" });
     }
   },
+  validatePost: function (req, res, next) {
+    // do your magic!
+    if (Object.keys(req.body).length === 0) {
+      res.status(400).json({
+        message: "missing post data",
+      });
+    } else if (req.body.text && req.body.text.length) {
+      next();
+    } else {
+      res.status(400).json({
+        message: "missing required text field",
+      });
+    }
+  },
+
   addName: function (req, res, next) {
     req.name = req.name || req.headers["x-name"];
     console.log(`${req.name} has been applied `);
