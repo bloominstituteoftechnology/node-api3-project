@@ -2,6 +2,7 @@ const express = require('express');
 const helmet = require('helmet');
 const middleware = require('./midWare.js');
 const userRouter = require('./users/userRouter');
+const postRouter = require('./posts/postRouter');
 
 const server = express();
 server.use(express.json());
@@ -9,6 +10,7 @@ server.use(helmet());
 
 server.use(middleware.logger)
 server.use('/api/users', userRouter);
+server.use('/api/posts', postRouter);
 server.use(middleware.addName);
 
 server.get('/', (req, res) => {

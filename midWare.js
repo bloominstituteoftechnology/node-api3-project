@@ -1,5 +1,5 @@
 const Users = require('./users/userDb')
-
+const Post = require('./posts/postDb');
 module.exports = {
   logger: function (req, res, next) {
     console.log(`${req.method} requests`);
@@ -34,6 +34,23 @@ module.exports = {
       res.status(400).json({ message: " please include a body" });
     }
   },
+
+  validatePostId: function (req, res, next) {
+  // do your magic!
+  const { id } = req.params;
+  Post.getById(id)
+    .then((posts) => {
+      if (posts) {
+        req.posts = posts;
+        next();
+      } else {
+        res.status(404).json({ message: "Post id not found" });
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({ messages: " error getting post" });
+    });
+},
   validatePost: function (req, res, next) {
     // do your magic!
     if (Object.keys(req.body).length === 0) {
