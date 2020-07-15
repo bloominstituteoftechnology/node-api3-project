@@ -39,30 +39,30 @@ Follow these steps for completing your project.
 
 - `validateUserId()`
 
-  - `validateUserId` validates the user id on every request that expects a user id parameter
+  -[x] `validateUserId` validates the user id on every request that expects a user id parameter
   - if the `id` parameter is valid, store that user object as `req.user`
   - if the `id` parameter does not match any user id in the database, cancel the request and respond with status `400` and `{ message: "invalid user id" }`
 
 - `validateUser()`
 
-  - `validateUser` validates the `body` on a request to create a new user
+  -[x] `validateUser` validates the `body` on a request to create a new user
   - if the request `body` is missing, cancel the request and respond with status `400` and `{ message: "missing user data" }`
-  - if the request `body` is missing the required `name` field, cancel the request and respond with status `400` and `{ message: "missing required name field" }`
+  -[x] if the request `body` is missing the required `name` field, cancel the request and respond with status `400` and `{ message: "missing required name field" }`
 
 - `validatePost()`
-  -[] `validatePost` validates the `body` on a request to create a new post
+  -[x] `validatePost` validates the `body` on a request to create a new post
   - if the request `body` is missing, cancel the request and respond with status `400` and `{ message: "missing post data" }`
-  - if the request `body` is missing the required `text` field, cancel the request and respond with status `400` and `{ message: "missing required text field" }`
+  -[x] if the request `body` is missing the required `text` field, cancel the request and respond with status `400` and `{ message: "missing required text field" }`
 
 ### Database Persistence Helpers
 
 There are two helper files that you can use to manage the persistence of _users_ and _posts_ data. These files are `users/userDb.js` and `posts/postDb.js`. Both files publish the following api:
 
--[p] `get()`: calling find returns a promise that resolves to an array of all the `resources` contained in the database.
--[p] `getById()`: takes an `id` as the argument and returns a promise that resolves to the `resource` with that id if found.
--[] `insert()`: calling insert passing it a `resource` object will add it to the database and return the new `resource`.
--[] `update()`: accepts two arguments, the first is the `id` of the `resource` to update and the second is an object with the `changes` to apply. It returns the count of updated records. If the count is 1 it means the record was updated correctly.
--[p] `remove()`: the remove method accepts an `id` as it's first parameter and, upon successfully deleting the `resource` from the database, returns the number of records deleted.
+-[pu] `get()`: calling find returns a promise that resolves to an array of all the `resources` contained in the database.
+-[pu] `getById()`: takes an `id` as the argument and returns a promise that resolves to the `resource` with that id if found.
+-[uu] `insert()`: calling insert passing it a `resource` object will add it to the database and return the new `resource`.
+-[p] `update()`: accepts two arguments, the first is the `id` of the `resource` to update and the second is an object with the `changes` to apply. It returns the count of updated records. If the count is 1 it means the record was updated correctly.
+-[pu] `remove()`: the remove method accepts an `id` as it's first parameter and, upon successfully deleting the `resource` from the database, returns the number of records deleted.
 
 The `userDb.js` helper includes an extra method called `getUserPosts()` that when passed a user's `id`, returns a list of all the `posts` for the `user`.
 

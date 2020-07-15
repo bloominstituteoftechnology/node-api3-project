@@ -73,7 +73,7 @@ function validatePostId(req, res, next) {
       req.post = post;
       next();
     } else {
-      res.status(400).json({ message: "Invalid post id" });
+      res.status(400).json({ message: 'Invalid post id' });
     }
   })
   .catch(err => {
