@@ -27,11 +27,18 @@ server.delete('/', (req, res) =>{
   res.send('delete');
 });
 
-//custom middleware
+// function logger
 function logger(req, res, next) {
   console.log(`${req.method} ${req.url} [${new Date().toISOString()}]`);
   next();
 };
 
+function errorHandler(error, req, res, next){
+  console.log('error', error.message);
+  const code = error.status || error.statusCode || 400;
+  res.status(code).json(error);
+};
+
+server.use(errorHandler);
 
 module.exports = server;
