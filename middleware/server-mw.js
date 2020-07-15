@@ -12,7 +12,7 @@ function lockout(res, req, next) {
     res.status(403).json({message: 'The API server is in maintenance mode'})
 }
 
-function handlerErrors(error, req, res, next) {
+function handleErrors(error, req, res, next) {
     console.log('[SERVER ERROR]: ', error.message)
     const code = error.status || error.statusCode || 400
     res.status(code).json(error)

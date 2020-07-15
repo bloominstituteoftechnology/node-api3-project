@@ -10,6 +10,15 @@ const router = express.Router()
 //                             Create                                 |
 // ------------------------------------------------------------------ |
 
+// Create new user
+router.post('/', validateUser, (req, res, next) => {
+  const { name } = req.body
+
+  User.insert({ name })
+  .then(user => {res.status(201).json(user)})
+  .catch(err => {res.status(500).json({error: 'An internal server error occurred when creating the new user.'})})
+})
+
 // Create new post by users ID
 router.post('/:id/posts', validateUserId, validatePost, (req, res, next) => {
   const { id: user_id } = req.params
@@ -26,14 +35,6 @@ router.post('/:id/posts', validateUserId, validatePost, (req, res, next) => {
 // ------------------------------------------------------------------ |
 
 // Get full users list
-router.post('/', validateUser, (req, res, next) => {
-  const { name } = req.body
-
-  User.insert({ name })
-  .then(user => {res.status(201).json(user)})
-  .catch(err => {res.status(500).json({error: 'An internal server error occurred when creating the new user.'})})
-})
-
 router.get('/', (req, res, next) => {
   User.get()
   .then(users => {res.status(200).json(users)})
@@ -45,11 +46,11 @@ router.get('/:id', validateUserId, (req, res, next) => {
   const { id } = req.params
 
   User.getById(id)
-  .then(user => {
-    if(!user) {
+  .then(users => {
+    if(!users) {
       res.status(404).json({error: `The user with ID: ${id} could not be found.`})
     } else {
-      res.status(200).json(user)
+      res.status(200).json(users)
     }})
   .catch(err => {res.status(500).json({error: 'An internal server error occurred while getting the user.'})})
 })

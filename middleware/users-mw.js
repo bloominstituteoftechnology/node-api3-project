@@ -1,3 +1,5 @@
+const User = require('../users/userDb')
+
 function validateUserId(req, res, next) {
     const { id } = req.params
   
