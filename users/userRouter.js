@@ -1,6 +1,19 @@
 const express = require('express');
-
 const router = express.Router();
+
+
+// POST DB
+const postDB = require('../posts/postDb')
+//USER db
+const userDB = require('./userDb.js')
+
+// MIDDLEWARE
+const cm = require('../middleware/middleware.js')
+const validateUserId = cm.validateUserId
+const validateUser = cm.validateUser
+const validatePost = cm.validatePost
+
+
 
 router.post('/', (req, res) => {
   // do your magic!
