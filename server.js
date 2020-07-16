@@ -9,9 +9,13 @@ server.use(express.json());
 server.use('/api/posts', postRouter);
 server.use('api/user', userRouter);
 server.get(helmet());
+server.use(logger);
+server.use(validateUserId);
 
 server.get('/', (req, res) => {
-  res.send(`<h2>Let's write some middleware!</h2>`);
+  const userInsert = (req.user) ? `${req.user}` : '';
+
+  res.send(`<h2>Welcome ${userInsert}</h2>`);
 });
 
 //custom middleware
@@ -19,6 +23,11 @@ server.get('/', (req, res) => {
 function logger(req, res, next) {
   console.log(`${req.method} request`);
   next();
+}
+
+function validateUserId(req, res, next) {
+  req.user = req.user || 'sk';
+  next()
 }
 
 module.exports = server;
