@@ -3,29 +3,26 @@ const server = express();
 const helmet = require('helmet');
 const cors = require('cors');
 
-// MIDDLEWARE
-const cm = require('./middleware/middleware');
+// ### Middleware ### 
+const cm = require('./middleware/middleware')
 
-// LOGGER
-const logger = cm.logger();
+// ### Logger ### 
+const logger = cm.logger
 
-//USER POST API ROUTER
-const userRouter = require('./users/userRouter');
-const postRouter = require('./posts/postRouter');
+// ### USER & POST API Router 
+const userRouter = require('./users/userRouter')
+const postRouter = require('./posts/postRouter')
 
-// PARSERS
+// ### Body Parser
 server.use(helmet(), logger, express.json(), cors());
 
-//API ROUTES
+// ### API Routes
 server.use('/posts', postRouter);
 server.use('/users', userRouter);
 
 server.get('/', (req, res) => {
-	res.send(`<h2>Let's get at the Middleware!</h2>`);
+  res.send(`<h2>Welcome to the API!</h2>`);
 });
 
-//custom middleware
-
-function logger(req, res, next) {}
 
 module.exports = server;
