@@ -66,9 +66,9 @@ module.exports = {
     }
   },
 
-  addName: function (req, res, next) {
-    req.name = req.name || req.headers["x-name"];
-    console.log(`${req.name} has been applied `);
-    next();
-  },
+  // addName: function (req, res, next) {
+  //   req.name = req.name || req.headers["x-name"];
+  //   console.log(`${req.name} has been applied `);
+  //   next();
+  // },
 };
