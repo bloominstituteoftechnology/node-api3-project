@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const { logger, lockout, handleErrors } = require('./middleware/server-mw')
 const express = require('express')
 const UserRouter = require('./routes/users/userRouter')
@@ -5,7 +7,9 @@ const UserRouter = require('./routes/users/userRouter')
 const helmet = require('helmet')
 // const morgan = require('morgan')
 const server = express()
+const port = process.env.PORT || 5000
 
+server.listen(port)
 
 server.use(express.json())
 server.use('/api/users', UserRouter)
