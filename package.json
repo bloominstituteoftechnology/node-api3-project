@@ -24,6 +24,7 @@
     "homepage": "https://github.com/LambdaSchool/node-api3-project#readme",
     "dependencies": {
         "express": "^4.17.1",
+        "helmet": "^3.23.3",
         "knex": "^0.21.1",
         "sqlite3": "^5.0.0"
     },
