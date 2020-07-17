@@ -10,7 +10,7 @@ server.use('/api/posts', postRouter);
 server.use('api/user', userRouter);
 server.get(helmet());
 server.use(logger);
-server.use(validateUserId);
+
 
 server.get('/', (req, res) => {
   const userInsert = (req.user) ? `${req.user}` : '';
@@ -25,9 +25,6 @@ function logger(req, res, next) {
   next();
 }
 
-function validateUserId(req, res, next) {
-  req.user = req.user || 'sk';
-  next()
-}
+
 
 module.exports = server;
