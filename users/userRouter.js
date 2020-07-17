@@ -8,7 +8,7 @@ router.use(validateUserId);
 router.use(requireBody);
 
 function getHandler(req, res) {
-  Users.find(req.query)
+  Users.get(req.query)
   .then(usr => {
     res.status(200).json(usr);
   })
@@ -21,7 +21,7 @@ function getHandler(req, res) {
 
 router.post('/', (req, res) => {
   // do your magic!
-  Users.add(req.body)
+  Users.get(req.body)
   .then(usr => {
     res.status(201).json(usr);
   })
@@ -35,7 +35,7 @@ router.post('/', (req, res) => {
 
 router.post('/:id/posts', [validateUserId, requireBody], (req, res) => {
   // do your magic!
-  Users.update(req.params.id, req.body)
+  Users.insert(req.params.id, req.body)
   .then(usr => {
    if(usr){
     res.status(200).json(usr);
@@ -58,7 +58,7 @@ router.get('/:id', validateUserId, (req, res) => {
 
 router.get('/:id/posts', validateUserId, (req, res) => {
   // do your magic!
-  Users.findUserPosts(req.params.id)
+  Users.getUserPosts(req.params.id)
   .then(posts => {
     res.status(200).json(posts)
   })
@@ -107,7 +107,7 @@ router.put('/:id', [validateUserId, requireBody], (req, res) => {
 function validateUserId(req, res, next) {
   // do your magic!
   const {id} = req.params;
-  Users.findById(id)
+  Users.getById(id)
   .then(usr => {
     if (usr) {
       req.usr = usr;

@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
   // do your magic!
-  Posts.find(req.query)
+  Posts.get(req.query)
   .then(pos => {
     res.status(200).json(pos);
   })
@@ -63,7 +63,7 @@ router.put('/:id', validatePostId, (req, res) => {
 function validatePostId(req, res, next) {
   // do your magic!
   const {id} = req.params;
-  Posts.findById(id)
+  Posts.getById(id)
   .then(pos => {
     if (pos) {
       req.pos = pos;
