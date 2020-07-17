@@ -3,13 +3,6 @@ const Users = require('../users/userDb');
 
 const router = express.Router();
 
-// router.use(validateUser);
-// router.use(validateUserId);
-// router.use(requireBody);
-
-// function getHandler(req, res) {
- 
-// }
 
 router.post('/', (req, res) => {
   // do your magic!
@@ -25,7 +18,7 @@ router.post('/', (req, res) => {
   })
 });
 
-router.post('/:id/posts', [validateUserId, requireBody], (req, res) => {
+router.post('/:id/posts', [validateUserId, validateUser], (req, res) => {
   // do your magic!
   Users.insert(req.params.id, req.body)
   .then(usr => {
@@ -88,7 +81,7 @@ router.delete('/:id', validateUserId, (req, res) => {
   })
 });
 
-router.put('/:id', [validateUserId, requireBody], (req, res) => {
+router.put('/:id', [validateUserId, validateUser], (req, res) => {
   // do your magic!
   Users.update(req.params.id, req.body)
     .then(usr => {
@@ -129,18 +122,14 @@ function validateUserId(req, res, next) {
 
 function validateUser(req, res, next) {
   // do your magic!
-  req.user = req.user || 'sk';
-  next()
-}
-
-
-
-function requireBody(req, res, next) {
   const body = req.body;
   !body || body === {} ?
   res.status(400).json({message: 'Please include request body'})
   : 
   next();
 }
+
+
+
 
 module.exports = router;
