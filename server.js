@@ -6,17 +6,28 @@ const usersRouter = require('./users/userRouter.js');
 //step 2 - add 3rd party middleware
 const helmet = require('helmet');
 const morgan = require('morgan');
+const cors = require('cors');
+
 
 const server = express();
+server.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
 
 //step 3 - hook up middleware functions 
 server.use(express.json());
 server.use(helmet());
 server.use(morgan('dev'));
 server.use(logger);
+server.use("/api/users", usersRouter);
+server.use("/api/posts", postsRouter);
+
 
 //step 4 connect to routers
 server.use('/api/users', postsRouter, usersRouter);
+
+server.use(cors());
 
 server.get('/', (req, res, next) => {
   res.send(`<h2>Let's write some middleware!</h2>`);

@@ -3,6 +3,7 @@ const Posts = require('./postDb.js');
 const { response } = require('express');
 const router = express.Router();
 
+
 router.use((req, res, next) => {
   console.log('posts router!');
   next();
