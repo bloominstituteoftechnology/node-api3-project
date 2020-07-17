@@ -101,7 +101,7 @@ router.delete('/:id', validateUserId, (req, res) => {
   });
 });
 
-router.put('/:id', validateUserId, (req, res) => {
+router.put('/:id', validateUser, validateUserId, (req, res) => {
   // do your magic!
   Users.update(req.params.id, req.body)
   .then(user => {

@@ -10,6 +10,7 @@ router.use((req, res, next) => {
 
 router.get('/', (req, res) => {
   // do your magic!
+  // const messageofTheDay = process.env.MOTD || 'Hello There!!';
   Posts.get(req.query)
   .then(posts => {
     res.status(200).json(posts);
@@ -61,6 +62,12 @@ router.put('/:id', validatePostId, (req, res) => {
     });
   });
 });
+
+router.use(errorHandler);
+
+function errorHandler(error, req, res, next) {
+  res.status(500).json(error.message);
+}
 
 // custom middleware
 
