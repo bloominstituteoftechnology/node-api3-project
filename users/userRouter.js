@@ -100,6 +100,7 @@ router.put('/:id', [validateUserId, requireBody], (req, res) => {
       console.log(error);
       res.status(500).json({ message: 'Error updating the user', error });
 });
+})
 
 //custom middleware
 
@@ -128,6 +129,7 @@ function validateUser(req, res, next) {
   req.user = req.user || 'sk';
   next()
 }
+
 
 
 function requireBody(req, res, next) {
