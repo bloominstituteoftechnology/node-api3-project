@@ -7,16 +7,16 @@ const server = express();
 
 server.use(express.json());
 server.use('/api/posts', postRouter);
-server.use('api/user', userRouter);
+server.use('/api/user', userRouter);
 server.get(helmet());
 server.use(logger);
 
 
-server.get('/', (req, res) => {
-  const userInsert = (req.user) ? `${req.user}` : '';
+// server.get('/', (req, res) => {
+//   // const userInsert = (req.user) ? `${req.user}` : '';
 
-  res.send(`<h2>Welcome ${userInsert}</h2>`);
-});
+//   res.send(`<h2>Welcome ${userInsert}</h2>`);
+// });
 
 //custom middleware
 

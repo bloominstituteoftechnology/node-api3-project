@@ -3,21 +3,13 @@ const Users = require('../users/userDb');
 
 const router = express.Router();
 
-router.use(validateUser);
-router.use(validateUserId);
-router.use(requireBody);
+// router.use(validateUser);
+// router.use(validateUserId);
+// router.use(requireBody);
 
-function getHandler(req, res) {
-  Users.get(req.query)
-  .then(usr => {
-    res.status(200).json(usr);
-  })
-  .catch(err => {
-    res.status(500).json({
-      message: 'Error retrieving the user',
-    })
-  })
-}
+// function getHandler(req, res) {
+ 
+// }
 
 router.post('/', (req, res) => {
   // do your magic!
@@ -49,7 +41,17 @@ router.post('/:id/posts', [validateUserId, requireBody], (req, res) => {
   })
 });
 
-router.get('/', getHandler);
+router.get('/', (req, res) =>{
+  Users.get()
+  .then(usr => {
+    res.status(200).json(usr);
+  })
+  .catch(err => {
+    res.status(500).json({
+      message: 'Error retrieving the user',
+    })
+  })
+});
 
 router.get('/:id', validateUserId, (req, res) => {
   // do your magic!
@@ -107,6 +109,7 @@ router.put('/:id', [validateUserId, requireBody], (req, res) => {
 function validateUserId(req, res, next) {
   // do your magic!
   const {id} = req.params;
+  console.log(id);
   Users.getById(id)
   .then(usr => {
     if (usr) {
