@@ -3,7 +3,7 @@ const express = require('express');
 const Posts = require('./postDb');
 const { route } = require('../users/userRouter');
 
-router.use(validatePostId);
+// router.use(validatePostId);
 
 const router = express.Router();
 
