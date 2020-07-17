@@ -98,24 +98,28 @@ function validateUserId(req, res, next) {
         req.user = user;
         next();
       }else{
-        next({message: 'invalid user id'});
+        res.status(400).json({message: 'invalid user id'});
       }
     })
 }
 
 function validateUser(req, res, next) {
-  if(req.body && Object.keys(req.body).length > 0){
-    next();
+  if(req.body && Object.keys(req.body).length <= 0){
+    res.status(400).json({message: 'missing user data'})
+  }else if(!req.body.name){
+    res.status(400).json({message: 'missing required name field'})
   }else{
-    res.status(400).json({message: 'missing post data'})
+    next();
   }
 }
 
 function validatePost(req, res, next) {
-  if(req.body.text) {
-    next();
-  }else{
+  if(req.body && Object.keys(req.body).length <= 0){
+    res.status(400).json({message: 'missing user data'})
+  }else if(!req.body.text) {
     res.status(400).json({message: 'missing required text field'})
+  }else{
+    next();
   }
 }
 
