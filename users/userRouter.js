@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.use(validateUser);
 router.use(validateUserId);
-router.use(validatePost);
+router.use(requireBody);
 
 function getHandler(req, res) {
   Users.find(req.query)
