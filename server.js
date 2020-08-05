@@ -1,5 +1,5 @@
 const express = require("express");
-const logger = require("./middleware/loggerMiddleware");
+const logger = require("./middleware/logger");
 
 const server = express();
 server.use(express.json());
