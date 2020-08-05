@@ -30,6 +30,26 @@ Follow these steps for completing your project.
 1. Build an API to let clients perform CRUD operations on `users`.
 1. Add endpoints to retrieve the list of `posts` for a `user` and to store a new `post` for a `user`.
 
+## To DO 
+- [x] Set up Index/API
+  - [x] import express
+  - [x] const server
+  - [x] add server.use
+  - [x] add server.listen
+  - [x] add server is working
+  - [x] add router variuabled mapped to postRouter
+
+- [] Finished setting up Router and write requests
+  - [x] import method from post Db
+  - [] finish wrting the requests 
+
+- [] Add custom middleware
+ - [] add logger
+ - [] add a validateuserID middleware 
+ - [] add validate user middleware
+ - [] add validatepost middleware
+
+
 #### Custom Middleware Requirements
 
 - `logger()`
