@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
 
 
 
-router.get('/:id', validatePostId, (req, res) => {
+router.get('/:id',validatePostId, (req, res) => {
   Methods.getById(req.params.id)
   .then(user => {
     res.status(200).json(user)
