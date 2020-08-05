@@ -3,8 +3,16 @@ const userDB = require("./userDb");
 
 const router = express.Router();
 
+// Create (POST) a new user
 router.post("/", (req, res) => {
-  // do your magic!
+  userDB
+    .insert(req.body)
+    .then((user) => {
+      res.status(201).json(user);
+    })
+    .catch((error) => {
+      res.status(500).json({ error: error.message });
+    });
 });
 
 router.post("/:id/posts", (req, res) => {
@@ -45,13 +53,13 @@ router.put("/:id", (req, res) => {
 
 //custom middleware
 
-function validateUserId(req, res, next) {
-  // do your magic!
-}
+// function validateUserId(req, res, next) {
+//   // do your magic!
+// }
 
-function validateUser(req, res, next) {
-  // do your magic!
-}
+// function validateUser(req, res, next) {
+//   // do your magic!
+// }
 
 function validatePost(req, res, next) {
   // do your magic!
