@@ -11,6 +11,7 @@ router.post("/:id/posts", (req, res) => {
   // do your magic!
 });
 
+// GET all users
 router.get("/", (req, res) => {
   userDB
     .get()
