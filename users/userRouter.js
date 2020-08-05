@@ -64,7 +64,6 @@ router.delete("/:id", validateUserId, (req, res) => {
   userDB
     .remove(user.id)
     .then((response) => {
-      console.log("Response", response);
       res.status(204).end();
     })
     .catch((error) => {
@@ -72,19 +71,20 @@ router.delete("/:id", validateUserId, (req, res) => {
     });
 });
 
-router.put("/:id", (req, res) => {
-  // do your magic!
+router.put("/:id", validateUser, validateUserId, (req, res) => {
+  const user = req.user;
+  const userUpdates = req.body;
+
+  userDB
+    .update(user.id, userUpdates)
+    .then((response) => {
+      console.log("Response", response);
+      res.status(200).end();
+    })
+    .catch((error) => {
+      res.status(500).json({ error: error.message });
+    });
 });
-
-//custom middleware
-
-// function validateUserId(req, res, next) {
-//   // do your magic!
-// }
-
-// function validateUser(req, res, next) {
-//   // do your magic!
-// }
 
 function validatePost(req, res, next) {
   // do your magic!
