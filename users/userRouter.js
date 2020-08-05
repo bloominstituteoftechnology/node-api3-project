@@ -57,8 +57,19 @@ router.get("/:id/posts", validateUserId, (req, res) => {
     });
 });
 
-router.delete("/:id", (req, res) => {
-  // do your magic!
+// DELETE user by id
+router.delete("/:id", validateUserId, (req, res) => {
+  const user = req.user;
+
+  userDB
+    .remove(user.id)
+    .then((response) => {
+      console.log("Response", response);
+      res.status(204).end();
+    })
+    .catch((error) => {
+      res.status(500).json({ error: error.message });
+    });
 });
 
 router.put("/:id", (req, res) => {
