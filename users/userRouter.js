@@ -39,11 +39,22 @@ router.get("/", (req, res) => {
 // GET user by id
 router.get("/:id", validateUserId, (req, res) => {
   const user = req.user;
+
   res.status(200).json(user);
 });
 
-router.get("/:id/posts", (req, res) => {
-  // do your magic!
+// GET posts by user
+router.get("/:id/posts", validateUserId, (req, res) => {
+  const user = req.user;
+
+  userDB
+    .getUserPosts(user.id)
+    .then((posts) => {
+      res.status(200).json(posts);
+    })
+    .catch((error) => {
+      res.status(500).json({ error: error.message });
+    });
 });
 
 router.delete("/:id", (req, res) => {
