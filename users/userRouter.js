@@ -1,10 +1,19 @@
 const express = require("express");
 const validateUserID = require("./validateUserIdMW");
+const Users = require("./userDb");
 
 const router = express.Router();
 
-router.post("/", (req, res) => {
-  // do your magic!
+router.post("/", validateUser, (req, res) => {
+  let newUser = req.body;
+
+  Users.insert(newUser)
+    .then((response) => {
+      return res.status(201).json(response);
+    })
+    .catch((error) => {
+      res.status(400).json({ error: error.message });
+    });
 });
 
 router.post("/:id/posts", validateUserID, (req, res) => {
@@ -12,7 +21,13 @@ router.post("/:id/posts", validateUserID, (req, res) => {
 });
 
 router.get("/", (req, res) => {
-  res.send(`<h2>Let's write some middleware 2!</h2>`);
+  Users.get({})
+    .then((response) => {
+      return res.status(200).json(response);
+    })
+    .catch((error) => {
+      return res.status(500).json({ error: error.message });
+    });
 });
 
 router.get("/:id", validateUserID, (req, res) => {
@@ -33,12 +48,14 @@ router.put("/:id", validateUserID, (req, res) => {
 
 //custom middleware
 
-function validateUserId(req, res, next) {
-  // do your magic!
-}
-
 function validateUser(req, res, next) {
-  // do your magic!
+  if (!req.body) {
+    return res.status(400).json({ message: "missing user data" });
+  } else if (!req.body.name) {
+    return res.status(400).json({ message: "missing required name field" });
+  } else {
+    next();
+  }
 }
 
 function validatePost(req, res, next) {

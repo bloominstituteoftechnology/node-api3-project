@@ -1,4 +1,3 @@
-const express = require("express");
 const Users = require("./userDb");
 
 module.exports = (req, res, next) => {
@@ -6,11 +5,16 @@ module.exports = (req, res, next) => {
 
   Users.getById(requestedUser)
     .then((response) => {
-      req.user = response;
+      if (!response) {
+        return res.status(400).json({ message: "invalid user id" });
+      } else {
+        req.user = response;
+        next();
+      }
+      console.log(response);
+      next();
     })
     .catch((error) => {
-      return res.status(400).json({ message: "invalid user id" });
+      return res.status(500).json({ error: error.message });
     });
-
-  next();
 };
