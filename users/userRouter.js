@@ -1,10 +1,11 @@
 const express = require("express");
 const userDB = require("./userDb");
-
 const router = express.Router();
+const validateUser = require("../middleware/validateUser");
+const validateUserId = require("../middleware/validateUserId");
 
 // Create (POST) a new user
-router.post("/", (req, res) => {
+router.post("/", validateUser, (req, res) => {
   userDB
     .insert(req.body)
     .then((user) => {
@@ -15,7 +16,7 @@ router.post("/", (req, res) => {
     });
 });
 
-router.post("/:id/posts", (req, res) => {
+router.post("/:id/posts", validateUserId, (req, res) => {
   // do your magic!
 });
 
@@ -35,8 +36,10 @@ router.get("/", (req, res) => {
     });
 });
 
-router.get("/:id", (req, res) => {
-  // do your magic!
+// GET user by id
+router.get("/:id", validateUserId, (req, res) => {
+  const user = req.user;
+  res.status(200).json(user);
 });
 
 router.get("/:id/posts", (req, res) => {
