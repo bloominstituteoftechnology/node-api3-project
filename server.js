@@ -1,12 +1,14 @@
 const express = require("express");
 const userRouter = require("./users/userRouter");
+const postRouter = require("./posts/postRouter");
 
 const server = express();
 
 server.use(express.json());
 server.use(logger);
 
-server.use("/", userRouter);
+server.use("/users", userRouter);
+server.use("/posts", postRouter);
 
 //custom middleware
 
