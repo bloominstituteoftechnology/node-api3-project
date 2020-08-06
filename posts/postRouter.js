@@ -36,8 +36,8 @@ router.delete("/:id", (req, res) => {
 
   postDB
     .remove(postID)
-    .then((post) => {
-      if (post) {
+    .then((response) => {
+      if (response) {
         res.status(204).end();
       } else {
         res.status(400).json({ message: "Invalid post id." });
@@ -49,7 +49,32 @@ router.delete("/:id", (req, res) => {
 });
 
 router.put("/:id", (req, res) => {
-  // do your magic!
+  const postID = req.params.id;
+  const postUpdates = req.body;
+
+  postDB
+    .getById(postID)
+    .then((post) => {
+      if (post) {
+        if (postUpdates.text) {
+          postDB
+            .update(postID, postUpdates)
+            .then((response) => {
+              res.status(204).end();
+            })
+            .catch((response) => {
+              res.status(500).json({ error: error.message });
+            });
+        } else {
+          res.status(400).json({ message: "missing required text field " });
+        }
+      } else {
+        res.status(400).json({ message: "Invalid post id." });
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({ error: error.message });
+    });
 });
 
 // custom middleware
