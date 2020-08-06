@@ -18,7 +18,7 @@ router.post("/", validateUser, (req, res) => {
     });
 });
 
-// Create (POST) a new post for a user
+// Create (POST) a new post by user
 router.post("/:id/posts", validateUserId, validatePost, (req, res) => {
   const user = req.user;
   const post = {
