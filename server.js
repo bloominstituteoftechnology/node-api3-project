@@ -9,6 +9,11 @@ server.use(logger);
 
 server.use("/users", userRouter);
 server.use("/posts", postRouter);
+server.get("/", (req, res) => {
+  message = process.env.MESSAGE;
+
+  res.status(200).json({ message: message });
+});
 
 //custom middleware
 
