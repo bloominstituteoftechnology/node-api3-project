@@ -1,8 +1,9 @@
 const express = require("express");
 const postDB = require("./postDb");
-
 const router = express.Router();
+const validatePostId = require("../middleware/validatePostId");
 
+// GET all posts
 router.get("/", (req, res) => {
   postDB
     .get()
@@ -14,73 +15,44 @@ router.get("/", (req, res) => {
     });
 });
 
-router.get("/:id", (req, res) => {
-  const postID = req.params.id;
+// GET post by id
+router.get("/:id", validatePostId, (req, res) => {
+  const post = req.post;
 
-  postDB
-    .getById(postID)
-    .then((post) => {
-      if (post) {
-        res.status(200).json(post);
-      } else {
-        res.status(400).json({ message: "Invalid post id." });
-      }
-    })
-    .catch((error) => {
-      res.status(500).json({ error: error.message });
-    });
+  res.status(200).json(post);
 });
 
-router.delete("/:id", (req, res) => {
-  const postID = req.params.id;
+// DELETE post by id
+router.delete("/:id", validatePostId, (req, res) => {
+  const post = req.post;
 
   postDB
-    .remove(postID)
+    .remove(post.id)
     .then((response) => {
-      if (response) {
-        res.status(204).end();
-      } else {
-        res.status(400).json({ message: "Invalid post id." });
-      }
+      res.status(204).end();
     })
     .catch((error) => {
       res.status(500).json({ error: error.message });
     });
 });
 
-router.put("/:id", (req, res) => {
-  const postID = req.params.id;
+// Update (PUT) post by id
+router.put("/:id", validatePostId, (req, res) => {
+  const post = req.post;
   const postUpdates = req.body;
 
-  postDB
-    .getById(postID)
-    .then((post) => {
-      if (post) {
-        if (postUpdates.text) {
-          postDB
-            .update(postID, postUpdates)
-            .then((response) => {
-              res.status(204).end();
-            })
-            .catch((response) => {
-              res.status(500).json({ error: error.message });
-            });
-        } else {
-          res.status(400).json({ message: "missing required text field " });
-        }
-      } else {
-        res.status(400).json({ message: "Invalid post id." });
-      }
-    })
-    .catch((error) => {
-      res.status(500).json({ error: error.message });
-    });
+  if (postUpdates.text) {
+    postDB
+      .update(post.id, postUpdates)
+      .then((response) => {
+        res.status(204).end();
+      })
+      .catch((error) => {
+        res.status(500).json({ error: error.message });
+      });
+  } else {
+    res.status(400).json({ message: "missing required text field " });
+  }
 });
-
-// custom middleware
-
-function validatePostId(req, res, next) {
-  // do your magic!
-}
 
 module.exports = router;

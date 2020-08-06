@@ -95,8 +95,7 @@ router.put("/:id", validateUser, validateUserId, (req, res) => {
   userDB
     .update(user.id, userUpdates)
     .then((response) => {
-      console.log("Response", response);
-      res.status(200).end();
+      res.status(204).end();
     })
     .catch((error) => {
       res.status(500).json({ error: error.message });
