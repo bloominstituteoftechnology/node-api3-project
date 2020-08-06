@@ -15,7 +15,20 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
-  // do your magic!
+  const postID = req.params.id;
+
+  postDB
+    .getById(postID)
+    .then((post) => {
+      if (post) {
+        res.status(200).json(post);
+      } else {
+        res.status(400).json({ message: "Invalid post id." });
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({ error: error.message });
+    });
 });
 
 router.delete("/:id", (req, res) => {
