@@ -1,8 +1,10 @@
 const express = require("express");
 const userDB = require("./userDb");
+const postDB = require("../posts/postDb");
 const router = express.Router();
 const validateUser = require("../middleware/validateUser");
 const validateUserId = require("../middleware/validateUserId");
+const validatePost = require("../middleware/validatePost");
 
 // Create (POST) a new user
 router.post("/", validateUser, (req, res) => {
@@ -16,8 +18,22 @@ router.post("/", validateUser, (req, res) => {
     });
 });
 
-router.post("/:id/posts", validateUserId, (req, res) => {
-  // do your magic!
+// Create (POST) a new post for a user
+router.post("/:id/posts", validateUserId, validatePost, (req, res) => {
+  const user = req.user;
+  const post = {
+    ...req.body,
+    user_id: user.id,
+  };
+
+  postDB
+    .insert(post)
+    .then((newPost) => {
+      res.status(201).json(newPost);
+    })
+    .catch((error) => {
+      res.status(500).json({ error: error.message });
+    });
 });
 
 // GET all users
@@ -71,6 +87,7 @@ router.delete("/:id", validateUserId, (req, res) => {
     });
 });
 
+// Update (PUT) user by id
 router.put("/:id", validateUser, validateUserId, (req, res) => {
   const user = req.user;
   const userUpdates = req.body;
@@ -85,9 +102,5 @@ router.put("/:id", validateUser, validateUserId, (req, res) => {
       res.status(500).json({ error: error.message });
     });
 });
-
-function validatePost(req, res, next) {
-  // do your magic!
-}
 
 module.exports = router;
