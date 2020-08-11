@@ -1,11 +1,13 @@
 const express = require('express');
 const usersRouter = require('./users/userRouter.js');
+const postRouter = require('./posts/postRouter')
 
 const server = express();
 
 server.use(logger);
 server.use(express.json());
-server.use(usersRouter);
+server.use('/api/users', usersRouter);
+server.use('/api/posts', postRouter);
 
 server.use((err, req, res, next) => {
 	// log the error and send back generic message so we don't expose

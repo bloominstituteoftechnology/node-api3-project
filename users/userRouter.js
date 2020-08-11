@@ -77,7 +77,7 @@ router.put('/:id',validateUserId, (req, res) => {
   // do your magic!
   userDb.update(req.params.id, req.body)
   .then((user)=> {
-    res.status(201).json(user)
+      res.status(201).json({message: 'User updated successfully', user})
   })
   .catch((error)=>{
     next(error)
