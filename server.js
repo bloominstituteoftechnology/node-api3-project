@@ -1,9 +1,12 @@
+
 const express = require('express');
+const helmet = require('helmet')
 const usersRouter = require('./users/userRouter.js');
 const postRouter = require('./posts/postRouter')
 
 const server = express();
 
+server.use(helmet())
 server.use(logger);
 server.use(express.json());
 server.use('/api/users', usersRouter);
