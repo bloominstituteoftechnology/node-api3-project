@@ -4,6 +4,7 @@
     "description": "Node API 3 Project",
     "main": "index.js",
     "scripts": {
+        "start": "nodemon index.js",
         "server": "nodemon index.js"
     },
     "repository": {
@@ -25,6 +26,7 @@
     "dependencies": {
         "express": "^4.17.1",
         "knex": "^0.21.2",
+        "morgan": "^1.10.0",
         "sqlite3": "^5.0.0"
     },
     "devDependencies": {
