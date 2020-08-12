@@ -7,9 +7,17 @@ const postDb = require("../posts/postDb");
 
 const router = express.Router();
 
-router.post("/", (req, res) => {
+router.post("/", validateUser(), (req, res) => {
     // do your magic!
     //todo: what is supposed to be posted to "/" .....? This project is really messy and hard to follow
+    db.insert(req.body)
+        .then(user =>{
+            res.status(201).json(user);
+        })
+        .catch(err =>{
+            console.log(err.stack);
+            res.status(500).json({message: "Error creating new user"});
+        });
 });
 
 router.post("/:id/posts", validatePostId(), validatePost(), (req, res) => {
