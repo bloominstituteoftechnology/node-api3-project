@@ -1,6 +1,5 @@
 const express = require("express");
 const {validateUser, validateUserId} = require("../middleware/user");
-const logger = require("../middleware/logger");
 const {validatePost, validatePostId} = require("../middleware/post");
 const db = require("../users/userDb");
 const postDb = require("../posts/postDb");
@@ -11,10 +10,10 @@ router.post("/", validateUser(), (req, res) => {
     // do your magic!
     //todo: what is supposed to be posted to "/" .....? This project is really messy and hard to follow
     db.insert(req.body)
-        .then(user =>{
+        .then(user => {
             res.status(201).json(user);
         })
-        .catch(err =>{
+        .catch(err => {
             console.log(err.stack);
             res.status(500).json({message: "Error creating new user"});
         });
@@ -23,10 +22,10 @@ router.post("/", validateUser(), (req, res) => {
 router.post("/:id/posts", validatePostId(), validatePost(), (req, res) => {
     // do your magic!
     postDb.insert(req.body)
-        .then(post =>{
+        .then(post => {
             res.status(200).json({postCreated: post});
         })
-        .catch(err =>{
+        .catch(err => {
             console.log(err.stack);
             res.status(500).json({message: "Error posting comment"});
         })
@@ -48,10 +47,10 @@ router.get("/", (req, res) => {
 router.get("/:id", validateUserId(), (req, res) => {
     // do your magic!
     db.getById(req.params.id)
-        .then(user =>{
+        .then(user => {
             res.status(200).json({user: user});
         })
-        .catch(err =>{
+        .catch(err => {
             console.log(err.stack);
             res.status(500).json({message: "Error finding user"});
         })
@@ -69,18 +68,16 @@ router.get("/:id/posts", validatePostId(), (req, res) => {
         });
 });
 
-router.delete("/:id", validateUserId(), (req, res) => {
+router.delete("/:id", validateUserId(), async (req, res) => {
     // do your magic!
-    const delUser = db.getById(req.params.id);
-    db.remove(req.params.id)
-        .then(response =>{
-            console.log("Delete res", response);
-            res.status(200).json({userDeleted: "delUser"});//todo: Circular json when trying to pas in delUser. maybe need async?
-        })
-        .catch(err =>{
-            console.log(err.stack);
-            res.status(500).json({message: "Error deleting user"});
-        })
+    const delUser = await db.getById(req.params.id);
+    try {
+        db.remove(req.params.id);
+        res.status(200).json({userDeleted: delUser});
+    } catch (err) {
+        console.log(err.stack);
+        res.status(500).json({message: "Error deleting user"});
+    }
 });
 
 router.put("/:id", validateUserId(), validateUser(), (req, res) => {
