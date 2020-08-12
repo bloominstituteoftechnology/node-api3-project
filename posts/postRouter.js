@@ -45,7 +45,7 @@ router.put('/:id',validatePostId, (req, res) => {
     if(post){
       //changed
       const text = req.body.text
-      res.status(201).json({message: "Post was updated successfully", text})
+      res.status(201).json({message: "Post was updated successfully", text, post})
     }
     
   })

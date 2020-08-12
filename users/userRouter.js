@@ -79,7 +79,7 @@ router.put('/:id',validateUserId, (req, res) => {
   .then( (user)=> {
       if(user){
         const name =  req.body.name
-        res.status(201).json({message: 'User updated successfully', name})
+        res.status(201).json({message: 'User updated successfully', name, user})
       }
       
   })
