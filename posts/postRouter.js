@@ -43,6 +43,7 @@ router.put('/:id',validatePostId, (req, res) => {
   postDb.update(req.params.id, req.body)
   .then((post)=> {
     if(post){
+      //changed
       const text = req.body.text
       res.status(201).json({message: "Post was updated successfully", text})
     }
