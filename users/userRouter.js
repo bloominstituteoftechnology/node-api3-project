@@ -76,8 +76,12 @@ router.delete('/:id',validateUserId, (req, res) => {
 router.put('/:id',validateUserId, (req, res) => {
   // do your magic!
   userDb.update(req.params.id, req.body)
-  .then((user)=> {
-      res.status(201).json({message: 'User updated successfully', user})
+  .then( (user)=> {
+      if(user){
+        const name =  req.body.name
+        res.status(201).json({message: 'User updated successfully', name})
+      }
+      
   })
   .catch((error)=>{
     next(error)

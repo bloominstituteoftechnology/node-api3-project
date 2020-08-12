@@ -1,4 +1,4 @@
-
+require('dotenv').config();
 const express = require('express');
 const helmet = require('helmet')
 const usersRouter = require('./users/userRouter.js');

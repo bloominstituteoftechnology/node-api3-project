@@ -42,7 +42,11 @@ router.put('/:id',validatePostId, (req, res) => {
   // do your magic!
   postDb.update(req.params.id, req.body)
   .then((post)=> {
-    res.status(201).json({message: "Post was updated successfully", post})
+    if(post){
+      const text = req.body.text
+      res.status(201).json({message: "Post was updated successfully", text})
+    }
+    
   })
   .catch((error)=>{
     next(error)
