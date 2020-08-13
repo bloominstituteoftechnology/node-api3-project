@@ -1,12 +1,10 @@
 const express = require("express");
-const { validateUser, validateUserId } = require("../middleware/user");
-const { validatePost, validatePostId } = require("../middleware/post");
-const db = require("../users/userDb");
-const postDb = require("../posts/postDb");
-
+const postDb = require("./postDb");
+const logger = require("../middleware/logger");
+const validatePost = require("../middleware/validatePost");
 const router = express.Router();
 
-router.get("/", (req, res) => {
+router.get("/", logger(), (req, res) => {
   postDb
     .get(req.query)
     .then((posts) => {
@@ -18,7 +16,14 @@ router.get("/", (req, res) => {
     });
 });
 
-router.get("/:id", validatePostId, (req, res) => {
+// router.post("/:id", validatePost(), (req, res) => {
+//   users
+//     .insert(req.body)
+//     .then((user) => res.status(200).json(user))
+//     .catch((err) => res.status(500).json({ message: err }));
+// });
+
+router.get("/:id", logger(), validatePost(), (req, res) => {
   postDb
     .getById(req.params.id)
     .then((post) => {
@@ -30,8 +35,8 @@ router.get("/:id", validatePostId, (req, res) => {
     });
 });
 
-router.delete("/:id", validatePostId, (req, res) => {
-  posts.getById(req.params.id).then((post) => {
+router.delete("/:id", logger(), validatePost(), (req, res) => {
+  postDb.getById(req.params.id).then((post) => {
     res.status(200).json(post);
   });
   Posts.remove(req.params.id).catch((error) => {
@@ -42,8 +47,7 @@ router.delete("/:id", validatePostId, (req, res) => {
   });
 });
 
-router.put("/:id", validatePostId, (req, res) => {
-  // do your magic!
+router.put("/:id", logger(), validatePost, (req, res) => {
   postDb
     .update(req.params.id, req.params.body)
     .then((post) => {
@@ -58,16 +62,5 @@ router.put("/:id", validatePostId, (req, res) => {
 });
 
 // custom middleware
-
-function validatePostId(req, res, next) {
-  posts.getById(req.params.id).then((post) => {
-    if (!post) {
-      res.status(404).json({ message: "invalid post id" });
-    } else {
-      req.post = post;
-      next();
-    }
-  });
-}
 
 module.exports = router;
