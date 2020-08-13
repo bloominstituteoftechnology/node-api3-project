@@ -7,8 +7,6 @@ const postDb = require("../posts/postDb");
 const router = express.Router();
 
 router.post("/", validateUser(), (req, res) => {
-    // do your magic!
-    //todo: what is supposed to be posted to "/" .....? This project is really messy and hard to follow
     db.insert(req.body)
         .then(user => {
             res.status(201).json(user);
@@ -31,17 +29,16 @@ router.post("/:id/posts", validatePostId(), validatePost(), (req, res) => {
         })
 });
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
     // do your magic!
-    db.get()
-        .then(users => {
+    console.log(req.body);
+    const users = await db.get();
+        try{
             res.status(200).json({users: users});
-        })
-        .catch(err => {
+        } catch(err) {
             console.log(err.stack);
             res.status(500).json({message: "Error trying to get users"});
-        });
-
+        }
 });
 
 router.get("/:id", validateUserId(), (req, res) => {
