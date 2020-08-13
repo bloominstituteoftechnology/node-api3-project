@@ -18,6 +18,20 @@ server.use("/api/users", userRouter);
 server.use("/api/posts", postRouter);
 server.use("/api/pokemon", pokemonRouter);
 
+server.get('/', (req, res) => {
+    res.send(`<h2>Here is a list of valid get endpoints:
+<ul>
+<li>/api/users/</li>
+<li>/api/users/:id</li>
+<li>/api/users/:id/posts</li>
+<li>/api/posts/</li>
+<li>/api/posts/:id</li>
+<li>/api/pokemon/</li>
+<li>/api/pokemon/:poke_num</li>
+</ul>
+</h2>`);
+});
+
 server.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
