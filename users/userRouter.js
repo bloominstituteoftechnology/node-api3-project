@@ -1,47 +1,133 @@
-const express = require('express');
+const express = require("express");
+
+const users = require("../users/userDb");
 
 const router = express.Router();
 
-router.post('/', (req, res) => {
-  // do your magic!
+router.post("/api/user", validateUser(), (req, res, next) => {
+  users
+    .insert(req.body)
+    .then(user => {
+      res.status(201).json(user);
+    })
+    .catch(error => {
+      next(error);
+    });
 });
 
-router.post('/:id/posts', (req, res) => {
-  // do your magic!
+router.get("/api/user", (req, res) => {
+  const options = {
+    sortBy: req.query.sortBy,
+    limit: req.query.limit
+  };
+
+  users
+    .get(options)
+    .then(users => {
+      res.status(200).json(users);
+    })
+    .catch(error => {
+      next(error);
+    });
 });
 
-router.get('/', (req, res) => {
-  // do your magic!
+router.get("/api/user/:id", validateUserId(), (req, res) => {
+  res.status(200).json(req.user);
 });
 
-router.get('/:id', (req, res) => {
-  // do your magic!
+router.get(
+  "/api/user/:id/posts",
+  validateUserId(),
+  validatePost(),
+  (req, res, next) => {
+    users
+      .getUserPosts(req.params.id)
+      .then(posts => {
+        res.status(200).json(posts);
+      })
+      .catch(next);
+  }
+);
+
+router.delete("/api/user/:id", validateUserId(), (req, res, next) => {
+  users
+    .remove(req.params.id)
+    .then(count => {
+      if (count > 0) {
+        res.status(200).json({
+          message: "The user has been nuked"
+        });
+      } else {
+        res.status(404).json({
+          message: "The user could not be found"
+        });
+      }
+    })
+    .catch(next);
 });
 
-router.get('/:id/posts', (req, res) => {
-  // do your magic!
-});
-
-router.delete('/:id', (req, res) => {
-  // do your magic!
-});
-
-router.put('/:id', (req, res) => {
-  // do your magic!
-});
+router.put(
+  "/api/user/:id",
+  validateUserId(),
+  validateUserId(),
+  (req, res, next) => {
+    users
+      .update(req.params.id, req.body)
+      .then(user => {
+        res.status(200).json(user);
+      })
+      .catch(next);
+  }
+);
 
 //custom middleware
 
-function validateUserId(req, res, next) {
-  // do your magic!
+function validateUserId() {
+  return (req, res, next) => {
+    users
+      .getById(req.params.id)
+      .then(user => {
+        if (user) {
+          req.user = user;
+          next();
+        } else {
+          res.status(400).json({
+            message: "invalid user id"
+          });
+        }
+      })
+      .catch(next);
+  };
 }
 
-function validateUser(req, res, next) {
-  // do your magic!
+function validateUser() {
+  return (req, res, next) => {
+    if (!req.body.id) {
+      return res.status(400).json({
+        message: "Missing username"
+      });
+    }
+
+    next();
+  };
 }
 
-function validatePost(req, res, next) {
-  // do your magic!
+function validatePost() {
+  return (req, res, next) => {
+    users
+      .getUserPosts(req.params.id)
+      .then(post => {
+        if (post) {
+          req.post = post;
+          next();
+        } else {
+          res.status(404).json({
+            message: "User's post not found"
+          });
+        }
+      })
+      .catch(next);
+  };
 }
 
 module.exports = router;
