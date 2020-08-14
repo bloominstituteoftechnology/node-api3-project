@@ -39,7 +39,7 @@ router.delete("/:id", logger(), validatePost(), (req, res) => {
   postDb.getById(req.params.id).then((post) => {
     res.status(200).json(post);
   });
-  Posts.remove(req.params.id).catch((error) => {
+  postDb.remove(req.params.id).catch((error) => {
     console.log(error);
     res.status(500).json({
       error: "The post could not be removed",
@@ -62,5 +62,16 @@ router.put("/:id", logger(), validatePost, (req, res) => {
 });
 
 // custom middleware
+
+// function validatePostId(req, res, next) {
+//   posts.getById(req.params.id).then((post) => {
+//     if (!post) {
+//       res.status(404).json({ message: "invalid post id" });
+//     } else {
+//       req.post = post;
+//       next();
+//     }
+//   });
+// }
 
 module.exports = router;

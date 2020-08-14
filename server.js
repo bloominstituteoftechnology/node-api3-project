@@ -3,7 +3,7 @@ const logger = require("./middleware/logger");
 const server = express();
 const userRouter = require("./users/userRouter");
 const postRouter = require("./posts/postRouter");
-const port = 8080;
+const port = 8000;
 server.use(logger());
 server.use(express.json());
 server.get("/", (req, res) => {
