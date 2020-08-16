@@ -5,6 +5,8 @@ const postDb = require("../posts/postDb")
 
 const router = express.Router();
 
+const {pt} = require("../../../../2020 dev/MY SCRIPTS/shrinker");
+
 router.post('/', validateUser,  (req, res,next) => {
   userDb.insert(req.body)
       .then(user=>{
@@ -25,6 +27,7 @@ router.get('/', (req, res,next) => {
   userDb.get()
       .then(posts=>{
           res.status(200).json(posts)
+          // pt("Get users",posts,'yes')
       })
       .catch(next)
 });
