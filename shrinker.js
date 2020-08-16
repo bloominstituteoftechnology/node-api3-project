@@ -35,16 +35,6 @@ function debugHelper(objectToCheck,nameOfDebug){
         catch (e) {
             pt("Mapping over object failed.\n")
         }
-        // try{
-        //     pt("\nAttempting to forEach over object::")
-        //     objectToCheck.forEach((item)=>{
-        //         pt(item)
-        //     })
-        //     pt("forEach over object completed::\n")
-        // }
-        // catch (e) {
-        //     pt("forEach over object failed::\n")
-        // }
         try{
             pt("\nAttempting to get key|value pairs::")
             for(const property in objectToCheck){
@@ -53,13 +43,11 @@ function debugHelper(objectToCheck,nameOfDebug){
                         pt(pp,objectToCheck[property][pp])
                     }
                 }
-
                 catch (e) {
                     pt(property,objectToCheck[property])
                 }
                 pt('')
             }
-
             pt("::Attempt complete\n")
         }
         catch (e) {
@@ -68,8 +56,43 @@ function debugHelper(objectToCheck,nameOfDebug){
     }
 }
 
+// Goal of this function is to give you all values of variables in current file
+const fs = require('fs');
+// __filename, process.cwd()
+function getAllValues(fileName){
+
+    // opens fs stream and reads data
+    // let data = '';
+    //
+    // let readStream = fs.createReadStream(fileName,'utf8');
+    //
+    // readStream.on('data', function(chunk){
+    //     data += chunk;
+    // }).on('end',function(){
+    //     pt("data is",data);
+    // });
+    return (req,res,next)=>{
+        fs.readFile(fileName, 'utf8', function(err, data){
+            if(err) throw (err);
+            let newData = [];
+            data.split('\n').forEach(item=>{
+                newData.push(item.match(/(?<=const).[^=]*/))
+            })
+            let finalData=[];
+            newData.map(item=>{
+                pt('item is ', item, 'yes')
+                item?finalData.push(item):null;
+            })
+
+            pt("data is", finalData);
+        });
+        next()
+    }
 
 
+
+
+}
 
 
 
@@ -100,6 +123,7 @@ function debugHelper(objectToCheck,nameOfDebug){
 module.exports = {
     pt,
     debugHelper,
+    getAllValues,
 
 }
 
