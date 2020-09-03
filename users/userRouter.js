@@ -5,7 +5,7 @@ const dbConfig = require('../data/dbConfig')
 const router = express.Router();
 const PostDb = require('../posts/postDb')
 
-router.post('/', (req, res) => {
+router.post('/', validateUser, (req, res) => {
   // do your magic!
   UserDb.insert(req.body)
   .then(user => {
@@ -51,12 +51,38 @@ router.get('/:id/posts', validateUserId, (req, res) => {
   })
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', validateUserId, (req, res) => {
   // do your magic!
+  UserDb.remove(req.params.id)
+  .then(count => {
+    res.status(200).json({ message: "The user has been deleted!" });
+  })
+  .catch(error => {
+    // log error to server
+    console.log(error);
+    res.status(500).json({
+        message: "Error deleting the user",
+    });
+  });
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validateUserId, (req, res) => {
   // do your magic!
+  UserDb.update(req.params.id, req.body)
+    .then(user => {
+      if (user) {
+          res.status(200).json(user);
+      } else {
+          res.status(404).json({ message: "The user could not be found" });
+      }
+    })
+    .catch(error => {
+      // log error to server
+      console.log(error);
+      res.status(500).json({
+          message: "Error updating the user",
+      });
+    });
 });
 
 //custom middleware

@@ -1,8 +1,8 @@
 // code away!
 const server = require('./server')
 
-const port = 8888
 
-server.listen(port, () => {
-    console.log('server up and running')
-})
+
+server.listen(8888, () => {
+    console.log('\n* Server Running on http://localhost:8888 *\n');
+  });
