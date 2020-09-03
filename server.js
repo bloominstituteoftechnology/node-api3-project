@@ -2,6 +2,7 @@ const express = require("express"); // importing a CommonJS module
 const helmet = require("helmet");
 
 const userRouter = require('./users/userRouter')
+const postRouter = require('./posts/postRouter')
 
 
 const server = express();
@@ -17,6 +18,7 @@ server.get('/', (req, res) => {
 });
 
 server.use('/api/users', userRouter)
+server.use('/api/posts', postRouter)
 //custom middleware
 
 function logger() {
