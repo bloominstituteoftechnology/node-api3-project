@@ -55,10 +55,24 @@ Users.getById(req.params.id)
 
 router.get('/:id/posts', (req, res) => {
   // do your magic!
+  Users.getUserPosts(req.params.id)
+  .then((posts) => {
+    res.status(200).json(posts)
+  })
+  .catch((err) => {
+    res.status(404).json({message: `posts for ${req.params.id} not found`})
+  })
 });
 
 router.delete('/:id', (req, res) => {
   // do your magic!
+  Users.remove(req.params.id)
+  .then((deleted) => {
+    res.status(201).json({message: `deleted user id: ${req.params.id}`}) 
+  })
+  .catch((err) =>{
+    res.status(500).json({ error: 'error deleting user please try again'})
+  })
 });
 
 router.put('/:id', (req, res) => {
