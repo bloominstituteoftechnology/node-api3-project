@@ -1,24 +1,25 @@
 const express = require('express');
 
-const router = express.Router();
-
 const Users = require('./userDb');
 const Posts = require('../posts/postDb')
 
+const router = express.Router();
+
+const postsRouter = require('../posts/postRouter');
 
 router.post('/', validateUser, (req, res) => {
   // do your magic!
-  Users.insert(req.user)
+  Users.insert(req.body)
   .then((user) => {
-    res.status(200).json(user)
+    res.status(200).json(user).end()
   })
   .catch((err) => {
-    res.status(500).json({message: 'unable to submit data'})
+    res.status(500).json({message: 'unable to submit data', error: {err}})
   });
 });
 
-router.post('/:id/posts', validateUserId, (req, res) => {
-  const newPost = { ...req.body, user_id: req.params.id };
+router.post('/:id/posts',  (req, res) => {
+  const newPost = { ...req.body, user_id: Number(req.params.id) };
 
   Posts.insert(newPost)
     .then((post) => {
@@ -42,14 +43,13 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
   // do your magic!
-Users.getById(req.params.id)
-.then((user) => {
-  res.status(200).json(user);
-})
-.catch((err) => {
-  res.status(500).json({error: 'cannot fetch user'});
-})
-  
+  Users.getById(req.params.id)
+  .then((user) => {
+    res.status(200).json(user);
+  })
+  .catch((err) => {
+    res.status(500).json({error: 'cannot fetch user'});
+  })
 });
 
 router.get('/:id/posts', (req, res) => {
@@ -97,9 +97,7 @@ function validateUserId(req, res, next) {
 };
 
 function validateUser(req, res, next) {
-  if (!req.body) {
-    res.status(400).json({ message: 'missing user data' });
-  } else if (!req.body.name) {
+  if (!req.body.name) {
     res
       .status(400)
       .json({ message: 'missing required name field' });
@@ -119,4 +117,5 @@ function validatePost(req, res, next) {
   next();
 };
 
+router.use('/:id/posts', postsRouter);
 module.exports = router;
