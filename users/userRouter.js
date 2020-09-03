@@ -18,10 +18,10 @@ router.post('/', validateUser, (req, res) => {
   });
 });
 
-router.post('/:id/posts',  (req, res) => {
+router.post('/:id/posts', validateUserId, validatePost,  (req, res) => {
   const newPost = { ...req.body, user_id: Number(req.params.id) };
 
-  Posts.insert(newPost)
+  Posts.insert(req.body)
     .then((post) => {
       res.status(200).json(post);
     })
@@ -77,7 +77,7 @@ router.delete('/:id', (req, res) => {
 router.put('/:id', (req, res) => {
   Users.update(req.params.id, req.body)
   .then((updatedUser) => {
-    res.status(200).json({message: `updated user id ${req.params.id} for user ${updatedUser}`})
+    res.status(200).json(updatedUser)
   })
   .catch((err) =>{
     res.status(500).json({message: `unable to update user. please try again.`})
@@ -87,14 +87,20 @@ router.put('/:id', (req, res) => {
 //custom middleware
 
 function validateUserId(req, res, next) {
-  const id = req.params.id;
-
-  if (req.header.id === id) {
-    next();
-  } else {
-    res.status(400).json({ message: 'invalid user id' });
-  }
-};
+  const userId = req.params.id || req.body.user_id;
+  Users.getById(userId)
+    .then((user) => {
+      if (user) {
+        req.user = user;
+        return next();
+      } else {
+        res.status(400).json({ message: "that is not a valid id" });
+      }
+    })
+    .catch(() => {
+      res.status(500).json({ message: "cant fetch user from db" });
+    });
+} 
 
 function validateUser(req, res, next) {
   if (!req.body.name) {
@@ -110,12 +116,13 @@ function validatePost(req, res, next) {
   if (!req.body) {
     res.status(400).json({ message: 'missing post data' });
   } else if (!req.body.text) {
-    res
-      .status(400)
-      .json({ message: 'missing required text field' });
+    res.status(400).json({ message: 'missing required text field' });
+  } else {
+    req.body.user_id = req.user.id
+    next();
   }
-  next();
+  
 };
 
-router.use('/:id/posts', postsRouter);
+
 module.exports = router;

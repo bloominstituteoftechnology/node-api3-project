@@ -29,7 +29,7 @@ server.get('/', (req, res) => {
 
 function logger(req, res, next) {
   return function (req, res, next) {
-    console.log(`a ${req.method} request was made to ${req.url} at ${new Date().getTime()}`);
+    console.log(`a ${req.method} request was made to ${req.url} at ${new Date()}`);
     next();
   }
 }
