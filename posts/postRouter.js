@@ -1,9 +1,17 @@
 const express = require('express');
-
 const router = express.Router();
+const Posts = require("./postDb"); 
+
 
 router.get('/', (req, res) => {
   // do your magic!
+  Posts.get()
+  .then(posts => {
+    res.status(200).json(posts)
+  })
+  .catch(err => {
+    res.status(404).json({ errorMessage: "Resource not found" })
+  })
 });
 
 router.get('/:id', (req, res) => {
