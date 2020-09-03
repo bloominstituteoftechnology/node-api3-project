@@ -4,7 +4,6 @@ const router = express.Router();
 
 const Users = require('./userDb');
 const Posts = require('../posts/postDb')
-const postsRouter = require('../posts/postRouter');
 
 
 router.post('/', validateUser, (req, res) => {
@@ -76,7 +75,13 @@ router.delete('/:id', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-  // do your magic!
+  Users.update(req.params.id, req.body)
+  .then((updatedUser) => {
+    res.status(200).json({message: `updated user id ${req.params.id} for user ${updatedUser}`})
+  })
+  .catch((err) =>{
+    res.status(500).json({message: `unable to update user. please try again.`})
+  })
 });
 
 //custom middleware
@@ -98,8 +103,9 @@ function validateUser(req, res, next) {
     res
       .status(400)
       .json({ message: 'missing required name field' });
+  } else {
+    next();
   }
-  next();
 };
 
 function validatePost(req, res, next) {

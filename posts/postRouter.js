@@ -7,6 +7,13 @@ const Posts = require('./postDb');
 
 router.get('/', (req, res) => {
   // do your magic!
+  Posts.get()
+  .then((posts) =>{
+    res.status(200).json(posts);
+  })
+  .catch((err) => {
+    res.status(500).json({error: 'Unable to retrieve posts'})
+  })
 });
 
 router.get('/:id', (req, res) => {
