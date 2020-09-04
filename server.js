@@ -1,12 +1,14 @@
 const express = require('express');
 const server = express();
+const cors = require('cors');
 
 const userRouter = require('./users/userRouter'); 
-const postsRouter = require('./posts/postRouter'); 
+// const postsRouter = require('./posts/postRouter'); 
 
+server.use(cors()); 
 server.use(express.json()); 
 server.use('/api/users', logger, userRouter); 
-server.use('/api/posts', postsRouter); 
+// server.use('/api/posts', postsRouter); 
 
 server.get('/', logger, (req, res) => {
   res.send(`<h2>Let's write some middleware!</h2>`);
