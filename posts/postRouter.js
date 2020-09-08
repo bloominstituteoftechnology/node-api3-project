@@ -1,27 +1,39 @@
 const express = require('express');
-
+const posts = require('../posts/postDb');
+const validatePostId = require('../middleware/postMiddleware');
+const { validatePost } = require('../middleware/userMiddleware');
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  // do your magic!
+router.get('/', async (req, res, next) => {
+	try {
+		const allPosts = await posts.get();
+		res.status(200).json(allPosts);
+	} catch (error) {
+		next(error);
+	}
 });
 
-router.get('/:id', (req, res) => {
-  // do your magic!
+router.get('/:id', validatePostId(), (req, res) => {
+	res.status(200).json(req.post);
 });
 
-router.delete('/:id', (req, res) => {
-  // do your magic!
+router.delete('/:id', validatePostId(), async (req, res, next) => {
+	try {
+		await posts.remove(req.post.id);
+		res.status(200).json(req.post);
+	} catch (error) {
+		next(error);
+	}
 });
 
-router.put('/:id', (req, res) => {
-  // do your magic!
+router.put('/:id', validatePost(), validatePostId(), async (req, res, next) => {
+	try {
+		await posts.update(req.post.id, req.body);
+		const updated = await posts.getById(req.post.id);
+		res.status(200).json(updated);
+	} catch (error) {
+		next(error);
+	}
 });
-
-// custom middleware
-
-function validatePostId(req, res, next) {
-  // do your magic!
-}
 
 module.exports = router;
