@@ -11,7 +11,6 @@ import {
 	makeStyles,
 } from '@material-ui/core';
 import PostForm from './PostForm';
-import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 const useStyles = makeStyles({
@@ -37,7 +36,6 @@ export default function PostCards({
 	allPosts,
 }) {
 	const classes = useStyles();
-	const history = useHistory();
 	const [dialogOpen, setDialogOpen] = useState(false);
 
 	const handleEdit = () => {
@@ -51,8 +49,6 @@ export default function PostCards({
 			setUserPosts(deleted);
 		});
 	};
-
-	const handleAddComment = () => {};
 
 	return (
 		<Card
@@ -80,9 +76,9 @@ export default function PostCards({
 						<Dialog
 							open={dialogOpen}
 							onClose={() => setDialogOpen(false)}
-							aria-labelledby='Add New Post'
+							aria-labelledby='Edit Post'
 						>
-							<DialogTitle id='posts'>Add New Post</DialogTitle>
+							<DialogTitle id='posts'>Edit Post</DialogTitle>
 							<DialogContent>
 								<PostForm
 									post={post}
@@ -95,11 +91,6 @@ export default function PostCards({
 								/>
 							</DialogContent>
 						</Dialog>
-					</React.Fragment>
-				)}
-				{allPosts && (
-					<React.Fragment>
-						<Button onClick={handleAddComment}>Add Comment</Button>
 					</React.Fragment>
 				)}
 			</CardActions>

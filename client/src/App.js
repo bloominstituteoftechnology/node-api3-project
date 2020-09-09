@@ -1,34 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { Container } from '@material-ui/core';
+import React from 'react';
+import { Container, makeStyles } from '@material-ui/core';
 import DisplayPosts from './components/DisplayPosts';
 import { Route, Switch } from 'react-router-dom';
 import DisplayUser from './components/DisplayUser';
 import DisplayUserList from './components/DisplayUserList';
-import axios from 'axios';
 
+const useStyles = makeStyles({
+	container: {
+		display: 'flex',
+		alignItems: 'center',
+		flexDirection: 'column',
+	},
+});
 function App() {
-	const [posts, setPosts] = useState([]);
+	const classes = useStyles();
 
-	useEffect(() => {
-		axios
-			.get('http://localhost:5000/api/posts')
-			.then((res) => {
-				console.log(res.data);
-				setPosts(res.data);
-			})
-			.catch((err) => {
-				alert(err);
-			});
-	}, []);
 	return (
-		<Container textAlign='center'>
+		<Container className={classes.container}>
 			<Switch>
 				<Route exact path='/'>
-					<DisplayUserList />
-					<DisplayPosts posts={posts} setPosts={setPosts} />
+					<DisplayUserList reload />
+					<DisplayPosts />
 				</Route>
 				<Route path='/user/:id'>
-					<DisplayUser posts={posts} setPosts={setPosts} />
+					<DisplayUserList />
+					<DisplayUser />
 				</Route>
 			</Switch>
 		</Container>

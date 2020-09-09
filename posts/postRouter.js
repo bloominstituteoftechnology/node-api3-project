@@ -12,7 +12,7 @@ router.get('/', async (req, res, next) => {
 			allPosts.map(async (post) => {
 				let user = await users.getById(post.user_id);
 				post.user_name = user.name;
-				console.log(post);
+				// console.log(post);
 				return post;
 			})
 		);

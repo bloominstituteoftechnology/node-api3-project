@@ -22,40 +22,19 @@ const useStyles = makeStyles({
 	},
 });
 
-export default function Form(props) {
+export default function Form({ setDialogOpen, users, setUsers }) {
 	const { handleSubmit, register, errors, formState } = useForm({
 		mode: 'onChange',
 	});
 	const classes = useStyles();
 
-	const submitAdd = (data) => {
+	const addUser = (data) => {
 		axios
-			.post(`http://localhost:5000/api/users/${props.id}/posts`, data)
+			.post(`http://localhost:5000/api/users/`, data)
 			.then((res) => {
-				// console.log(res.data);
-				res.data.postedBy = props.userName;
-				props.setUserPosts([...props.userPosts, res.data]);
-				props.setDialogOpen(false);
-			})
-			.catch((err) => {
-				alert(err.message);
-			});
-	};
+				setUsers([...users, res.data]);
 
-	const submitEdit = (data) => {
-		axios
-			.put(`http://localhost:5000/api/posts/${props.id}`, data)
-			.then((res) => {
-				res.data.postedBy = props.userName;
-				const updated = props.userPosts.map((post) => {
-					if (post.id === res.data.id) {
-						return res.data;
-					} else {
-						return post;
-					}
-				});
-				props.setUserPosts(updated);
-				props.setDialogOpen(false);
+				setDialogOpen(false);
 			})
 			.catch((err) => {
 				alert(err.message);
@@ -74,7 +53,7 @@ export default function Form(props) {
 	return (
 		<Box
 			component='form'
-			onSubmit={handleSubmit(props.edit ? submitEdit : submitAdd)}
+			onSubmit={handleSubmit(addUser)}
 			className={classes.container}
 		>
 			<TextField
@@ -83,13 +62,12 @@ export default function Form(props) {
 				autoFocus
 				variant='outlined'
 				type='text'
-				id='text'
-				name='text'
+				id='name'
+				name='name'
 				inputRef={register({ required: 'Required' })}
-				defaultValue={props.post ? props.post : ''}
-				label='Post:'
-				error={errors.text ? true : false}
-				helperText={errors.text ? errors.text.message : null}
+				label='Name:'
+				error={errors.name ? true : false}
+				helperText={errors.name ? errors.name.message : null}
 			/>
 
 			<Button

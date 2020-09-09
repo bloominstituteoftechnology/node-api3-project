@@ -1,7 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import PostCards from './PostCards';
+import axios from 'axios';
 
-export default function DisplayPosts({ posts, setPosts }) {
+export default function DisplayPosts() {
+	const [posts, setPosts] = useState([]);
+
+	useEffect(() => {
+		axios
+			.get('http://localhost:5000/api/posts')
+			.then((res) => {
+				// console.log(res.data);
+				setPosts(res.data);
+			})
+			.catch((err) => {
+				alert(err);
+			});
+	}, []);
 	return (
 		<React.Fragment>
 			{posts.map((post) => {
