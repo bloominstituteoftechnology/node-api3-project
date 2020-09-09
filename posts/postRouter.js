@@ -1,13 +1,22 @@
 const express = require('express');
 const posts = require('../posts/postDb');
+const users = require('../users/userDb');
 const validatePostId = require('../middleware/postMiddleware');
 const { validatePost } = require('../middleware/userMiddleware');
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
 	try {
-		const allPosts = await posts.get();
-		res.status(200).json(allPosts);
+		let allPosts = await posts.get();
+		let namePosts = await Promise.all(
+			allPosts.map(async (post) => {
+				let user = await users.getById(post.user_id);
+				post.user_name = user.name;
+				console.log(post);
+				return post;
+			})
+		);
+		res.status(200).json(namePosts);
 	} catch (error) {
 		next(error);
 	}
