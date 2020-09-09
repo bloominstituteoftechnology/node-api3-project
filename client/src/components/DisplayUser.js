@@ -4,7 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import PostCards from './PostCards';
 import { Typography, Button } from '@material-ui/core';
 
-export default function DisplayUser({ posts, setPosts }) {
+export default function DisplayUser() {
 	const { id } = useParams();
 
 	const [userPosts, setUserPosts] = useState([]);
@@ -26,8 +26,9 @@ export default function DisplayUser({ posts, setPosts }) {
 						post={post.text}
 						userName={post.postedBy}
 						userPageCards
-						posts={posts}
-						setPosts={setPosts}
+						userPosts={userPosts}
+						setUserPosts={setUserPosts}
+						id={post.id}
 					/>
 				);
 			})}

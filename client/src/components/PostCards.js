@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 import PostForm from './PostForm';
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 
 const useStyles = makeStyles({
 	root: {
@@ -30,8 +31,8 @@ export default function PostCards({
 	userName,
 	post,
 	id,
-	posts,
-	setPosts,
+	userPosts,
+	setUserPosts,
 	userPageCards,
 	allPosts,
 }) {
@@ -39,9 +40,17 @@ export default function PostCards({
 	const history = useHistory();
 	const [dialogOpen, setDialogOpen] = useState(false);
 
-	const handleEdit = () => {};
+	const handleEdit = () => {
+		setDialogOpen(true);
+		console.log(post);
+	};
 
-	const handleDelete = () => {};
+	const handleDelete = () => {
+		axios.delete(`http://localhost:5000/api/posts/${id}`).then((res) => {
+			const deleted = userPosts.filter((post) => post.id !== res.data.id);
+			setUserPosts(deleted);
+		});
+	};
 
 	const handleAddComment = () => {};
 
@@ -68,6 +77,24 @@ export default function PostCards({
 					<React.Fragment>
 						<Button onClick={handleEdit}>Edit Post</Button>
 						<Button onClick={handleDelete}>Delete Post</Button>
+						<Dialog
+							open={dialogOpen}
+							onClose={() => setDialogOpen(false)}
+							aria-labelledby='Add New Post'
+						>
+							<DialogTitle id='posts'>Add New Post</DialogTitle>
+							<DialogContent>
+								<PostForm
+									post={post}
+									userPosts={userPosts}
+									setUserPosts={setUserPosts}
+									setDialogOpen={setDialogOpen}
+									edit={true}
+									id={id}
+									userName={userName}
+								/>
+							</DialogContent>
+						</Dialog>
 					</React.Fragment>
 				)}
 				{allPosts && (
@@ -76,21 +103,6 @@ export default function PostCards({
 					</React.Fragment>
 				)}
 			</CardActions>
-			<Dialog
-				open={dialogOpen}
-				onClose={() => setDialogOpen(false)}
-				aria-labelledby='Add New Post'
-			>
-				<DialogTitle id='posts'>Add New Post</DialogTitle>
-				<DialogContent>
-					<PostForm
-						postData={post}
-						setPostData={setPosts}
-						setDialogOpen={setDialogOpen}
-						edit={false}
-					/>
-				</DialogContent>
-			</Dialog>
 		</Card>
 	);
 }

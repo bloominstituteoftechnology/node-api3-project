@@ -27,12 +27,14 @@ export default function Form(props) {
 		mode: 'onChange',
 	});
 	const classes = useStyles();
+
 	const submitAdd = (data) => {
 		axios
 			.post('http://localhost:5000/api/posts', data)
 			.then((res) => {
+				console.log(res.data);
 				props.setPostData([...props.postData, res.data]);
-				props.setAddDialogOpen(false);
+				props.setDialogOpen(false);
 			})
 			.catch((err) => {
 				alert(err.message);
@@ -43,16 +45,16 @@ export default function Form(props) {
 		axios
 			.put(`http://localhost:5000/api/posts/${props.id}`, data)
 			.then((res) => {
-				console.log(res);
-				const edited = props.postData.map((post) => {
-					if (res.data[0].id === post.id) {
-						return res.data[0];
+				res.data.postedBy = props.userName;
+				const updated = props.userPosts.map((post) => {
+					if (post.id === res.data.id) {
+						return res.data;
 					} else {
 						return post;
 					}
 				});
-				props.setPostData(edited);
-				props.setEditDialogOpen(false);
+				props.setUserPosts(updated);
+				props.setDialogOpen(false);
 			})
 			.catch((err) => {
 				alert(err.message);
@@ -80,27 +82,13 @@ export default function Form(props) {
 				autoFocus
 				variant='outlined'
 				type='text'
-				id='title'
-				name='title'
+				id='text'
+				name='text'
 				inputRef={register({ required: 'Required' })}
-				defaultValue={props.title ? props.title : ''}
-				label='Title:'
-				error={errors.title ? true : false}
-				helperText={errors.title ? errors.title.message : null}
-			/>
-
-			<TextField
-				fullWidth={true}
-				className={classes.field}
-				variant='outlined'
-				type='text'
-				id='contents'
-				name='contents'
-				inputRef={register({ required: 'Required' })}
-				defaultValue={props.contents ? props.contents : ''}
-				label='Contents:'
-				error={errors.contents ? true : false}
-				helperText={errors.contents ? errors.contents.message : null}
+				defaultValue={props.post ? props.post : ''}
+				label='Post:'
+				error={errors.text ? true : false}
+				helperText={errors.text ? errors.text.message : null}
 			/>
 
 			<Button
