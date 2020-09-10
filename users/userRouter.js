@@ -48,7 +48,7 @@ router.get('/:id', validateUserId, (req, res) => {
 });
 
 router.get('/:id/posts', validateUserId, (req, res) => {
-  Posts.getById(req.params.id)
+  Helpers.getUserPosts(req.params.id)
   .then(posts =>{
     res.status(200).json(posts);
   })
