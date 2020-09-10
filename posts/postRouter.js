@@ -7,7 +7,10 @@ router.get("/posts", (req, res) => {
   posts.get()
     .then((post) => {
       res.status(200).json(post);
-    });
+    })
+    .catch(error => {
+      console.log(error);
+    })
 });
 
 router.get("/posts/:id", validatePostId, (req, res) => {
@@ -24,6 +27,9 @@ router.put("/posts/:id", validatePostId, (req, res) => {
   posts.update(req.params.id, req.params.body)
     .then(post => {
       res.status(200).json(post);
+    })
+    .catch(error => {
+      console.log(error);
     })
 });
 
