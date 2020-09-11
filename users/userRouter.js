@@ -4,10 +4,10 @@ const Posts = require('../posts/postDb.js');
 
 const router = express.Router();
 
-router.use((req, res, next)=>{
-  console.log("in the users router!");
-  next()
-})
+// router.use((req, res, next)=>{
+//   console.log("in the users router!");
+//   next()
+// })
 
 router.post('/',validateUser, (req, res) => {
  Helpers.insert(req.body)

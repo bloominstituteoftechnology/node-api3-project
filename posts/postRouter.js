@@ -4,10 +4,10 @@ const Posts = require('./postDb.js');
 
 const router = express.Router();
 
-router.use((req, res, next)=>{
-  console.log("in the posts router!");
-  next()
-})
+// router.use((req, res, next)=>{
+//   console.log("in the posts router!");
+//   next()
+// })
 
 router.get('/', (req, res) => {
   Posts.get()
