@@ -28,7 +28,7 @@ function App() {
     axios
     .get('http://localhost:4000/api/users')
     .then(result =>{
-      console.log(result.data)
+      // console.log(result.data)
       setUsers(result.data);
     })
 

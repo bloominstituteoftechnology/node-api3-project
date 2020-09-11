@@ -9,15 +9,18 @@ const User = (props) =>{
     const id = props.users.id;
     const [posts, setPosts] = useState([])
 
-    console.log(posts);     
+    // console.log(posts);     
   
     const showDetails =()=>{
         axios
         .get(`http://localhost:4000/api/users/${id}/posts`)
         .then(result =>{
+            console.log(result.data.text);
             setPosts(result.data.text);
-            
         })  
+        .catch(error=>{
+            console.log(error);
+        })
     }
   
     useEffect(()=>{
@@ -29,8 +32,8 @@ const User = (props) =>{
         <div>
             <div key={props.users.id}>
             <h1>{props.users.name}</h1>
-            <button onClick= {showDetails} >Posts</button>
-            {posts.map(post=><Details posts={post}></Details>)}
+            <button onClick={showDetails} >Posts</button>
+            {/* {posts.map(post=><Details posts={post}></Details>)} */}
             </div>
         </div>
         
