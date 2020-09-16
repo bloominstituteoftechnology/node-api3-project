@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
    if(posts){   
      return res.status(200).json(posts)
    }else{
-     res.status(400).json({error: "error getting the posts"})
+     res.status(404).json({error: "error getting the posts"})
    }
   })
 });
@@ -22,8 +22,8 @@ router.get('/:id', validatePostId, (req, res) => {
   .then(post=>{
     res.status(200).json(post)
   })
-  .catch(err=>{
-    res.status(400).json({error:"could not find the post with specific id"})
+  .catch(error=>{
+    res.status(400).json({msg:"post not found!"})
   })
 });
 

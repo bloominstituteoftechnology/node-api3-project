@@ -124,7 +124,6 @@ EXAMPLE OUTPUT
 }  
 
 ```
-
 STATUS CODE: 400(BAD REQUEST)
 
 If there is a server or database error, the endpoint will return an HTTP response with a status code 500 and a body as below.
@@ -279,7 +278,7 @@ If there is a server or database error, the endpoint will return an HTTP respons
 ##### HTTP method: [PUT]
 #### Response
 #### SUCCESSFUL
-204 (OK)
+200 (OK)
 
 {
     "id": 4,
@@ -297,6 +296,38 @@ If there is a server or database error, the endpoint will return an HTTP respons
 
 ##### HTTP method: [GET]
 
+#### Response
+STATUS CODE: 200(OK)
+EXAMPLE OUTPUT
+
+```
+[
+    {
+        "id": 10,
+        "text": "We've had one yes. What about second lunch?",
+        "user_id": 4
+    },
+    {
+        "id": 11,
+        "text": "You need people of intelligence on this sort of mission...quest...thing.",
+        "user_id": 4
+    }
+    
+]  
+
+```
+
+STATUS CODE: 500(SERVER ERROR)
+
+If there is a server or database error, the endpoint will return an HTTP response with a status code 500 and a body as below.
+
+```
+    {
+        error: "error getting the posts"
+    }
+
+```
+
 -------------------------------
 
 ## Get Post by Id
@@ -304,7 +335,26 @@ If there is a server or database error, the endpoint will return an HTTP respons
 #### _Method Url:_ `/api/posts/:id`
 
 ##### HTTP method: [GET]
+STATUS CODE: 200(OK)
+EXAMPLE OUTPUT
 
+```
+{
+    "id": 14,
+    "text": "Is it secret?! Is it safe?!",
+    "user_id": 5
+}
+```
+STATUS CODE: 400(CLIENT ERROR)
+
+If there is a server or database error, the endpoint will return an HTTP response with a status code 500 and a body as below.
+
+```
+    {
+        msg: "post not found"
+    }
+
+```
 -------------------------------
 ## Delete the Post 
 
@@ -312,14 +362,39 @@ If there is a server or database error, the endpoint will return an HTTP respons
 
 ##### HTTP method: [DELETE]
 
+#### Response
+#### SUCCESSFUL
+204 (OK)
+
+The endpoint will return a HTTP response with a status code 200 and the ID of The Deleted Rental
+
+```
+{
+    message: "post is removed successfully!"
+}
+```
+#### FAIL
+500(SERVER ERROR)
+
+If there is a server or database error, the endpoint will return an HTTP response with a status code 500 
+
 -------------------------------
 
-## Upadate the Post
+## Update the Post
 
 #### _Method Url:_ `/api/posts/:id`
 
 ##### HTTP method: [PUT]
 
+#### Response
+#### SUCCESSFUL
+200 (OK)
+
+{
+    "id": 13,
+    "text": "One wish to rule them all. One wish to find them. One wish to bring them all and in the darkness bind them!",
+    "user_id": 5
+}
 -------------------------------
 
 
