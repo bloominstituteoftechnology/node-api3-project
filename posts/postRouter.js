@@ -1,15 +1,13 @@
 const express = require('express');
-//import data
 const db = require ('./postDb');
 
 const router = express.Router();
 
-
-router.get('/', (req, res) => {
-  // do your magic!
+// -------get all the posts-------
+router.get('/', (req, res) => { 
    db.get()
    .then(posts=>{
-   if(posts){   // can do .then/.catch instead of if/else
+   if(posts){   
      return res.status(200).json(posts)
    }else{
      res.status(400).json({error: "error getting the posts"})
@@ -17,8 +15,8 @@ router.get('/', (req, res) => {
   })
 });
 
-router.get('/:id', validatePostId, (req, res) => {
-  // do your magic!
+//-----------get the post by id---------
+router.get('/:id', validatePostId, (req, res) => {  
   const {id} = req.params
   db.getById(id)
   .then(post=>{
@@ -29,8 +27,8 @@ router.get('/:id', validatePostId, (req, res) => {
   })
 });
 
-router.delete('/:id', validatePostId, (req, res) => {
-  // do your magic!
+//-------delete the post-------
+router.delete('/:id', validatePostId, (req, res) => { 
 const{id} = req.params
 db.remove(id)
 .then(()=>{
@@ -38,8 +36,8 @@ db.remove(id)
 })
 });
 
+//----------update the post-------
 router.put('/:id', validatePostId, (req, res) => {
-  // do your magic!
   const {id} = req.params
   const{text, user_id}= req.body
   db.update(id, {text,user_id})
@@ -59,7 +57,8 @@ router.put('/:id', validatePostId, (req, res) => {
   })
 });
 
-// custom middleware
+// -------custom middlewares--------------------
+//--------Middleware to validate postId---------
 
 function validatePostId(req, res, next) {
   // do your magic!
