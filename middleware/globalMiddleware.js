@@ -1,4 +1,4 @@
-module.exports = () => {
+const logger = () => {
   return (req, res, next) => {
     const time = new Date().toISOString();
     console.log(
@@ -6,4 +6,18 @@ module.exports = () => {
     );
     next();
   };
+};
+
+const errorHandler = () => {
+  return (err, req, res, next) => {
+    console.log(err);
+    res.status(500).json({
+      message: "Something went wrong, try again later",
+    });
+  };
+};
+
+module.exports = {
+  logger,
+  errorHandler,
 };
