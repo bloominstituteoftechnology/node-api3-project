@@ -108,8 +108,23 @@ router.delete("/:id", validateUserId(), (req, res) => {
     });
 });
 
-router.put("/:id", (req, res) => {
-  // do your magic!
+router.put("/:id", validateUserId(), validateUserData(), (req, res) => {
+  const id = req.params.id;
+  const updateUser = users.update(id, req.body);
+
+  updateUser
+    .then((updatedData) => {
+      console.log("Updated Data:", updatedData);
+      res.status(200).json({
+        message: "User data has been successfully updated",
+        updated_user_data: updatedData,
+      });
+    })
+    .catch((err) => {
+      res
+        .status(500)
+        .json({ error: "error modifying user; that name is not unique" });
+    });
 });
 
 module.exports = router;
