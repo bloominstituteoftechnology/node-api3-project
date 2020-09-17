@@ -1,6 +1,3 @@
-// const { getById } = require("../routers/userDb");
-// - - validateUserId(): validates the 'user id' upon every api request that expects a user id parameter. If the user id parameter is valid store the user object as req.user and it will be passed down the queue. If the id paramter does not match any user id in the database, cancel the request and respond with status 400 and a "{ message: "invalid user id" }"
-// - - - DPH's: getById() from -> "users/userDb.js".
 const users = require("../routers/userDb");
 
 const validateUserId = () => {
@@ -16,6 +13,7 @@ const validateUserId = () => {
         if (user) {
           console.log("I am the user:", user);
           req.user = user;
+          req.id = user.id;
           next();
         } else {
           return res.status(404).json({

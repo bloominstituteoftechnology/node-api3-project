@@ -28,8 +28,20 @@ router.get("/:id", validateUserId(), (req, res) => {
   res.status(200).json(user);
 });
 
-router.get("/:id/posts", (req, res) => {
-  // do your magic!
+router.get("/:id/posts", validateUserId(), (req, res) => {
+  const id = req.id;
+  const getUserPosts = users.getUserPosts(id);
+  getUserPosts
+    .then((posts) => {
+      if (posts[0]) {
+        res.status(200).json(posts);
+      } else {
+        res.status(404).json({ message: `User with id:${id} has no post` });
+      }
+    })
+    .catch((err) => {
+      next();
+    });
 });
 
 router.delete("/:id", (req, res) => {
