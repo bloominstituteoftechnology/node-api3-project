@@ -2,14 +2,34 @@ const express = require("express");
 const {
   validateUserId,
   validatePostData,
+  validateUserData,
 } = require("../middleware/userMiddleware");
 const { remove } = require("./userDb");
 const users = require("./userDb");
 const posts = require("../posts/postDb");
 const router = express.Router();
 
-router.post("/", (req, res) => {
-  // What needs to happen in order to post a succesful post
+router.post("/", validateUserData(), (req, res) => {
+  // Create new user
+  // Validate the user info  that was just created
+  const insertUser = users.insert(req.body);
+
+  insertUser
+    .then((newUser) => {
+      if (newUser) {
+        res.status(201).json({
+          message: "You have successfully added a new user",
+          new_user: newUser,
+        });
+      } else {
+        res.status(500).json({
+          message: "Something went wrong adding the user to the database",
+        });
+      }
+    })
+    .catch((err) => {
+      next();
+    });
 });
 
 router.post("/:id/posts", validateUserId(), validatePostData(), (req, res) => {
@@ -35,7 +55,6 @@ router.post("/:id/posts", validateUserId(), validatePostData(), (req, res) => {
 });
 
 router.get("/", (req, res) => {
-  // do your magic!
   const getUsers = users.get();
 
   getUsers

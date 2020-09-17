@@ -45,7 +45,26 @@ const validatePostData = () => {
   };
 };
 
+const validateUserData = () => {
+  return (req, res, next) => {
+    // What do I need to do? In order to validate the user data?
+    // - What user data needs to be validated
+    // - - "name"
+
+    const name = req.body.name;
+    if (name.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "You need to submit a name for your user" });
+    } else {
+      console.log("I am the value of name", name);
+      next();
+    }
+  };
+};
+
 module.exports = {
   validateUserId,
   validatePostData,
+  validateUserData,
 };
