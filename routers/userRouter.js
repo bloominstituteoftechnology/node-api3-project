@@ -1,5 +1,6 @@
 const express = require("express");
 const { validateUserId } = require("../middleware/userMiddleware");
+const { remove } = require("./userDb");
 const users = require("./userDb");
 const router = express.Router();
 
@@ -44,8 +45,22 @@ router.get("/:id/posts", validateUserId(), (req, res) => {
     });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", validateUserId(), (req, res) => {
   // do your magic!
+  const id = req.id;
+  const removeUser = users.remove(id);
+
+  removeUser
+    .then((user) => {
+      if (user) {
+        res
+          .status(200)
+          .json({ message: `User with id:${id} has successfuly been deleted` });
+      }
+    })
+    .catch((err) => {
+      next();
+    });
 });
 
 router.put("/:id", (req, res) => {
