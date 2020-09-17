@@ -27,6 +27,25 @@ const validateUserId = () => {
   };
 };
 
+const validatePostData = () => {
+  return (req, res, next) => {
+    // What data do I need to validate the post
+    const text = req.body.text;
+    req.upgradedPost = { ...req.body, user_id: Number(req.params.id) };
+
+    if (!text) {
+      console.log("I am text", text);
+      return res.status(400).json({
+        message: "Missing text on post",
+      });
+    } else {
+      // console.log("I am the next thing", req.body.text);
+      next();
+    }
+  };
+};
+
 module.exports = {
   validateUserId,
+  validatePostData,
 };

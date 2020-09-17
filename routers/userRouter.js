@@ -1,12 +1,38 @@
 const express = require("express");
-const { validateUserId } = require("../middleware/userMiddleware");
+const {
+  validateUserId,
+  validatePostData,
+} = require("../middleware/userMiddleware");
 const { remove } = require("./userDb");
 const users = require("./userDb");
+const posts = require("../posts/postDb");
 const router = express.Router();
 
-router.post("/", (req, res) => {});
+router.post("/", (req, res) => {
+  // What needs to happen in order to post a succesful post
+});
 
-router.post("/:id/posts", (req, res) => {});
+router.post("/:id/posts", validateUserId(), validatePostData(), (req, res) => {
+  // What needs to happen in order to post a succesful post
+  // Validate th user exist
+  // if they exist then I need to grab the post data and make sure that it is valid
+  // const postData = req.upgradedPost;
+  // const addPost = users.insert(req.upgradedPost);
+  console.log(" I am the value of req.body in the router", req.upgradedPost);
+  posts
+    .insert(req.upgradedPost)
+    .then((newPost) => {
+      console.log("I am the new post", newPost);
+      res.status(200).json(newPost);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        error: `error posting new post to user id ${req.params.id}`,
+        message: err,
+      });
+    });
+});
 
 router.get("/", (req, res) => {
   // do your magic!
@@ -66,19 +92,5 @@ router.delete("/:id", validateUserId(), (req, res) => {
 router.put("/:id", (req, res) => {
   // do your magic!
 });
-
-//custom middleware
-
-// function validateUserId(req, res, next) {
-//   // do your magic!
-// }
-
-// function validateUser(req, res, next) {
-//   // do your magic!
-// }
-
-// function validatePost(req, res, next) {
-//   // do your magic!
-// }
 
 module.exports = router;
