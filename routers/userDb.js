@@ -1,7 +1,8 @@
-const db = require('../data/dbConfig.js');
+const db = require("../data/dbConfig.js");
 
 module.exports = {
   get,
+  getAllUserIds,
   getById,
   getUserPosts,
   insert,
@@ -10,38 +11,36 @@ module.exports = {
 };
 
 function get() {
-  return db('users');
+  return db("users");
+}
+
+function getAllUserIds() {
+  return db("users").where({ id });
 }
 
 function getById(id) {
-  return db('users')
-    .where({ id })
-    .first();
+  return db("users").where({ id }).first();
 }
 
 function getUserPosts(userId) {
-  return db('posts as p')
-    .join('users as u', 'u.id', 'p.user_id')
-    .select('p.id', 'p.text', 'u.name as postedBy')
-    .where('p.user_id', userId);
+  return db("posts as p")
+    .join("users as u", "u.id", "p.user_id")
+    .select("p.id", "p.text", "u.name as postedBy")
+    .where("p.user_id", userId);
 }
 
 function insert(user) {
-  return db('users')
+  return db("users")
     .insert(user)
-    .then(ids => {
+    .then((ids) => {
       return getById(ids[0]);
     });
 }
 
 function update(id, changes) {
-  return db('users')
-    .where({ id })
-    .update(changes);
+  return db("users").where({ id }).update(changes);
 }
 
 function remove(id) {
-  return db('users')
-    .where('id', id)
-    .del();
+  return db("users").where("id", id).del();
 }

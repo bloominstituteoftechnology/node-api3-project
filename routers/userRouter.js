@@ -1,12 +1,11 @@
 const express = require("express");
+const { validateUserId } = require("../middleware/userMiddleware");
 const users = require("./userDb");
 const router = express.Router();
 
 router.post("/", (req, res) => {});
 
-router.post("/:id/posts", (req, res) => {
-  // do your magic!
-});
+router.post("/:id/posts", (req, res) => {});
 
 router.get("/", (req, res) => {
   // do your magic!
@@ -23,8 +22,10 @@ router.get("/", (req, res) => {
     });
 });
 
-router.get("/:id", (req, res) => {
-  // do your magic!
+router.get("/:id", validateUserId(), (req, res) => {
+  // I need to validate the incoming user ID
+  const user = req.user;
+  res.status(200).json(user);
 });
 
 router.get("/:id/posts", (req, res) => {
@@ -41,16 +42,16 @@ router.put("/:id", (req, res) => {
 
 //custom middleware
 
-function validateUserId(req, res, next) {
-  // do your magic!
-}
+// function validateUserId(req, res, next) {
+//   // do your magic!
+// }
 
-function validateUser(req, res, next) {
-  // do your magic!
-}
+// function validateUser(req, res, next) {
+//   // do your magic!
+// }
 
-function validatePost(req, res, next) {
-  // do your magic!
-}
+// function validatePost(req, res, next) {
+//   // do your magic!
+// }
 
 module.exports = router;
