@@ -1,34 +1,24 @@
-# Building an API using a Node.js and Express Middleware
+# Express Middleware Module Project
 
 In this challenge, you build an API and write custom middleware that satisfies the requirements listed under the `Minimum Viable Product` section.
 
 ## Instructions
 
-**Read these instructions carefully. Understand exactly what is expected before starting.**
+### Task 1: Set Up The Project With Git
 
-You are allowed, and **encouraged**, to collaborate with other peers. Please follow the twenty-minute rule, before seeking support from your TL and Instructor.
-
-## Project Set Up
+Follow these steps to set up and work on your project:
 
 - [ ] Create a forked copy of this project.
-- [ ] Add your `Team Lead` as collaborator on Github.
-- [ ] Clone your OWN version of the repository.
+- [ ] Clone your OWN version of the repository (Not Lambda's by mistake!).
 - [ ] Create a new branch: git checkout -b `<firstName-lastName>`.
 - [ ] Implement the project on your newly created `<firstName-lastName>` branch, committing changes regularly.
-- [ ] Push commits: git push origin `<firstName-lastName>`.
+- [ ] Push commits: git push -u origin `<firstName-lastName>`.
 
-Follow these steps for completing your project.
+### Task 2: Minimum Viable Product
 
-- [ ] Submit a Pull-Request to merge <firstName-lastName> Branch into master (student's Repository). **Please don't merge your own pull request**
-- [ ] Add your `Team Lead` as a reviewer on the pull-request
-- [ ] Your `Team Lead` will count the project as complete by merging the branch back into master.
-- [ ] Do your magic!
-
-## Minimum Viable Product
-
-1. Write and implement four custom `middleware` functions, detailed below.
-1. Build an API to let clients perform CRUD operations on `users`.
-1. Add endpoints to retrieve the list of `posts` for a `user` and to store a new `post` for a `user`.
+- Write and implement four custom `middleware` functions, detailed below.
+- Build an API to let clients perform CRUD operations on `users`.
+- Add endpoints to retrieve the list of `posts` for a `user` and to store a new `post` for a `user`.
 
 #### Custom Middleware Requirements
 
@@ -89,7 +79,7 @@ The _Database Schemas_ for the `users` and `posts` resources are:
 
 We have provided test data for the resources.
 
-## Stretch Goals
+### Task 3: Stretch Goals
 
 - Add the Post Router
 
@@ -100,3 +90,9 @@ We have provided test data for the resources.
   - From the React application connect to the `/api/users` endpoint in the API and show the list of users.
   - Add functionality to show the details of a user, including their posts, when clicking a user name in the list. Use React Router to navigate to a `/users/:id` route to show the user details.
   - Add styling!
+
+## Submission format
+
+Follow these steps for completing your project.
+
+- [ ] Submit a pull request to merge <firstName-lastName> Branch into master (student's  Repo). **Please don't merge your own pull request**
