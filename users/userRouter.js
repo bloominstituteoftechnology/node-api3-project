@@ -39,6 +39,7 @@ function validateUserId(req, res, next) {
   userMethods.findById(request.params.id)
     .then(userId => {
       if(userId) {
+        request.user = userId;
         response.status(200).json(userMethods);
       } else {
         response.status(400).json({ message: "invalid user id" });
@@ -48,11 +49,19 @@ function validateUserId(req, res, next) {
       console.log(error);
       response.status(500).json({ message: "Error retrieving" })
     })
+
   next();
 }
 
 function validateUser(req, res, next) {
   // do your magic!
+  if(request.body === undefined) {
+    response.status(400).json({ message: "missing user data" });
+  } else if (request.name === undefined) {
+    response.status(400).json({ message: "missing required name field" })
+  } else {
+    next();
+  }
 }
 
 function validatePost(req, res, next) {
