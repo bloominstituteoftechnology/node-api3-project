@@ -1,18 +1,21 @@
 const express = require('express');
+const userRouter = require("./users/userRouter");
 
 const server = express();
-
-server.get('/', (req, res) => {
-  res.send(`<h2>Let's write some middleware!</h2>`);
-});
+server.use(express.json());
 
 //custom middleware
 
-function logger(req, res, next) {}
+const logger = (request, response, next) => {
+  console.log(`[${new Date().toISOString()}] ${request.method} to ${request.url} ${request.get("Origin")}`)
+  next();
+}
 
+server.use(logger)
 
-server.listen(8000, () => {
-  console.log("it works")
-})
+server.get('/', (request, response) => {
+  response.send(`<h2>Let's write some middleware!</h2>`);
+});
+
 
 module.exports = server;
