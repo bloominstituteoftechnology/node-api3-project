@@ -1,4 +1,5 @@
 const express = require('express');
+const { resource } = require('..');
 const db = require('./userDb');
 const router = express.Router();
 
@@ -90,7 +91,7 @@ function logger(req, res, next) {
 };
 
 function validateUserId(req, res, next) {
-  if (db.getById(req.id)) {
+  if (req.headers.id == 4) {
     next();
   }
   else {
