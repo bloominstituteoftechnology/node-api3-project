@@ -10,4 +10,9 @@ server.get('/', (req, res) => {
 
 function logger(req, res, next) {}
 
+
+server.listen(8000, () => {
+  console.log("it works")
+})
+
 module.exports = server;
