@@ -1,34 +1,61 @@
 const express = require('express');
-
+const Users = require('./userDb');
 const router = express.Router();
 
 router.post('/', (req, res) => {
-  // do your magic!
+  Users.insert(req.body)
+    .then((user) => {
+      res.status(201).json(user);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
+    });
 });
 
-router.post('/:id/posts', (req, res) => {
-  // do your magic!
-});
+router.post('/:id/posts', (req, res) => {});
 
 router.get('/', (req, res) => {
-  // do your magic!
+  Users.get(req.query)
+    .then((user) => {
+      res.status(200).json(user);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: err.message });
+    });
 });
 
 router.get('/:id', (req, res) => {
-  // do your magic!
+  Users.getById(req.params.id)
+    .then((user) => {
+      res.status(200).json(user);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
+    });
 });
 
 router.get('/:id/posts', (req, res) => {
-  // do your magic!
+  Users.getById(req.params.id)
+    .then((user) => {
+      res.status(200).json(user);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
+    });
 });
 
 router.delete('/:id', (req, res) => {
-  // do your magic!
+  Users.remove(req.params.id)
+    .then((user) => {
+      res.status(204).json(user);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
+    });
 });
 
-router.put('/:id', (req, res) => {
-  // do your magic!
-});
+router.put('/:id', (req, res) => {});
 
 //custom middleware
 
