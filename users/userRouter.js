@@ -6,11 +6,13 @@ const router = express.Router();
 
 router.post('/', validateUser, (request, response) => {
   // do your magic!
-  userMethods.insert(request.body)
+  const body = request.body;
+  userMethods.insert(body)
     .then(user => {
-      response.status(201).json(request.body);
+      response.status(201).json({data: user});
     })
     .catch(error => {
+      console.log(error);
       response.status(500).json({ message: "There was a server error saving the user to the database" });
     })
 });
@@ -18,7 +20,6 @@ router.post('/', validateUser, (request, response) => {
 router.post('/:id/posts', validatePost, (request, response) => {
   // do your magic!
   const { id } = request.params;
-
   userMethods.getById(id)
     .then(user => {
       request.body.user_id = id;
@@ -72,7 +73,7 @@ router.get('/:id/posts', validateUserId, (request, response) => {
   userMethods.getUserPosts(id)
     .then(posts => {
       if (posts) {
-        response.status(200).json(posts);
+        response.status(200).json({data: posts});
       } else {
         response.status(400).json({ message: `User with id ${id} does not exist`})
       }
@@ -87,9 +88,9 @@ router.delete('/:id', validateUserId, (request, response) => {
   // do your magic!
   const { id } = request.params;
   userMethods.remove(id)
-    .then(userId => {
-      if(userId) {
-        response.status(200).json(userId);
+    .then(result => {
+      if(result === 1) {
+        response.status(200).json({id: id});
       } else {
         response.status(400).json({ message: `User with id ${id} does not exist`})
       }
@@ -121,11 +122,10 @@ router.put('/:id', (request, response) => {
 
 function validateUserId(request, response, next) {
   // do your magic!
-  userMethods.findById(request.params.id)
+  userMethods.getById(request.params.id)
     .then(userId => {
       if(userId) {
-        request.user = userId;
-        response.status(200).json(userMethods);
+        next();
       } else {
         response.status(404).json({ message: "invalid user id" });
       }
@@ -134,15 +134,13 @@ function validateUserId(request, response, next) {
       console.log(error);
       response.status(500).json({ message: "Error retrieving" })
     })
-
-  next();
 }
 
 function validateUser(request, response, next) {
   // do your magic!
-  if(request.body === undefined) {
+  if (request.body === undefined) {
     response.status(400).json({ message: "missing user data" });
-  } else if (request.name === undefined) {
+  } else if (request.body.name === undefined) {
     response.status(400).json({ message: "missing required name field" })
   } else {
     next();
@@ -154,7 +152,7 @@ function validatePost(request, response, next) {
   if(request.body === undefined) {
     response.status(400).json({ message: "missing user data" });
   } else if (request.body.text === undefined) {
-    response.status(400).json({ message: "missing required name field" })
+    response.status(400).json({ message: "missing required text field" })
   } else {
     next();
   }

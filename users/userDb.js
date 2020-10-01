@@ -27,6 +27,7 @@ function getUserPosts(userId) {
 }
 
 function insert(user) {
+  
   return db('users')
     .insert(user)
     .then(ids => {
