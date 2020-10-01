@@ -101,19 +101,20 @@ router.delete('/:id', validateUserId, (request, response) => {
     })
 });
 
-router.put('/:id', (request, response) => {
+router.put('/:id', validateUserId, (request, response) => {
   // do your magic!
   const { id } = request.params;
+
   userMethods.update(id, request.body)
     .then(changes => {
       if (changes) {
-        response.status(200).json(changes);
+        response.status(200).json({id: id});
       } else {
         response.status(400).json({ message: `User with id ${id} does not exist`});
       }
     })
     .catch(error => {
-      console.log(error);
+      console.log("hello", error);
       response.status(500).json({ message: "There was a server error updating the user" })
     })
 });
