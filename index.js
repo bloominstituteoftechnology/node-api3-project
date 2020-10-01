@@ -14,6 +14,6 @@ server.get('/', (req, res) => {
     res.send('server is running');
 })
 
-server.listen(5000, () => console.log("API is running on port 5000"));
+server.listen(port, () => console.log("API is running on port 5000"));
 
 module.exports = server
