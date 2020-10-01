@@ -1,7 +1,6 @@
 const express = require('express');
 const userMethods = require("./userDb");
 const postMethods = require("../posts/postDb");
-const { removeListener } = require('../server');
 const router = express.Router();
 
 
