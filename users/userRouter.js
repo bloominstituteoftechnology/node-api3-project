@@ -4,12 +4,37 @@ const postMethods = require("../posts/postDb");
 const router = express.Router();
 
 
-router.post('/', (request, response) => {
+router.post('/', validateUser, (request, response) => {
   // do your magic!
+  userMethods.insert(request.body)
+    .then(user => {
+      response.status(201).json(request.body);
+    })
+    .catch(error => {
+      response.status(500).json({ message: "There was a server error saving the user to the database" });
+    })
 });
 
-router.post('/:id/posts', (request, response) => {
+router.post('/:id/posts', validatePost, (request, response) => {
   // do your magic!
+  const { id } = request.params;
+
+  userMethods.getById(id)
+    .then(user => {
+      request.body.userId = id;
+      postMethods.insert(request.body)
+        .then(post => {
+          response.status(201).json(post);
+        })
+        .catch(error => {
+          console.log(error);
+          response.status(404).json({ message: "user does not exist" });
+        })
+    })
+    .catch(error => {
+      console.log(error);
+      response.status(500).json({ message: "There was a server error while trying to save the port" })
+    })
 });
 
 router.get('/', (request, response) => {
