@@ -2,25 +2,25 @@ const express = require('express');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/', (request, response) => {
   // do your magic!
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', (request, response) => {
   // do your magic!
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', (request, response) => {
   // do your magic!
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', (request, response) => {
   // do your magic!
 });
 
 // custom middleware
 
-function validatePostId(req, res, next) {
+function validatePostId(request, response, next) {
   // do your magic!
 }
 
