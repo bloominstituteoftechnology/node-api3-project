@@ -1,6 +1,7 @@
 const express = require('express');
 const userMethods = require("./userDb");
 const postMethods = require("../posts/postDb");
+const { removeListener } = require('../server');
 const router = express.Router();
 
 
@@ -83,8 +84,21 @@ router.get('/:id/posts', validateUserId, (request, response) => {
     })
 });
 
-router.delete('/:id', (request, response) => {
+router.delete('/:id', validateUserId, (request, response) => {
   // do your magic!
+  const { id } = request.params;
+  userMethods.remove(id)
+    .then(userId => {
+      if(userId) {
+        response.status(200).json(userId);
+      } else {
+        response.status(400).json({ message: `User with id ${id} does not exist`})
+      }
+    })
+    .catch(error => {
+      console.log(error);
+      response.status(500).json({ message: "There was a server error deleting the user" })
+    })
 });
 
 router.put('/:id', (request, response) => {
