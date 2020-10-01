@@ -8,7 +8,7 @@ router.post('/', (req, res) => {
   // do your magic!
 });
 
-router.post('/:id/posts', validateUser, (req, res) => {
+router.post('/:id/posts', (req, res) => {
   // do your magic!
 });
 
@@ -16,8 +16,9 @@ router.get('/', (req, res) => {
   // do your magic!
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', (request, response) => {
   // do your magic!
+  
 });
 
 router.get('/:id/posts', (req, res) => {
@@ -34,7 +35,7 @@ router.put('/:id', (req, res) => {
 
 //custom middleware
 
-function validateUserId(req, res, next) {
+function validateUserId(request, response, next) {
   // do your magic!
   userMethods.findById(request.params.id)
     .then(userId => {
@@ -42,7 +43,7 @@ function validateUserId(req, res, next) {
         request.user = userId;
         response.status(200).json(userMethods);
       } else {
-        response.status(400).json({ message: "invalid user id" });
+        response.status(404).json({ message: "invalid user id" });
       }
     })
     .catch(error => {
@@ -53,7 +54,7 @@ function validateUserId(req, res, next) {
   next();
 }
 
-function validateUser(req, res, next) {
+function validateUser(request, response, next) {
   // do your magic!
   if(request.body === undefined) {
     response.status(400).json({ message: "missing user data" });
@@ -64,8 +65,15 @@ function validateUser(req, res, next) {
   }
 }
 
-function validatePost(req, res, next) {
+function validatePost(request, response, next) {
   // do your magic!
+  if(request.body === undefined) {
+    response.status(400).json({ message: "missing user data" });
+  } else if (request.body.text === undefined) {
+    response.status(400).json({ message: "missing required name field" })
+  } else {
+    next();
+  }
 }
 
 module.exports = router;
