@@ -21,7 +21,7 @@ router.post('/:id/posts', validatePost, (request, response) => {
 
   userMethods.getById(id)
     .then(user => {
-      request.body.userId = id;
+      request.body.user_id = id;
       postMethods.insert(request.body)
         .then(post => {
           response.status(201).json(post);
@@ -113,7 +113,7 @@ router.put('/:id', (request, response) => {
     })
     .catch(error => {
       console.log(error);
-      response.status(500).json({ message: "There was a server error deleting the user" })
+      response.status(500).json({ message: "There was a server error updating the user" })
     })
 });
 
