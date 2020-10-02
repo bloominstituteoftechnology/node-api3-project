@@ -1,6 +1,9 @@
 # Let students use Yarn
 package-lock.json
 
+
+.env
+
 # Logs
 logs
 *.log
