@@ -7,8 +7,8 @@ const server = express();
 
 server.use(express.json());
 //Put use of other middleware here
-server.use(userRouter);
-server.use(postRouter);
+// server.use("/users", userRouter);
+// server.use(postRouter);
 
 
 server.get('/', (req, res) => {
@@ -18,5 +18,6 @@ server.get('/', (req, res) => {
 //custom middleware
 
 function logger(req, res, next) {}
+
 
 module.exports = server;

@@ -2,7 +2,7 @@
 const server = require("./server.js");
 
 const port = 4000;
-server.listen(port, () => {
+server.listen(4000, () => {
   console.log("Server listening on port 4000...");
 });
 
