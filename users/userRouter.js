@@ -1,11 +1,20 @@
 const express = require('express');
 
-const router = express.Router();
 
 const users = require("./userDb");
+const router = express.Router();
 
 router.post('/', (req, res) => {
   // do your magic!
+  console.log("req body", req.body);
+  users.insert(req.body)
+    .then((user) => {
+      res.status(201).json(user);
+    })
+    .error((error) => {
+      res.status(500).json(error);
+    })
+  
 });
 
 router.post('/:id/posts', (req, res) => {
@@ -14,7 +23,12 @@ router.post('/:id/posts', (req, res) => {
 
 router.get('/', (req, res) => {
   // do your magic!
-  res.status(200).json(users);
+  console.log("User get called", users);
+  //Why/when does find have parameters? Also why is it get() in this instance
+  users.get()
+    .then((users) => {
+      res.status(200).json(users);
+    })
 });
 
 router.get('/:id', (req, res) => {

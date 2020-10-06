@@ -7,7 +7,7 @@ const server = express();
 
 server.use(express.json());
 //Put use of other middleware here
-// server.use("/users", userRouter);
+server.use("/users", userRouter);
 // server.use(postRouter);
 
 
