@@ -3,9 +3,11 @@
 //Donewithotu reference, probalby entirely wrong.
 function logger(req, res, next) {
     // console.log("Logger works");
-    const time = new Date().toISOString;
-    //Why does time need to be in brackets?
-    console.log(`log: ${req.method} ${req.url} [${time}]`);
+    //!!Why does assigning time to a variable not work?
+    // const time = new Date().toISOString;
+    //!!Why does time need to be in brackets?
+    console.log(`Called ${req.method} to ${req.url} at [${new Date().toISOString()}]`);
+    
     next();
 }
 
