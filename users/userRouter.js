@@ -11,8 +11,8 @@ router.post('/', (req, res) => {
     .then((user) => {
       res.status(201).json(user);
     })
-    .error((error) => {
-      res.status(500).json(error);
+    .catch((error) => {
+      res.status(500).json("500 post error");
     })
   
 });
