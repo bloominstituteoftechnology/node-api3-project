@@ -23,7 +23,7 @@ router.post('/:id/posts', (req, res) => {
 
 router.get('/', (req, res) => {
   // do your magic!
-  console.log("User get called", users);
+  // console.log("User get called", users);
   //Why/when does find have parameters? Also why is it get() in this instance
   users.get()
     .then((users) => {
