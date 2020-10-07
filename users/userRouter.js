@@ -67,12 +67,38 @@ router.get('/:id', (req, res) => {
 
 });
 
+//!This returns all posts regardless of user id. I don't know if that's correct. Cant' tell when it wants user id and when it wants post id in general
+//Get by id does post id not user id
+//But instrutiors say "list of posts FOR a user"
 router.get('/:id/posts', (req, res) => {
   // do your magic!
+  posts.get()
+    .then((posts) => {
+      res.status(200).json(posts);
+    })
+    .catch((error) => {
+      res.status(500).json({message: "500 post error"});
+    })
 });
 
+//For some reason this only works correctly if else statement is present. Why?
 router.delete('/:id', (req, res) => {
   // do your magic!
+  users.remove(req.params.id)
+    .then((count) => {
+      if (count > 0) {
+				res.status(200).json({
+					message: "The user has been nuked",
+				})
+			} else {
+				res.status(404).json({
+					message: "The user could not be found",
+        })
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({message: "500 post error"});
+    })
 });
 
 router.put('/:id', (req, res) => {
