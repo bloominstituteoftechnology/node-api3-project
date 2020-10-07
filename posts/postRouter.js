@@ -6,6 +6,7 @@ router.get('/', (req, res) => {
   // do your magic!
 });
 
+//'/user/:id/posts/:id'
 router.get('/:id', (req, res) => {
   // do your magic!
 });

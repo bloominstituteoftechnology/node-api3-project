@@ -2,6 +2,8 @@ const express = require('express');
 
 
 const users = require("./userDb");
+//unsure if posts should be here. !confused by differnet ids
+const posts = require("../posts/postDb")
 
 // const {validateUser} = require("../middleware/validateUser");
 const router = express.Router();
@@ -19,12 +21,25 @@ router.post('/', validateUser, (req, res) => {
     // .catch((error) => {
     //   res.status(500).json("500 post error");
     // })
+    //!!!Where is it getting next? Is validateUser returning it?
     .catch(next)
   
 });
 
+//!!! Doesn't work, doing get first
+//'users/:id/posts'
+//insert for posts doesn't seem to have a place for user id?
 router.post('/:id/posts', (req, res) => {
   // do your magic!
+  posts.insert(req.body)
+    .then((post) => {
+      res.status(201).json(post);
+    })
+    .catch((err) => {
+      console.log("error with post");
+    } )
+
+
 });
 
 router.get('/', (req, res) => {
@@ -42,6 +57,14 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
   // do your magic!
+  users.getById(req.params.id)
+    .then((user) => {
+      res.status(200).json(user)
+    })
+    .catch((err) => {
+      res.status(500).json("500 post error")
+    })
+
 });
 
 router.get('/:id/posts', (req, res) => {
@@ -66,7 +89,7 @@ function validateUserId(req, res, next) {
 function validateUser(req, res, next) {
   // do your magic!
   
-  //This works, but is it the best way?
+  //!!This works, but is it the best way? Were they expecting us to access javascript knowledge here?
   if(Object.keys(req.body).length === 0) {
             res.status(400).json({message: "missing user data"});
         }
