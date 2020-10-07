@@ -16,9 +16,10 @@ router.post('/', validateUser, (req, res) => {
     .then((user) => {
       res.status(201).json(user);
     })
-    .catch((error) => {
-      res.status(500).json("500 post error");
-    })
+    // .catch((error) => {
+    //   res.status(500).json("500 post error");
+    // })
+    .catch(next)
   
 });
 
@@ -61,11 +62,12 @@ function validateUserId(req, res, next) {
   // do your magic!
 }
 
-//!! Name works, but missing body doesn't. Also produces "Unhandled promise rejeciton warning"
+
 function validateUser(req, res, next) {
   // do your magic!
   
-  if(!req.body) {
+  //This works, but is it the best way?
+  if(Object.keys(req.body).length === 0) {
             res.status(400).json({message: "missing user data"});
         }
    else if (!req.body.name) {
