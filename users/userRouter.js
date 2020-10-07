@@ -2,6 +2,8 @@ const express = require('express');
 
 
 const users = require("./userDb");
+
+// const {validateUser} = require("../middleware/validateUser");
 const router = express.Router();
 
 //Note, middlewar goes as an input between path and (req, res)
@@ -32,6 +34,9 @@ router.get('/', (req, res) => {
     .then((users) => {
       res.status(200).json(users);
     })
+    .catch((error) => {
+      res.status(500).json("500 post error");
+    })
 });
 
 router.get('/:id', (req, res) => {
@@ -56,8 +61,18 @@ function validateUserId(req, res, next) {
   // do your magic!
 }
 
+//!! Name works, but missing body doesn't. Also produces "Unhandled promise rejeciton warning"
 function validateUser(req, res, next) {
   // do your magic!
+  
+  if(!req.body) {
+            res.status(400).json({message: "missing user data"});
+        }
+   else if (!req.body.name) {
+        console.log("validate", req.body);
+        res.status(400).json({message: "Missing required name field"});
+        }
+        next();
 }
 
 function validatePost(req, res, next) {

@@ -11,7 +11,7 @@ server.use(express.json());
 //Put use of other middleware here
 //Logger is first on purpose I think
 server.use(logger); 
-server.use(validateUser);
+// server.use(validateUser);
 server.use("/users", userRouter);
 
 // server.use(postRouter);
