@@ -101,8 +101,26 @@ router.delete('/:id', (req, res) => {
     })
 });
 
+
 router.put('/:id', (req, res) => {
   // do your magic!
+  users.update(req.params.id, req.body)
+		.then((count) => {
+      console.log("count", count);
+			if (count === 1) {
+				res.status(200).json({message: "User edited"})
+			} else {
+				res.status(404).json({
+					message: "The user could not be found",
+				})
+			}
+		})
+		.catch((error) => {
+			console.log(error)
+			res.status(500).json({
+				message: "Error updating the user",
+			})
+		})
 });
 
 //custom middleware
