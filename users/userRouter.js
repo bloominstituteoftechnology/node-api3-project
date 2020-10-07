@@ -13,7 +13,7 @@ const router = express.Router();
 // e.g. ("/", checkUserData(), (req, res)
 
 router.post('/', validateUser, (req, res) => {
-  // do your magic!
+  
   
   console.log("req body", req.body);
   users.insert(req.body)
@@ -23,23 +23,19 @@ router.post('/', validateUser, (req, res) => {
     .catch((error) => {
       res.status(500).json("500 post error");
     })
-    //Where is it getting next? Is validateUser returning it?
-    //Nevermind this doesn't work now. Why. I'm so baffled.
-    // .catch(next)
+    
   
 });
 
-//!!! Doesn't work
-//'users/:id/posts'
-//insert for posts doesn't seem to have a place for user id?
-router.post('/:id/posts', (req, res) => {
-  // do your magic!
+router.post('/:id/posts', validateUserId, (req, res) => {
+  
   if (!req.body.text) {
 		return res.status(400).json({
 			message: "Need a value for text",
 		})
 	}
 
+  //!!!Okay this works but I have no idea where it comes from
   posts.insert({text: req.body.text, user_id:req.body.user_id})
     .then((post) => {
       res.status(201).json(post);
@@ -53,9 +49,10 @@ router.post('/:id/posts', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-  // do your magic!
+  
   // console.log("User get called", users);
-  //Why/when does find have parameters? Also why is it get() in this instance
+  //Why/when does find/get have parameters? 
+  //Also why is it get() in this instance
   users.get()
     .then((users) => {
       res.status(200).json(users);
@@ -65,8 +62,8 @@ router.get('/', (req, res) => {
     })
 });
 
-router.get('/:id', (req, res) => {
-  // do your magic!
+router.get('/:id', validateUserId, (req, res) => {
+ 
   users.getById(req.params.id)
     .then((user) => {
       res.status(200).json(user)
@@ -78,8 +75,8 @@ router.get('/:id', (req, res) => {
 });
 
 //Returns posts for specific user id
-router.get('/:id/posts', (req, res) => {
-  // do your magic!
+router.get('/:id/posts', validateUserId, (req, res) => {
+  
   users.getUserPosts(req.params.id)
     .then((posts) => {
       res.status(200).json(posts);
@@ -90,7 +87,7 @@ router.get('/:id/posts', (req, res) => {
 });
 
 //For some reason this only works correctly if else statement is present. Why?
-router.delete('/:id', (req, res) => {
+router.delete('/:id', validateUserId, (req, res) => {
   // do your magic!
   users.remove(req.params.id)
     .then((count) => {
@@ -110,7 +107,7 @@ router.delete('/:id', (req, res) => {
 });
 
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validateUserId, (req, res) => {
   // do your magic!
   users.update(req.params.id, req.body)
 		.then((count) => {
@@ -135,6 +132,23 @@ router.put('/:id', (req, res) => {
 
 function validateUserId(req, res, next) {
   // do your magic!
+  users.getById(req.params.id)
+    .then((user) => {
+      if (user) {
+        req.user = user;
+        next()
+      } else {
+        res.status(404).json({
+          message: "User not found"
+        })
+      }
+    })
+    .catch((error) =>{
+      console.log(error);
+      res.status(500).json({
+        message: "Error retrieving data"
+      })
+    })
 }
 
 
