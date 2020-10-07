@@ -1,13 +1,27 @@
 const db = require('../data/dbConfig.js');
 
 module.exports = {
+  find,
   get,
   getById,
   getUserPosts,
+  findUserPostById,
+  addUserPost,
   insert,
   update,
   remove,
 };
+
+function find(query = {}) {
+  const { page = 1, limit = 100, sortBy = "id", sortDir = "asc" } = query
+  const offset = limit * (page - 1)
+
+  return db("users")
+    .orderBy(sortBy, sortDir)
+    .limit(limit)
+    .offset(offset)
+    .select()
+}
 
 function get() {
   return db('users');
@@ -24,6 +38,19 @@ function getUserPosts(userId) {
     .join('users as u', 'u.id', 'p.user_id')
     .select('p.id', 'p.text', 'u.name as postedBy')
     .where('p.user_id', userId);
+}
+
+function findUserPostById(userId, id) {
+	return db("posts")
+		.where({ id, user_id: userId })
+		.first()
+}
+
+async function addUserPost(userId, post) {
+	const data = { user_id: userId, ...post }
+	const [id] = await db("posts").insert(data)
+
+	return findUserPostById(userId, id)
 }
 
 function insert(user) {
