@@ -1,5 +1,6 @@
 const express = require('express');
 
+//!! Why does the then care about what you do inside of it?
 
 const users = require("./userDb");
 //unsure if posts should be here. !confused by differnet ids
@@ -13,30 +14,39 @@ const router = express.Router();
 
 router.post('/', validateUser, (req, res) => {
   // do your magic!
+  
   console.log("req body", req.body);
   users.insert(req.body)
     .then((user) => {
       res.status(201).json(user);
     })
-    // .catch((error) => {
-    //   res.status(500).json("500 post error");
-    // })
-    //!!!Where is it getting next? Is validateUser returning it?
-    .catch(next)
+    .catch((error) => {
+      res.status(500).json("500 post error");
+    })
+    //Where is it getting next? Is validateUser returning it?
+    //Nevermind this doesn't work now. Why. I'm so baffled.
+    // .catch(next)
   
 });
 
-//!!! Doesn't work, doing get first
+//!!! Doesn't work
 //'users/:id/posts'
 //insert for posts doesn't seem to have a place for user id?
 router.post('/:id/posts', (req, res) => {
   // do your magic!
-  posts.insert(req.body)
+  if (!req.body.text) {
+		return res.status(400).json({
+			message: "Need a value for text",
+		})
+	}
+
+  posts.insert({text: req.body.text, user_id:req.body.user_id})
     .then((post) => {
       res.status(201).json(post);
     })
     .catch((err) => {
       console.log("error with post");
+      res.status(500).json({message: "500 error"})
     } )
 
 
@@ -67,12 +77,10 @@ router.get('/:id', (req, res) => {
 
 });
 
-//!This returns all posts regardless of user id. I don't know if that's correct. Cant' tell when it wants user id and when it wants post id in general
-//Get by id does post id not user id
-//But instrutiors say "list of posts FOR a user"
+//Returns posts for specific user id
 router.get('/:id/posts', (req, res) => {
   // do your magic!
-  posts.get()
+  users.getUserPosts(req.params.id)
     .then((posts) => {
       res.status(200).json(posts);
     })
