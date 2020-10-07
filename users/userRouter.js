@@ -4,7 +4,10 @@ const express = require('express');
 const users = require("./userDb");
 const router = express.Router();
 
-router.post('/', (req, res) => {
+//Note, middlewar goes as an input between path and (req, res)
+// e.g. ("/", checkUserData(), (req, res)
+
+router.post('/', validateUser, (req, res) => {
   // do your magic!
   console.log("req body", req.body);
   users.insert(req.body)

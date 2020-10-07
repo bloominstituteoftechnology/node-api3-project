@@ -3,14 +3,17 @@ const userRouter = require("./users/userRouter");
 const postRouter = require("./posts/postRouter");
 //require other middleware here
 const logger = require("./middleware/logger");
+const validateUser = require("./middleware/validateUser");
 
 const server = express();
 
 server.use(express.json());
 //Put use of other middleware here
 //Logger is first on purpose I think
-server.use(logger); //logger() ?
+server.use(logger); 
+server.use(validateUser);
 server.use("/users", userRouter);
+
 // server.use(postRouter);
 
 
