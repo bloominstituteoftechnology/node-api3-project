@@ -17,7 +17,8 @@ router.post('/', checkUserData(), (req, res) => {
 
 router.get("/welcome", (req, res) => {
   res.status(200).json({
-    message: `Welcome ${process.env.COHORT}!`
+    message: `Welcome ${process.env.COHORT}!`,
+    fun_fact: process.env.FUN_FACT || "I have no fun facts today"
   })
 })
 
