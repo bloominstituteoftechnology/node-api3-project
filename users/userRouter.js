@@ -15,6 +15,12 @@ router.post('/', checkUserData(), (req, res) => {
     })
 });
 
+router.get("/welcome", (req, res) => {
+  res.status(200).json({
+    message: `Welcome ${process.env.COHORT}!`
+  })
+})
+
 router.post('/:id/posts', checkUserID(), (req, res) => {
   // do your magic!
   if (!req.body.text) {
