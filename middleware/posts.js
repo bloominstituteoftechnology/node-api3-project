@@ -1,0 +1,2 @@
+// const posts = require("./postDb");
+

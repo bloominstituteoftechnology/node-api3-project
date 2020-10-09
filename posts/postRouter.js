@@ -14,10 +14,25 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-  // do your magic!
+  const id = req.params.id
+  posts.getById(id)
+  .then(posts => res.status(200).json(posts))
+  .catch((err)=> {
+    next(err);
+  })
 });
 
 router.delete('/:id', (req, res) => {
+  const id = req.params.id
+posts
+.remove(id)
+.then((posts) => {
+  res.status(200).json({posts})
+})
+.catch(error =>{
+  console.log(error)
+  res.status(500).json({message: "The post could not be removed"})
+})
   // do your magic!
 });
 
