@@ -21,10 +21,42 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
   // do your magic!
+  Hubs
+    .getById(req.params.id)
+    .then(hubs => {
+      if(hubs){
+        res.status(202).json(hubs)
+      } else {
+        res.status(404).json({message: `post with ID ${req.params.id} doesnt exist!`})
+      }
+    })
+    .catch(error => {
+      console.log(error.message, error.stack)
+      res.status(500).json({
+          message: error.message,
+          stack: error.stack
+      })
+  })
 });
 
 router.delete('/:id', (req, res) => {
   // do your magic!
+  Hubs
+    .remove(req.params.id)
+    .then(count => {
+      if (count >0) {
+        res.status(200).json({message: ` post ${req.params.id} has been deleted`})
+      } else {
+        res.status(404).json({ message: `post with ID ${req.params.id} cannot be found`})
+      }
+    })
+    .catch(error => {
+      console.log(error.message, error.stack)
+      res.status(500).json({
+          message: error.message,
+          stack: error.stack
+      })
+  })
 });
 
 router.put('/:id', (req, res) => {
