@@ -4,6 +4,32 @@ const Hubs = require('./userDb')
 
 const router = express.Router();
 
+function validateUserId(req, res, next) {
+  // do your magic!
+  const {id} = req.params
+  
+  Hubs
+    .getById(id)
+    .then(data => {
+      console.log(data)
+      if (data) {
+        req.hub = data
+        next()
+      } else {
+        // next({code: 400, message: `ID ${id} does not exist at all`})
+        res.status(404).json({message: `ID ${id} does not exist at all`})
+        console.log({message: `ID ${id} does not exist at all`})
+      }
+    })
+    .catch(error => {
+      console.log(error.message, error.stack)
+      res.status(500).json({
+          message: error.message,
+          stack: error.stack
+      })
+  })
+}
+
 
 router.post('/', (req, res) => {
   // do your magic!
@@ -57,24 +83,24 @@ router.get('/', (req, res) => {
   })
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', [validateUserId], (req, res) => {
   // do your magic!
-  Hubs
-    .getById(req.params.id)
-    .then(hub => {
-      if (hub) {
-        res.status(200).json(hub)
-      } else {
-        res.status(404).json({message: `user with ID ${req.params.id} does not exist`})
-      }
-    })
-    .catch(error => {
-      console.log(error.message, error.stack)
-      res.status(500).json({
-          message: error.message,
-          stack: error.stack
-      })
-  })
+  // Hubs
+  //   .getById(req.params.id)
+  //   .then(hub => {
+  //     if (hub) {
+        res.status(200).json(req.hub)
+  //     } else {
+  //       res.status(404).json({message: `user with ID ${req.params.id} does not exist`})
+  //     }
+  //   })
+  //   .catch(error => {
+  //     console.log(error.message, error.stack)
+  //     res.status(500).json({
+  //         message: error.message,
+  //         stack: error.stack
+  //     })
+  // })
 });
 
 router.get('/:id/posts', (req, res) => {
@@ -143,9 +169,7 @@ router.put('/:id', (req, res) => {
 
 //custom middleware
 
-function validateUserId(req, res, next) {
-  // do your magic!
-}
+
 
 function validateUser(req, res, next) {
   // do your magic!
