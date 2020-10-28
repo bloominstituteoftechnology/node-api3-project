@@ -1,6 +1,8 @@
 const express = require('express');
+const Hubs = require('./userDb')
 
 const router = express.Router();
+
 
 router.post('/', (req, res) => {
   // do your magic!
@@ -12,6 +14,18 @@ router.post('/:id/posts', (req, res) => {
 
 router.get('/', (req, res) => {
   // do your magic!
+  Hubs
+    .get(req.query)
+    .then(hubs => {
+      res.status(200).json(hubs)
+    })
+    .catch(error => {
+      console.log(error.message, error.stack)
+      res.status(500).json({
+          message: error.message,
+          stack: error.stack
+      })
+  })
 });
 
 router.get('/:id', (req, res) => {
