@@ -61,6 +61,25 @@ router.delete('/:id', (req, res) => {
 
 router.put('/:id', (req, res) => {
   // do your magic!
+  const changes = req.body
+
+  Hubs
+    .update(req.params.id, changes)
+    .then(hub => {
+      if(hub){
+        const changePost = {id: req.params.id, ...changes}
+      res.status(202).json(changePost)
+      } else {
+        res.status(400).json({message: `post with ID ${req.params.id} does not exist`})
+      }
+    })
+    .catch(error => {
+      console.log(error.message, error.stack)
+      res.status(500).json({
+          message: error.message,
+          stack: error.stack
+      })
+  })
 });
 
 // custom middleware
