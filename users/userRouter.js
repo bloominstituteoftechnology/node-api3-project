@@ -33,16 +33,36 @@ function validateUserId(req, res, next) {
 function validateUser(req, res, next) {
   // do your magic!
   console.log(req.body)
+  if(req.body === {}){
+    res.status(400).json({message: "missing user data"})
+  } else if (!req.body.name) {
+    res.status(400).json({message: "missing required name field"})
+  } else {
+    next()
+  }
+
+}
+
+function validatePost(req, res, next) {
+  // do your magic!
+  console.log(req.body)
+  if(req.body === {}){
+    res.status(400).json({message: "missing post data"})
+  } else if (!req.body.text) {
+    res.status(400).json({message: "missing required post field"})
+  } else {
+    next()
+  }
+}
+
+router.post('/', [validateUser], (req, res) => {
+  // do your magic!
   Hubs
     .insert(req.body)
     .then(hub => {
-      if(!hub.name) {
-        res.status(400).json({message: "missing user data"})
-      } else if (hub.name === "") {
-        res.status(400).json({message: "missing required name field"})
-      } else {
-        next()
-      }
+      const newUser = {...hub, ...req.body}
+      console.log(newUser)
+      res.status(201).json(req.body)
     })
     .catch(error => {
       console.log(error.message, error.stack)
@@ -51,48 +71,7 @@ function validateUser(req, res, next) {
           stack: error.stack
       })
   })
-  
-}
-
-function validatePost(req, res, next) {
-  // do your magic!
-  Hubs
-  .insert(req.body)
-  .then(hub => {
-    if(!hub.text) {
-      res.status(400).json({message: "missing post data"})
-    } else if (hub.text === "") {
-      res.status(400).json({message: "missing required post field"})
-    } else {
-      next()
-    }
-  })
-  .catch(error => {
-    console.log(error.message, error.stack)
-    res.status(500).json({
-        message: error.message,
-        stack: error.stack
-    })
-})
-}
-
-router.post('/', [validateUser], (req, res) => {
-  // do your magic!
-  // Hubs
-  //   .insert(req.body)
-  //   .then(hub => {
-  //     const newUser = {...hub, ...req.body}
-      // console.log(newUser)
-      res.status(201).json(req.body)
-    })
-  //   .catch(error => {
-  //     console.log(error.message, error.stack)
-  //     res.status(500).json({
-  //         message: error.message,
-  //         stack: error.stack
-  //     })
-  // })
-// });
+});
 
 router.post('/:id/posts', [validatePost], (req, res) => {
   // do your magic!
