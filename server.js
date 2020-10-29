@@ -13,9 +13,7 @@ server.get("/", (req, res) => {
 
 function logger(req, res, next) {
   console.log(
-    `[${new Date().toISOString()}] ${req.method} to ${req.url} from ${req.get(
-      "Origin"
-    )}`
+    `[${new Date().toISOString()}] ${req.method} to ${req.url} from ${req.ip}`
   );
 
   next();
@@ -24,8 +22,12 @@ function logger(req, res, next) {
 server.use(express.json());
 server.use(logger);
 server.use(helmet());
-server.use("/api/posts", postRouter);
+
 server.use("/api/users", userRouter);
+
+server.use((error, req, res, next) => {
+  res.status(error.code).json(error);
+});
 
 server.listen(4000, () => {
   console.log("server is listening on port 4000");
