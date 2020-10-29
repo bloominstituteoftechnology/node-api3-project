@@ -17,7 +17,9 @@ Follow these steps to set up and work on your project:
 ### Task 2: Minimum Viable Product
 
 - Write and implement four custom `middleware` functions, detailed below.
+
 - Build an API to let clients perform CRUD operations on `users`.
+
 - Add endpoints to retrieve the list of `posts` for a `user` and to store a new `post` for a `user`.
 
 #### Custom Middleware Requirements
@@ -33,11 +35,11 @@ Follow these steps to set up and work on your project:
   )
   } -->
 
-- `validateUserId()`
+<!-- - `validateUserId()`
 
   - this middleware will be used for all endpoints that include an `id` parameter in the url (ex: `/api/users/:id` and it should check the database to make sure there is a user with that id. If there is no user with that id return HTTP status code 404 and a useful error message. If a user with that id is found, then let the request continue.
   - if the `id` parameter is valid, store that user object as `req.user`
-  - if the `id` parameter does not match any user id in the database, respond with status `400` and `{ message: "invalid user id" }`
+  - if the `id` parameter does not match any user id in the database, respond with status `400` and `{ message: "invalid user id" }` -->
 
 - `validateUser()`
 

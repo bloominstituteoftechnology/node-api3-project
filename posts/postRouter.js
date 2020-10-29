@@ -3,6 +3,32 @@ const Hubs = require('./postDb')
 
 const router = express.Router();
 
+function validatePostId(req, res, next) {
+  // do your magic!
+  const {id} = req.params
+  
+  Hubs
+    .getById(id)
+    .then(data => {
+      console.log(data)
+      if (data) {
+        req.hub = data
+        next()
+      } else {
+        // next({code: 400, message: `ID ${id} does not exist at all`})
+        res.status(404).json({message: `post ${id} does not exist at all`})
+        console.log({message: `post ${id} does not exist at all`})
+      }
+    })
+    .catch(error => {
+      console.log(error.message, error.stack)
+      res.status(500).json({
+          message: error.message,
+          stack: error.stack
+      })
+  })
+}
+
 router.get('/', (req, res) => {
   // do your magic!
   Hubs
@@ -19,24 +45,24 @@ router.get('/', (req, res) => {
   })
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', [validatePostId], (req, res) => {
   // do your magic!
-  Hubs
-    .getById(req.params.id)
-    .then(hubs => {
-      if(hubs){
-        res.status(202).json(hubs)
-      } else {
-        res.status(404).json({message: `post with ID ${req.params.id} doesnt exist!`})
-      }
-    })
-    .catch(error => {
-      console.log(error.message, error.stack)
-      res.status(500).json({
-          message: error.message,
-          stack: error.stack
-      })
-  })
+  // Hubs
+  //   .getById(req.params.id)
+  //   .then(hubs => {
+  //     if(hubs){
+        res.status(202).json(req.hub)
+  //     } else {
+  //       res.status(404).json({message: `post with ID ${req.params.id} doesnt exist!`})
+  //     }
+  //   })
+  //   .catch(error => {
+  //     console.log(error.message, error.stack)
+  //     res.status(500).json({
+  //         message: error.message,
+  //         stack: error.stack
+  //     })
+  // })
 });
 
 router.delete('/:id', (req, res) => {
@@ -84,8 +110,6 @@ router.put('/:id', (req, res) => {
 
 // custom middleware
 
-function validatePostId(req, res, next) {
-  // do your magic!
-}
+
 
 module.exports = router;
