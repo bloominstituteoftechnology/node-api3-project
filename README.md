@@ -8,30 +8,38 @@ In this challenge, you build an API and write custom middleware that satisfies t
 
 Follow these steps to set up and work on your project:
 
-- [ ] Create a forked copy of this project.
-- [ ] Clone your OWN version of the repository (Not Lambda's by mistake!).
-- [ ] Create a new branch: git checkout -b `<firstName-lastName>`.
-- [ ] Implement the project on your newly created `<firstName-lastName>` branch, committing changes regularly.
-- [ ] Push commits: git push origin `<firstName-lastName>`.
+- [ x] Create a forked copy of this project.
+- [ x] Clone your OWN version of the repository (Not Lambda's by mistake!).
+- [ x] Create a new branch: git checkout -b `<firstName-lastName>`.
+- [ x] Implement the project on your newly created `<firstName-lastName>` branch, committing changes regularly.
+- [ x] Push commits: git push origin `<firstName-lastName>`.
 
 ### Task 2: Minimum Viable Product
 
 - Write and implement four custom `middleware` functions, detailed below.
+
 - Build an API to let clients perform CRUD operations on `users`.
+
 - Add endpoints to retrieve the list of `posts` for a `user` and to store a new `post` for a `user`.
 
 #### Custom Middleware Requirements
 
-- `logger()`
+<!-- - `logger()`
 
   - `logger` logs to the console the following information about each request: request method, request url, and a timestamp
   - this middleware runs on every request made to the API
 
-- `validateUserId()`
+  const logger = (req, res, next) => {
+  console.log(
+  `[${new Date().toISOString()}] ${req.method} to ${req.url} ${req.get('Origin')}`
+  )
+  } -->
+
+<!-- - `validateUserId()`
 
   - this middleware will be used for all endpoints that include an `id` parameter in the url (ex: `/api/users/:id` and it should check the database to make sure there is a user with that id. If there is no user with that id return HTTP status code 404 and a useful error message. If a user with that id is found, then let the request continue.
   - if the `id` parameter is valid, store that user object as `req.user`
-  - if the `id` parameter does not match any user id in the database, respond with status `400` and `{ message: "invalid user id" }`
+  - if the `id` parameter does not match any user id in the database, respond with status `400` and `{ message: "invalid user id" }` -->
 
 - `validateUser()`
 
@@ -95,4 +103,4 @@ We have provided test data for the resources.
 
 Follow these steps for completing your project.
 
-- [ ] Submit a pull request to merge `<firstName-lastName>` Branch into master (student's  Repo). **Please don't merge your own pull request**
+- [ ] Submit a pull request to merge `<firstName-lastName>` Branch into master (student's Repo). **Please don't merge your own pull request**
