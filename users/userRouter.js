@@ -1,6 +1,7 @@
 const express = require('express');
 const { update } = require('../data/dbConfig');
 const Hubs = require('./userDb')
+const Posts = require('../posts/postDb')
 
 const router = express.Router();
 
@@ -76,19 +77,20 @@ router.post('/', [validateUser], (req, res) => {
 router.post('/:id/posts', [validatePost], (req, res) => {
   // do your magic!
   // const newPoster = {user_id: req.params.id}
-  // Hubs
-  //   .insert(newPoster)
-  //   .then(hubs => {
-  //     console.log(hubs)
-  //     res.status(201).json(hubs)
-  //   })
-  //   .catch(error => {
-  //     console.log(error.message, error.stack)
-  //     res.status(500).json({
-  //         message: error.message,
-  //         stack: error.stack
-  //     })
-  // })
+
+  Posts
+    .insert(req.body)
+    .then(hubs => {
+      console.log(hubs)
+      res.status(201).json(hubs)
+    })
+    .catch(error => {
+      console.log(error.message, error.stack)
+      res.status(500).json({
+          message: error.message,
+          stack: error.stack
+      })
+  })
 });
 
 router.get('/', (req, res) => {
