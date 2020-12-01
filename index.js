@@ -5,7 +5,7 @@ const helmet = require('helmet');
 
 const app = express(); 
 app.use(express.json());
-app.use(helmet()); 
+app.use(helmet('dev')); 
 app.use(logger); 
 
 
