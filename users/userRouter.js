@@ -1,10 +1,16 @@
 const express = require("express");
+
+//databases
 const db = require("./userDb");
+const postDb = require("../posts/postDb");
+
+
+//middlewares 
 const validateUserId = require("../middleware/validateUserId");
 const validateUser = require('../middleware/validateUser'); 
 const validatePost = require('../middleware/validatePost'); 
-const postDb = require("../posts/postDb");
-const logger = require('../middleware/logger')
+
+
 
 const router = express.Router();
 
