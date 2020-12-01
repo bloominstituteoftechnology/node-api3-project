@@ -1,19 +1,17 @@
 const express = require("express");
 const db = require("./userDb");
-const validateUser = require("../middleware/validateUser");
+const validateUserId = require("../middleware/validateUserId");
+const validateUser = require('../middleware/validateUser'); 
 const validatePost = require('../middleware/validatePost'); 
 const postDb = require("../posts/postDb");
 const logger = require('../middleware/logger')
 
 const router = express.Router();
 
-router.post("/register", async (req, res) => {
+router.post("/register", validateUser,  async (req, res) => {
   try {
-    const { name } = req.body;
-
-    if (!name) return res.status(400).send({ error: "Please provide a name" });
-
-    const newUser = { name };
+    
+    const newUser = { name: req.name };
 
     await db.insert(newUser);
     return res.status(201).send(newUser);
@@ -22,7 +20,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.post("/:id/posts", [validateUser, validatePost],  async (req, res) => {
+router.post("/:id/posts", [validateUserId, validatePost],  async (req, res) => {
   // have access to current user as req.user;
 
   try {
@@ -42,19 +40,19 @@ router.get("/", (req, res) => {
   // do your magic!
 });
 
-router.get("/:id", validateUser, async (req, res) => {
+router.get("/:id", validateUserId, async (req, res) => {
   // do your magic!
 });
 
-router.get("/:id/posts", validateUser, async (req, res) => {
+router.get("/:id/posts", validateUserId, async (req, res) => {
   // do your magic!
 });
 
-router.delete("/:id", validateUser, async (req, res) => {
+router.delete("/:id", validateUserId, async (req, res) => {
   // do your magic!
 });
 
-router.put("/:id", validateUser, async (req, res) => {
+router.put("/:id", validateUserId, async (req, res) => {
   // do your magic!
 });
 

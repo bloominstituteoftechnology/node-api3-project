@@ -4,7 +4,9 @@ module.exports = async function (req, res, next) {
 
     try {
 
-        if(!req.body) return res.status(400).send({message: "missing post data"})
+        if (Object.keys(req.body).length === 0) {
+            return res.status(400).send({error: "Missing post data"})
+        }
 
         const { text } = req.body; 
 
