@@ -1,9 +1,17 @@
 const express = require('express');
 
 const router = express.Router();
+const Post =  require('./postDb')
 
 router.get('/', (req, res) => {
-  // do your magic!
+  Post.get()
+    .then(post => {
+      res.status(200).json(post)
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({ error: err.message})
+    })
 });
 
 router.get('/:id', (req, res) => {
@@ -21,7 +29,8 @@ router.put('/:id', (req, res) => {
 // custom middleware
 
 function validatePostId(req, res, next) {
-  // do your magic!
+  const { id } =  req.params
+  
 }
 
 module.exports = router;
