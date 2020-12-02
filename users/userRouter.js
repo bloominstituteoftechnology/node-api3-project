@@ -20,21 +20,33 @@ const router = express.Router();
   }
 }
 
-function validateUser(req, res, next) {
-  // do your magic!
-}
+const validateUser = (req, res, next) => {
+  const { body } = req; 
+  if (body === {}) {
+    res.status(400).json({ message: "missing user data"}); 
+  } else if (!body.name) {
+    res.status(400).json({ message: "missing required name field"}); 
+  } else { 
+    next();
+  }
+};
 
-function validatePost(req, res, next) {
+const validatePost = (req, res, next) => {
   // do your magic!
 }
 
 //JUICY ENPOINTS ---------------------------------
-router.post('/', (req, res) => {
-  // do your magic!
+router.post('/', validateUser, async (req, res) => {
+  try { 
+    const user = await User.insert(req.body);
+    res.status(200).json(user);  
+  } catch (err) { 
+    res.status(500).json({ message: err.message }); 
+  }
 });
 
 router.post('/:id/posts', (req, res) => {
-  // do your magic!
+  
 });
 
 router.get('/', async (req, res) => {
@@ -46,15 +58,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', validateUserId, async (req, res) => {
-  const { id } = req.params;
-
-  try { 
-    const user = await User.getById(id); 
-    res.status(200).json(user); 
-  } catch (error) {
-    res.status(500).json({ message: error.message }); 
-  }
+router.get('/:id', validateUserId, (req, res) => {
+  res.status(200).json(req.user); 
 });
 
 router.get('/:id/posts', (req, res) => {
