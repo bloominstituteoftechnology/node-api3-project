@@ -7,7 +7,16 @@ const server = express();
 server.use(express.json()); 
 //custom middleware
 
-function logger(req, res, next) {}
+function logger(req, res, next) {
+  // log request method, request url and timestamp 
+  // run on every request 
+  var today = new Date();
+  var time = `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`;
+  console.log(`Method: ${req.method} - Request URL: ${req.url} - Time of Request: ${time}`); 
+  next();
+}
+
+server.use(logger);
 
 server.use('/api/users', usersRouter); 
 
