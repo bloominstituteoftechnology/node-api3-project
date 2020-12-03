@@ -1,6 +1,7 @@
 // code away!
 // Import our server 
-const dotenv = require('dotenv').config();
+const dotenv = require('dotenv');
+dotenv.config();
 
 const server = require('./server'); 
 
