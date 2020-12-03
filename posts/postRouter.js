@@ -1,28 +1,14 @@
 const express = require('express');
 const Post = require('./postDb');
+const middlewares = require('../middlewares');
 
 const router = express.Router();
 
 // custom middleware
 
-const validatePostId = async (req, res, next) => {
-  const { id } = req.params;
-  try {
-    const post = await Post.getById(id); 
-    if (!post) { 
-      res.status(404).json({ message: `post with id of ${id} not found`});
-    } else {
-      req.post = post;
-      next();
-    }
-  } catch (error) {
-    res.status(500).json({ message: 'Error retrieving post' });
-  }
-}
 
-const validatePost = (req, res, next) => {
-  // do your magic!
-}
+
+
 
 
 // ENDPOINTS 
@@ -35,7 +21,7 @@ router.get('/', async (req, res) =>  {
   }
 });
 
-router.get('/:id', validatePostId, (req, res) => {
+router.get('/:id', middlewares.validatePostId, (req, res) => {
   res.status(200).json(req.post); 
 });
 
@@ -43,8 +29,19 @@ router.delete('/:id', (req, res) => {
   // do your magic!
 });
 
-router.put('/:id', (req, res) => {
-  // do your magic!
+router.post('/:id/posts', middlewares.validateUserId, middlewares.validatePost, async (req, res) => {
+  const { id } = req.params;
+  const { text } = req.body;
+  const postObj = {
+    text: text,
+    user_id: id
+  };
+  try { 
+    const newPost = await Post.insert(postObj);
+    res.status(200).json(newPost);
+  } catch (err) {
+    res.status(500).json({ message: err.message }); 
+  }
 });
 
 

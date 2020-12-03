@@ -1,40 +1,16 @@
 const express = require('express');
 const User = require('./userDb'); 
-
+const middlewares = require('../middlewares');
 
 const router = express.Router();
 
 //custom middleware ---------------------------
- const validateUserId = async (req, res, next) => {
-  const { id } = req.params; 
-  try {
-    const user = await User.getById(id); 
-    if (!user) { 
-      res.status(404).json({ message: `User with id of ${id} not found`});
-    } else {
-      req.user = user;
-      next();
-    }
-  } catch (error) {
-    res.status(500).json({ message: 'Error retrieving user' });
-  }
-}
 
-const validateUser = (req, res, next) => {
-  const { body } = req; 
-  if (!body.name) {
-    res.status(400).json({ message: "missing user data"}); 
-  } else if (body.name.length < 2) {
-    res.status(400).json({ message: "name must be at least 2 characters long"}); 
-  } else { 
-    next();
-  }
-};
 
 
 
 //JUICY ENPOINTS ---------------------------------
-router.post('/', validateUser, async (req, res) => {
+router.post('/', middlewares.validateUser, async (req, res) => {
   try { 
     const user = await User.insert(req.body);
     res.status(200).json(user);  
@@ -56,11 +32,11 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', validateUserId, (req, res) => {
+router.get('/:id', middlewares.validateUserId, (req, res) => {
   res.status(200).json(req.user); 
 });
 
-router.get('/:id/posts', validateUserId, async (req, res) => {
+router.get('/:id/posts', middlewares.validateUserId, async (req, res) => {
   const { id } = req.params; 
   try { 
     const posts = await User.getUserPosts(id); 
@@ -70,7 +46,7 @@ router.get('/:id/posts', validateUserId, async (req, res) => {
   }
 });
 
-router.delete('/:id', validateUserId, async (req, res) => {
+router.delete('/:id', middlewares.validateUserId, async (req, res) => {
   const { id } = req.params; 
   try { 
     const deleted = await User.remove(id); 
@@ -80,7 +56,7 @@ router.delete('/:id', validateUserId, async (req, res) => {
   }
 });
 
-router.put('/:id', validateUserId, async (req, res) => {
+router.put('/:id', middlewares.validateUserId, async (req, res) => {
   const { id } = req.params; 
   try { 
     const updated = await User.update(id, req.body); 
