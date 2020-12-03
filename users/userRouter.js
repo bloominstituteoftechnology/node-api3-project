@@ -22,10 +22,10 @@ const router = express.Router();
 
 const validateUser = (req, res, next) => {
   const { body } = req; 
-  if (body === {}) {
+  if (!body.name) {
     res.status(400).json({ message: "missing user data"}); 
-  } else if (!body.name) {
-    res.status(400).json({ message: "missing required name field"}); 
+  } else if (body.name.length < 2) {
+    res.status(400).json({ message: "name must be at least 2 characters long"}); 
   } else { 
     next();
   }
@@ -62,16 +62,34 @@ router.get('/:id', validateUserId, (req, res) => {
   res.status(200).json(req.user); 
 });
 
-router.get('/:id/posts', (req, res) => {
-  // do your magic!
+router.get('/:id/posts', validateUserId, async (req, res) => {
+  const { id } = req.params; 
+  try { 
+    const posts = await User.getUserPosts(id); 
+    res.status(200).json(posts); 
+  } catch (err) { 
+    res.status(500).json({ message: err.message }); 
+  }
 });
 
-router.delete('/:id', (req, res) => {
-  // do your magic!
+router.delete('/:id', validateUserId, async (req, res) => {
+  const { id } = req.params; 
+  try { 
+    const deleted = await User.remove(id); 
+    res.status(200).json(deleted);
+  } catch (err) { 
+    res.status(500).json({ message: err.message }); 
+  }
 });
 
-router.put('/:id', (req, res) => {
-  // do your magic!
+router.put('/:id', validateUserId, async (req, res) => {
+  const { id } = req.params; 
+  try { 
+    const updated = await User.update(id, req.body); 
+    res.status(200).json(updated); 
+  } catch (err) { 
+    res.status(500).json({ message: err.message }); 
+  }
 });
 
 
