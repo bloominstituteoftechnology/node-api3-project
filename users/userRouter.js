@@ -42,8 +42,8 @@ router.post("/:id/posts", [validateUserId, validatePost],  async (req, res) => {
   }
 });
 
-router.get("/", (req, res) => {
-  // do your magic!
+router.get("/users", (req, res) => {
+  res.send({users: "Cristian"})
 });
 
 router.get("/:id", validateUserId, async (req, res) => {
