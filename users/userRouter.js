@@ -31,9 +31,7 @@ const validateUser = (req, res, next) => {
   }
 };
 
-const validatePost = (req, res, next) => {
-  // do your magic!
-}
+
 
 //JUICY ENPOINTS ---------------------------------
 router.post('/', validateUser, async (req, res) => {
