@@ -1,4 +1,4 @@
-const express = require('express');
+/* const express = require('express');
 
 const server = express();
 
@@ -11,3 +11,4 @@ server.get('/', (req, res) => {
 function logger(req, res, next) {}
 
 module.exports = server;
+ */
