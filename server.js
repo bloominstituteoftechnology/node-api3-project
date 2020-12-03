@@ -8,6 +8,21 @@ server.get('/', (req, res) => {
 
 //custom middleware
 
-function logger(req, res, next) {}
+const logger = (req,res, next) => {
+  let current_datetime = new Date();
+  let formatted_date =
+      current_datetime.getFullYear() + "-" +
+      current_datetime.getMonth() + "-" +
+      current_datetime.getHours() + ":" +
+      current_datetime.getMinutes() + ":" +
+      current_datetime.getSeconds();
+  let method = req.method;
+  let url = req.url;
+  let status = req.statusCode;
+  let log = `[${formatted_date}]
+  ${method}:${url} ${status}`;
+  console.log(log);
+  next();
+}
 
-module.exports = server;
+module.exports = server, logger;
