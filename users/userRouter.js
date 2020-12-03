@@ -57,7 +57,7 @@ router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
       res.status(201).json(res);
     })
     .catch((err) => {
-      res.status(500).json({ ErrorMessage: 'Failed to add post' });
+      res.status(500).json({ ErrorMessage: 'Failed to add post', err });
     });
 });
 
@@ -110,22 +110,22 @@ router.get("/:id/posts", validateUserId, (req, res) => {
       });
     });
 
-    router.delete('/:id', validateUserId, (req, res) => {
-      userData
-        .remove(req.params.id)
-        .then((user) => {
-          if (user) {
-            res.status(200).json({ message: 'User has been removed'});
-          } else {
-            res.status(404).json({ message: 'User could not be found'});
-          }
-        })
-        .catch((err) => {
-          res
-            .status(500)
-            .json({ ErrorMessage: 'User could not be found or deleted' });
-        });
-    });
+  router.delete('/:id', validateUserId, (req, res) => {
+    userData
+      .remove(req.params.id)
+      .then((user) => {
+        if (user) {
+          res.status(200).json({ message: 'User has been removed' });
+        } else {
+          res.status(404).json({ message: 'User could not be found' });
+        }
+      })
+      .catch((error) => {
+        res
+          .status(500)
+          .json({ ErrorMessage: 'User could not be found or deleted' });
+      });
+  });
 
   router.put("/:id", validateUserId, (req, res) => {
     const updateUser = req.body;
@@ -133,5 +133,5 @@ router.get("/:id/posts", validateUserId, (req, res) => {
       res.status(201).json(resp);
     });
   });
-
-module.exports = router;
+})
+module.exports = router
