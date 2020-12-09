@@ -28,14 +28,24 @@ router.post('/:id/posts', validatePost(), validateUserId(), (req, res) => {
     .then(post => {
       res.status(201).json(post)
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        message: 'Server is not up to that task',
+      })
+    });
 });
 
 router.get('/', (req, res) => {
   // do your magic!
   users.get()
     .then(users => res.status(200).json(users))
-    .catch((err) => console.log(err))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        message: 'that\'s a nope',
+      })
+    })
 });
 
 router.get('/:id', validateUserId(), (req, res) => {
@@ -47,18 +57,24 @@ router.get('/:id/posts', validateUserId(), (req, res) => {
   // do your magic!
   users.getUserPosts(req.params.id)
     .then(posts => res.status(200).json(posts))
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        message: 'server is on holiday',
+      })
+    });
 });
 
 router.delete('/:id', validateUserId(), (req, res) => {
   // do your magic!
   users.remove(req.params.id)
-    .then(res.status(200).json({
+    .then(() => res.status(200).json({
       message: 'User is gone',
     }))
-    .catch(() =>
-      res.status(500).json('We seem to have broken something.')
-    );
+    .catch(err =>{
+      console.log(err);
+      res.status(500).json('We seem to have broken something.');
+      });
 });
 
 router.put('/:id', validateUser(), validateUserId(), (req, res) => {
@@ -67,9 +83,10 @@ router.put('/:id', validateUser(), validateUserId(), (req, res) => {
     .then(user => {
       res.status(200).json(user)
     })
-    .catch(err =>
-      res.status(500).json('Server oopsed.' + err)
-    );
+    .catch(err =>{
+      console.log(err);
+      res.status(500).json('Server oopsed.')
+    });
 });
 
 //custom middleware
