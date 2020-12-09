@@ -32,13 +32,33 @@ router.get('/:id', validateUserId(), (req, res) => {
   res.status(200).json(req.user);
 });
 
-// router.get('/:id/posts', (req, res) => {
-//   // do your magic!
-// });
+router.get('/:id/posts', (req, res, next) => {
+  users.getUserPosts(req.params.id)
+    .then((posts) => {
+    res.status(200).json(posts)
+    })
+    .catch((error) => {
+      next(error);
+  })
+});
 
-// router.delete('/:id', (req, res) => {
-//   // do your magic!
-// });
+router.delete('/:id', (req, res, next) => {
+  users.remove(req.params.id)
+    .then((user) => {
+      if (user > 0) {
+        res.status(200).json({
+          Message: "User Name has been delete"
+        })
+      } else {
+        res.status(404).json({
+          Message: "User with specific ID does not exsist"
+        })
+      }
+    })
+    .catch((error) => {
+      next(error);
+  })
+});
 
 router.put('/:id', validateUser(), (req, res, next) => {
   users.update(req.params.id, req.body)
