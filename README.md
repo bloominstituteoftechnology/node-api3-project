@@ -22,7 +22,7 @@ Follow these steps to set up and work on your project:
 
 #### Custom Middleware Requirements
 
-- `logger()`
+- `logger(X)`
 
   - `logger` logs to the console the following information about each request: request method, request url, and a timestamp
   - this middleware runs on every request made to the API
