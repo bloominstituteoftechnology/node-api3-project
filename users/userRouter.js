@@ -1,6 +1,5 @@
 const express = require('express');
 const users = require("./userDb");
-// const { validateUserId } = require('./userMiddleware');
 
 const router = express.Router();
 
@@ -14,9 +13,19 @@ router.post('/', validateUser(), (req, res, next) => {
   })
 });
 
-// router.post('/:id/posts', (req, res) => {
-//   // do your magic!
-// });
+router.post('/:id/posts', validatePost(), (req, res, next) => {
+  users.getUserPosts(req.params.id)
+    .then((post) => {
+      if (!req.body.text) {
+        res.status(400).json({
+        Message: "Please provide text and used ID" 
+      })
+      } else {
+        res.status(201).json(post)
+    }
+    })
+  .catch((err) => {next(err)})
+});
 
 router.get('/', (req, res, next) => {
   users.get()
@@ -111,8 +120,16 @@ function validateUser() {
   }
 }
 
-// function validatePost(req, res, next) {
-//   // do your magic!
-// }
+function validatePost() {
+  return (req, res, next) => {
+    if (!req.params.id) {
+      res.status(404).json({
+        Message: "The user with specific id is not exist."
+      })
+    } else {
+      next();
+    }
+  }
+}
 
 module.exports = router;
