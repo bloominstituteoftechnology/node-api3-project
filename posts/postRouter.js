@@ -1,9 +1,12 @@
 const express = require('express');
+const { getById } = require('../users/userDb');
 const posts= require("./postDb");
 const router = express.Router();
 
 router.get('/', (req, res) => {
   // do your magic!
+  getById(req.params.id)
+  .then(post)
   posts.get(req.query)
     .then(userPosts=>res.status(200).json(userPosts))
     .catch(err=>{
@@ -58,6 +61,15 @@ users.update(req.params.id,req.body)
 
 function validatePostId(req, res, next) {
   // do your magic!
+  posts.getById(req.params.id)
+  .then(post=>{
+    if(post){req.post=post
+  next()}  
+  else{
+    res.status(404).json({
+      message:"The user with this specified ID does not exist."})}
+  })
+  .catch(err=>next(err))
 }
 
 module.exports = router;
