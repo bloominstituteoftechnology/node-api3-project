@@ -2,6 +2,8 @@ const express = require('express');
 
 const router = express.Router();
 
+const user = require('./userDb')
+
 router.post('/', (req, res) => {
   // do your magic!
 });
@@ -10,8 +12,14 @@ router.post('/:id/posts', (req, res) => {
   // do your magic!
 });
 
-router.get('/', (req, res) => {
-  // do your magic!
+router.get('/', (req, res, next) => {
+  user.get()
+    .then((user) => {
+      res.status(200).json(user)
+    })
+    .catch((err)=> {
+      next(err)
+    })
 });
 
 router.get('/:id', (req, res) => {
