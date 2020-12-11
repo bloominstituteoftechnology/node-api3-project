@@ -1,5 +1,6 @@
 const express = require("express");
 const userRouter = require("./users/userRouter");
+const welcomeRouter = require("./data/welcome/welcomeRouter");
 // const postRouter = require('./posts/postRouter');
 
 const server = express();
@@ -12,7 +13,7 @@ server.use((req, res, next) => {
 	console.log(`[${time}] ${req.ip} ${req.method} ${req.url}`);
 	next();
 })
-
+server.use("/", welcomeRouter)
 server.use("/api/users", userRouter);
 // server.use(postRouter);
 
