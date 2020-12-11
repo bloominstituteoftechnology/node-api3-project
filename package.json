@@ -4,7 +4,7 @@
     "description": "Node API 3 Project",
     "main": "index.js",
     "scripts": {
-        "server": "cross-env COHORT=webpt20 nnodemon index.js"
+        "server": "nodemon index.js"
     },
     "repository": {
         "type": "git",
@@ -30,6 +30,7 @@
     },
     "devDependencies": {
         "cross-env": "^7.0.3",
+        "dotenv": "^8.2.0",
         "eslint": "^7.12.1",
         "knex-cleaner": "^1.3.1",
         "nodemon": "^2.0.6"
