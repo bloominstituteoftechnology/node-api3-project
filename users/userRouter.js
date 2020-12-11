@@ -19,8 +19,8 @@ validateUser,
     res.status(201).json(user)
   })
   .catch(err=>{
-    console.log(err)
-    res.status(500).json({message: "There was an error while saving the user to the database."})
+   next(err)
+    // res.status(500).json({message: "There was an error while saving the user to the database."})
   })
 
 }
@@ -32,9 +32,9 @@ router.post('/:id/posts', validateUserId, validatePost,(req, res) => {
   //  if(!req.body.text || !req.body.user_id){res.status(400).json({message: "missing required text field"})}
   posts.insert(req.body)
       .then((post)=>{res.status(201).json(post)})
-      .catch((error)=>{
-          console.log(error)
-          res.status(500).json({error:"There was an error while saving the post to the database"})
+      .catch((err)=>{next(err)
+          // console.log(error)
+          // res.status(500).json({error:"There was an error while saving the post to the database"})
       })
 });
 
@@ -42,9 +42,9 @@ router.get('/', (req, res) => {
   // do your magic!  
   users.get(req.query)
     .then(users=>res.status(200).json(users))
-    .catch(err=>{
-      console.log(err)
-      res.status(500).json({message:'No data'})
+    .catch(err=>{next(err)
+      // console.log(err)
+      // res.status(500).json({message:'No data'})
     })
 });
 
@@ -55,9 +55,9 @@ users.getById(req.params.id)
   // if(!user){res.status(404).json({message: "The user does not exist"})}
   res.status(200).json(user)
 })
-.catch(err=>{
-  console.log(err)
-  res.status(500).json({message: "something went wrong"})
+.catch(err=>{next(err)
+  // console.log(err)
+  // res.status(500).json({message: "something went wrong"})
 })
 });
 
@@ -68,9 +68,9 @@ router.get('/:id/posts', validateUserId, (req, res) => {
       {
           // if(!postComment){res.status(404).json({message: "The post with the specified ID does not exist or the post has no comments."})}
           res.status(200).json(postComment)})
-  .catch(error=>{
-      console.log(error)
-      res.status(500).json(error)
+  .catch(err=>{next(err)
+      // console.log(error)
+      // res.status(500).json(error)
   })
 });
 
@@ -80,10 +80,10 @@ router.delete('/:id', validateUserId, (req, res) => {
   .then(()=>
   {res.status(200).json({message: "The user has been deleted."})})
   // else{res.status(404).json({message: "The user with the specified ID does not exist."})}})
-  .catch((error)=>{
-      console.log(error)
-      res.status(500).json({error: "The user could not be removed."}
-  )})
+  .catch(err=>{next(err)})
+      // console.log(error)
+      // res.status(500).json({error: "The user could not be removed."}
+  // )})
 });
 
 router.put('/:id', validateUserId, (req, res) => {
@@ -97,9 +97,9 @@ users.update(req.params.id,req.body)
     .then(user=>
         res.status(200).json(user))
         // else{res.status(404).json({message: "The user with the specified ID does not exist."})}})
-    .catch(error=>{
-        console.log(error)
-        res.status(500).json({error: "The user information could not be modified."})
+    .catch(err=>{next(err)
+        // console.log(error)
+        // res.status(500).json({error: "The user information could not be modified."})
     })
 });
 

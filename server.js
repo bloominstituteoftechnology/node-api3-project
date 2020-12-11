@@ -1,5 +1,5 @@
 const express = require('express');
-const port=8000
+const port=process.env.PORT || 8000
 const server = express();
 const userRouter=require("./users/userRouter")
 
@@ -10,7 +10,7 @@ server.use(express.json())
 //custom middleware
 
 function logger(req, res, next) {
-  console.log(`[${new Date().toISOString()}] ${req.method} to ${req.url} from ${req.get('Origin')}`);
+  console.log(`[${new Date().toISOString()}] ${req.method} to ${req.url} `);
 
   next();
 }
