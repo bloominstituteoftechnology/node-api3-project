@@ -4,7 +4,7 @@ const welcomeRouter = require("./data/welcome/welcomeRouter");
 // const postRouter = require('./posts/postRouter');
 
 const server = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 server.use(express.json());
 
