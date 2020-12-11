@@ -62,3 +62,6 @@ typings/
 
 # VSCode debug config
 .vscode/launch.json
+
+# Environment variable
+.env
