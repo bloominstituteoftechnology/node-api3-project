@@ -1,27 +1,31 @@
+
 exports.up = function(knex) {
   return knex.schema
-    .createTable('users', function(users) {
-      users.increments();
-      users
-        .string('name')
-        .notNullable()
-        .unique();
+    .createTable('schemes', tbl => {
+      tbl.increments();
+      tbl.text('scheme_name', 128)
+        .unique()
+        .notNullable();
     })
-    .createTable('posts', function(posts) {
-      posts.increments();
-      posts.text('text').notNullable();
-
-      posts
-        .integer('user_id')
+    .createTable('steps', tbl => {
+      tbl.increments();
+      tbl.integer('step_number')
+        .unsigned()
+        .notNullable();
+      tbl.text('instructions')
+        .notNullable();
+      tbl.integer('scheme_id')
         .unsigned()
         .notNullable()
         .references('id')
-        .inTable('users')
-        .onDelete('CASCADE')
-        .onUpdate('CASCADE');
+        .inTable('schemes')
+        .onUpdate('CASCADE')
+        .onDelete('CASCADE');
     });
 };
 
 exports.down = function(knex) {
-  return knex.schema.dropTableIfExists('posts').dropTableIfExists('users');
+  return knex.schema
+    .dropTableIfExists('steps')
+    .dropTableIfExists('schemes');
 };
