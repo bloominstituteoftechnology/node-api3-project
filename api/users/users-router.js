@@ -8,9 +8,15 @@ const {
 
 const router = express.Router();
 
-router.post('/', validateUser, (req, res) => {
-  // do your magic!
-  // this needs a middleware to check that the request body is valid
+// curl -d '{"name": "my name"}' -H 'Content-Type: application/json' -X POST http://localhost:5000/api/users
+router.post('/', validateUser, async (req, res, next) => {
+  const user = req.body;
+  try {
+    const newUser = await User.insert(user);
+    res.status(201).json(newUser);
+  } catch (err) {
+    next(err);
+  }
 });
 
 // curl -X GET http://localhost:5000/api/users
@@ -23,14 +29,20 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+// curl -X GET http://localhost:5000/api/users/:id
 router.get('/:id', validateUserId, (req, res) => {
-  // do your magic!
-  // this needs a middleware to verify user id
+  res.status(200).json(res.user);
 });
 
-router.delete('/:id', validateUserId, (req, res) => {
-  // do your magic!
-  // this needs a middleware to verify user id
+// curl -X DELETE http://localhost:5000/api/users/:id
+router.delete('/:id', validateUserId, async (req, res, next) => {
+  const id = req.params.id;
+  try {
+    await User.remove(id);
+    res.status(204).end();
+  } catch (err) {
+    next(err);
+  }
 });
 
 router.put('/:id', validateUserId, (req, res) => {
