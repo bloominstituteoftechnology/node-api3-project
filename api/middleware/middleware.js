@@ -24,7 +24,13 @@ async function validateUserId(req, res, next) {
 }
 
 function validateUser(req, res, next) {
-  // do your magic!
+  if (!req.body.name) {
+    res.status(400).json({ message: "missing required name field" });
+  } else if (!req.body) {
+    res.status(400).json({ message: "missing user data" });
+  } else {
+    next();
+  }
 }
 
 async function validatePostId(req, res, next) {
@@ -65,6 +71,6 @@ module.exports = {
   validatePostId,
   validatePost,
   validateUserId,
-
+  validateUser,
   serverErrorHandler
 }

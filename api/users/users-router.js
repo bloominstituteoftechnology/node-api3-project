@@ -1,17 +1,19 @@
 const express = require('express');
 const User = require('./users-model');
 const { 
-  validateUserId, 
-  serverErrorHandler 
+  validateUserId,
+  validateUser,
+  serverErrorHandler
 } = require('../middleware/middleware');
 
 const router = express.Router();
 
-router.post('/', (req, res) => {
+router.post('/', validateUser, (req, res) => {
   // do your magic!
   // this needs a middleware to check that the request body is valid
 });
 
+// curl -X GET http://localhost:5000/api/users
 router.get('/', async (req, res, next) => {
   try {
     const users = await User.get();
