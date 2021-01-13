@@ -1,6 +1,9 @@
 const express = require('express');
 const Post = require('./posts-model');
-const { serverErrorHandler } = require('../middleware/middleware');
+const { 
+  validatePostId,
+  serverErrorHandler
+ } = require('../middleware/middleware');
 
 const router = express.Router();
 
@@ -14,12 +17,12 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.get('/:id', (req, res) => {
-  // do your magic!
-  // this needs a middleware to verify post id
+// curl -X GET http://localhost:5000/api/posts/:id
+router.get('/:id', validatePostId, (req, res) => {
+  res.status(200).json(res.post);
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', validatePostId, async (req, res, next) => {
   // do your magic!
   // this needs a middleware to verify post id
 });

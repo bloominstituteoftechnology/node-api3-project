@@ -1,4 +1,5 @@
 const { restart } = require("nodemon");
+const Post = require('../posts/posts-model');
 
 function logger(req, res, next) {
   console.log(`
@@ -15,8 +16,18 @@ function validateUser(req, res, next) {
   // do your magic!
 }
 
-function validatePostId(req, res, next) {
-  // do your magic!
+async function validatePostId(req, res, next) {
+  try {
+    const post = await Post.getById(req.params.id);
+    if (!post) 
+      res.status(404).json({ message: "post not found" });
+    else {
+      res.post = post;
+      next();
+    }
+  } catch (err) {
+    next(err);
+  }
 }
 
 function validatePost(req, res, next) {
@@ -34,6 +45,8 @@ function serverErrorHandler(err, req, res, next) {
 // do not forget to expose these functions to other modules
 module.exports = {
   logger,
+  validatePostId,
+
 
   serverErrorHandler
 }
