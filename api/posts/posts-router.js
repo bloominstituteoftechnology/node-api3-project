@@ -19,7 +19,6 @@ router.delete('/:id', (req, res) => {
 router.put('/:id', (req, res) => {
   // do your magic!
   // this needs a middleware to verify post id
-  // and another middleware to check that the request body is valid
 });
 
 // do not forget to export the router

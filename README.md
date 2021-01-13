@@ -36,7 +36,7 @@ Follow these steps to set up and work on your project:
 
 - `validateUser()`
 
-  - `validateUser` validates the `body` on a request to create a new user
+  - `validateUser` validates the `body` on a request to create or update a user
   - if the request `body` is missing, respond with status `400` and `{ message: "missing user data" }`
   - if the request `body` lacks the required `name` field, respond with status `400` and `{ message: "missing required name field" }`
 
