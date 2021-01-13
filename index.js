@@ -1,1 +1,1 @@
-// code away!
+// require your server and start it

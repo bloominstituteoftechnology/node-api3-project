@@ -10,13 +10,13 @@ Follow these steps to set up and work on your project:
 
 - [ ] Create a forked copy of this project.
 - [ ] Clone your OWN version of the repository (Not Lambda's by mistake!).
-- [ ] Create a new branch: git checkout -b `<firstName-lastName>`.
+- [ ] Create a new branch: `git checkout -b <firstName-lastName>`.
 - [ ] Implement the project on your newly created `<firstName-lastName>` branch, committing changes regularly.
-- [ ] Push commits: git push origin `<firstName-lastName>`.
+- [ ] Push commits: `git push origin <firstName-lastName>`.
 
 ### Task 2: Minimum Viable Product
 
-- Write and implement four custom `middleware` functions, detailed below.
+- Write four custom `middleware` functions detailed below, in `api/middleware/middleware.js`.
 - Build an API to let clients perform CRUD operations on `users`.
 - Add endpoints to retrieve the list of `posts` for a `user` and to store a new `post` for a `user`.
 
