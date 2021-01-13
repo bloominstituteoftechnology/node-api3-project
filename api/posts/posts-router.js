@@ -2,6 +2,7 @@ const express = require('express');
 const Post = require('./posts-model');
 const { 
   validatePostId,
+  validatePost,
   serverErrorHandler
  } = require('../middleware/middleware');
 
@@ -32,7 +33,8 @@ router.delete('/:id', validatePostId, async (req, res, next) => {
   }
 });
 
-router.put('/:id', validatePostId, async (req, res, next) => {
+// curl -d '{"text": "some random text"}' -H 'Content-Type: application/json' -X PUT http://localhost:5000/api/posts/:id
+router.put('/:id', validatePostId, validatePost, async (req, res, next) => {
   const id = req.params.id;
   const postContent = req.body;
   try {

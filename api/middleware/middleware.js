@@ -31,7 +31,13 @@ async function validatePostId(req, res, next) {
 }
 
 function validatePost(req, res, next) {
-  // do your magic!
+  if (!req.body.text) {
+    res.status(400).json({ message: "missing required text field" });
+  } else if (!req.body) {
+    res.status(400).json({ message: "missing post data" });
+  } else {
+    next();
+  }
 }
 
 function serverErrorHandler(err, req, res, next) {
@@ -46,6 +52,7 @@ function serverErrorHandler(err, req, res, next) {
 module.exports = {
   logger,
   validatePostId,
+  validatePost,
 
 
   serverErrorHandler
