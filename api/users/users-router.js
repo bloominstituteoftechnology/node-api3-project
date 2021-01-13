@@ -1,4 +1,9 @@
 const express = require('express');
+const User = require('./users-model');
+const { 
+  validateUserId, 
+  serverErrorHandler 
+} = require('../middleware/middleware');
 
 const router = express.Router();
 
@@ -7,36 +12,43 @@ router.post('/', (req, res) => {
   // this needs a middleware to check that the request body is valid
 });
 
-router.get('/', (req, res) => {
-  // do your magic!
+router.get('/', async (req, res, next) => {
+  try {
+    const users = await User.get();
+    res.status(200).json(users);
+  } catch (err) {
+    next(err);
+  }
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', validateUserId, (req, res) => {
   // do your magic!
   // this needs a middleware to verify user id
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', validateUserId, (req, res) => {
   // do your magic!
   // this needs a middleware to verify user id
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validateUserId, (req, res) => {
   // do your magic!
   // this needs a middleware to verify user id
   // and another middleware to check that the request body is valid
 });
 
-router.post('/:id/posts', (req, res) => {
+router.post('/:id/posts', validateUserId, (req, res) => {
   // do your magic!
   // this needs a middleware to verify user id
   // and another middleware to check that the request body is valid
 });
 
-router.get('/:id/posts', (req, res) => {
+router.get('/:id/posts', validateUserId, (req, res) => {
   // do your magic!
   // this needs a middleware to verify user id
 });
+
+router.use(serverErrorHandler);
 
 // do not forget to export the router
 module.exports = router;

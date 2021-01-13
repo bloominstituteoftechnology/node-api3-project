@@ -1,5 +1,6 @@
 const { restart } = require("nodemon");
 const Post = require('../posts/posts-model');
+const User = require('../users/users-model');
 
 function logger(req, res, next) {
   console.log(`
@@ -8,8 +9,18 @@ function logger(req, res, next) {
   next();
 }
 
-function validateUserId(req, res, next) {
-  // do your magic!
+async function validateUserId(req, res, next) {
+  try {
+    const user = await User.getById(req.params.id);
+    if (!user) 
+      res.status(404).json({ message: "user not found" });
+    else {
+      res.user = user;
+      next();
+    }
+  } catch (err) {
+    next(err);
+  }
 }
 
 function validateUser(req, res, next) {
@@ -53,7 +64,7 @@ module.exports = {
   logger,
   validatePostId,
   validatePost,
-
+  validateUserId,
 
   serverErrorHandler
 }
