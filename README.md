@@ -17,8 +17,8 @@ Follow these steps to set up and work on your project:
 ### Task 2: Minimum Viable Product
 
 - Write four custom `middleware` functions detailed below, in `api/middleware/middleware.js`.
-- Build an API to let clients perform CRUD operations on `users`.
-- Add endpoints to retrieve the list of `posts` for a `user` and to store a new `post` for a `user`.
+- Complete the endpoints inside `api/posts/posts-router.js` and `api/users/users-router.js`.
+- There are endpoints in `users-router.js` to retrieve the list of `posts` by a `user` and to store a new `post` for a `user`.
 
 #### Custom Middleware Requirements
 
@@ -29,9 +29,10 @@ Follow these steps to set up and work on your project:
 
 - `validateUserId()`
 
-  - this middleware will be used for all endpoints that include an `id` parameter in the url (ex: `/api/users/:id` and it should check the database to make sure there is a user with that id. If there is no user with that id return HTTP status code 404 and a useful error message. If a user with that id is found, then let the request continue.
-  - if the `id` parameter is valid, store that user object as `req.user`
-  - if the `id` parameter does not match any user id in the database, respond with status `400` and `{ message: "invalid user id" }`
+  - this middleware will be used for all user endpoints that include an `id` parameter in the url (ex: `/api/users/:id` and it should check the database to make sure there is a user with that id.
+
+  - if the `id` parameter is valid, store the user object as `req.user` and allow the request to continue
+  - if the `id` parameter does not match any user id in the database, respond with status `404` and `{ message: "user not found" }`
 
 - `validateUser()`
 
@@ -39,7 +40,15 @@ Follow these steps to set up and work on your project:
   - if the request `body` is missing, respond with status `400` and `{ message: "missing user data" }`
   - if the request `body` lacks the required `name` field, respond with status `400` and `{ message: "missing required name field" }`
 
+- `validatePostId()`
+
+  - this middleware will be used for all post endpoints that include an `id` parameter in the url (ex: `/api/posts/:id` and it should check the database to make sure there is a post with that id.
+
+  - if the `id` parameter is valid, store the post object as `req.post` and allow the request to continue
+  - if the `id` parameter does not match any post id in the database, respond with status `404` and `{ message: "post not found" }`
+
 - `validatePost()`
+
   - `validatePost` validates the `body` on a request to create a new post
   - if the request `body` is missing, respond with status `400` and `{ message: "missing post data" }`
   - if the request `body` lacks the required `text` field, respond with status `400` and `{ message: "missing required text field" }`
@@ -81,10 +90,6 @@ We have provided test data for the resources.
 
 ### Task 3: Stretch Goals
 
-- Add the Post Router
-
-  - Implement all endpoints and middleware within `posts/postRouter.js`
-
 - Create a React App
   - Use `create-react-app` to create an application inside the root folder, name it `client`.
   - From the React application connect to the `/api/users` endpoint in the API and show the list of users.
@@ -95,4 +100,4 @@ We have provided test data for the resources.
 
 Follow these steps for completing your project.
 
-- [ ] Submit a pull request to merge `<firstName-lastName>` Branch into master (student's  Repo). **Please don't merge your own pull request**
+- [ ] Submit a pull request to merge `<firstName-lastName>` Branch into main (student's  Repo). **Please don't merge your own pull request**
