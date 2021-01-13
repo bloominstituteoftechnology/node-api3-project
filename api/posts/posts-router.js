@@ -22,14 +22,26 @@ router.get('/:id', validatePostId, (req, res) => {
   res.status(200).json(res.post);
 });
 
+// curl -X DELETE http://localhost:5000/api/posts/:id
 router.delete('/:id', validatePostId, async (req, res, next) => {
-  // do your magic!
-  // this needs a middleware to verify post id
+  try {
+    await Post.remove(req.params.id);
+    res.status(204).end();
+  } catch (err) {
+    next(err);
+  }
 });
 
-router.put('/:id', (req, res) => {
-  // do your magic!
-  // this needs a middleware to verify post id
+router.put('/:id', validatePostId, async (req, res, next) => {
+  const id = req.params.id;
+  const postContent = req.body;
+  try {
+    await Post.update(id, postContent);
+    const updatedPost = await Post.getById(id);
+    res.status(201).json(updatedPost);
+  } catch (err) {
+    next(err);
+  }
 });
 
 router.use(serverErrorHandler);
