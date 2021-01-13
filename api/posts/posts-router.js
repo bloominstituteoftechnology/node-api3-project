@@ -33,11 +33,13 @@ router.delete("/:id", validatePostId, (req, res) => {
     });
 });
 
-router.put("/:id", validatePostId, validatePost, (req, res) => {
+router.put("/:id", validatePostId, (req, res) => {
   const { id } = req.params;
-  Posts.update(id, req.newPost)
-    .then(() => {
-      res.status(204).json({ message: "Successfully modified" });
+
+  Posts.update(id, req.body)
+    .then((post) => {
+      console.log(post);
+      res.status(200).json({ message: "Successfully modified" });
     })
     .catch(() => {
       res.status(500).json({ message: "Error Modifying Post" });

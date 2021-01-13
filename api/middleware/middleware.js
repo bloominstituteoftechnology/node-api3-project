@@ -31,18 +31,14 @@ function validatePostId(req, res, next) {
 
 function validatePost(req, res, next) {
   // do your magic!
-  const { text, user_id } = req.body;
-  if (!text || !user_id) {
-    res.status(400).json({ message: "Please include text and user_id" });
+  const { text } = req.body;
+  if (!req.body) {
+    res.status(400).json({ message: "missing post data" });
+  } else if (!text) {
+    res.status(400).json({ message: "missing required text field" });
   } else {
-    Posts.insert(req.body)
-      .then((post) => {
-        req.newPost = post;
-        next();
-      })
-      .catch((error) => {
-        res.status(500).json({ error: "There was an error inserting post" });
-      });
+    req.validatedPost = req.body;
+    next();
   }
 }
 
