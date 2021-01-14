@@ -2,7 +2,7 @@
 const server = require('./api/server');
 const { logger } = require('./api/middleware/middleware');
 
-const port = 5000;
+const port = process.env.PORT;
 
 server.listen(port, logger, () => {
     console.log(`Listening on port ${port}`);
