@@ -1,14 +1,36 @@
 const Posts = require("../posts/posts-model");
+const Users = require("../users/users-model");
 
 function logger(req, res, next) {
   // do your magic!
 }
 
 function validateUserId(req, res, next) {
-  // do your magic!
+  const { id } = req.params;
+  Users.getById(id)
+    .then((user) => {
+      if (!user) {
+        res.status(404).json({ message: "user not found" });
+      } else {
+        req.user = user;
+        next();
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ message: "error finding user" });
+    });
 }
 
 function validateUser(req, res, next) {
+  const user = req.body;
+  if (!user) {
+    res.status(400).json({ message: "Missing user data" });
+  } else if (!user.name) {
+    res.status(400).json({ message: "Missing required 'name' field" });
+  } else {
+    req.user = user;
+    next();
+  }
   // do your magic!
 }
 
@@ -44,6 +66,9 @@ function validatePost(req, res, next) {
 
 // do not forget to expose these functions to other modules
 module.exports = {
+  logger,
+  validateUserId,
+  validateUser,
   validatePostId,
   validatePost,
 };
