@@ -2,6 +2,11 @@ const Posts = require("../posts/posts-model");
 const Users = require("../users/users-model");
 
 function logger(req, res, next) {
+  // console.log("HERES THE REQUEST", req);
+  console.log("baseURL: ", req.baseUrl);
+  console.log("method: ", req.method);
+  console.log("date: ", Date());
+  next();
   // do your magic!
 }
 
@@ -16,7 +21,7 @@ function validateUserId(req, res, next) {
         next();
       }
     })
-    .catch((err) => {
+    .catch(() => {
       res.status(500).json({ message: "error finding user" });
     });
 }
