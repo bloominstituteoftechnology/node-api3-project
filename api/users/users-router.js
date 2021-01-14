@@ -60,20 +60,27 @@ router.put('/:id', validateUserId, validateUser, async (req, res, next) => {
   }
 });
 
-// 
+// curl -d '{"text": "post text"}' -H 'Content-Type: application/json' -X POST http://localhost:5000/api/users/:id/posts
 router.post('/:id/posts', validateUserId, validatePost, async (req, res, next) => {
   const post = req.body;
+  const id = req.params.id;
   try {
-    const newPost = Post.insert(post);
+    const newPost = await Post.insert({...post, user_id: id});
     res.status(201).json(newPost);
   } catch (err) {
     next(err);
   }
 });
 
-router.get('/:id/posts', validateUserId, (req, res) => {
-  // do your magic!
-  // this needs a middleware to verify user id
+// curl -X GET http://localhost:5000/api/users/:id/posts
+router.get('/:id/posts', validateUserId, async (req, res, next) => {
+  const id = req.params.id;
+  try {
+    const posts = await User.getUserPosts(id);
+    res.status(200).json(posts);
+  } catch (err) {
+    next(err);
+  }
 });
 
 router.use(serverErrorHandler);
