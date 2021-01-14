@@ -2,8 +2,8 @@
     "name": "node-api3-project",
     "version": "1.0.0",
     "scripts": {
-        "start": "node index.js",
-        "server": "nodemon index.js"
+        "server": "nodemon index.js",
+        "start": "node index.js"
     },
     "repository": {
         "type": "git",
