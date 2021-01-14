@@ -4,7 +4,7 @@ const User = require('../users/users-model');
 
 function logger(req, res, next) {
   console.log(`
-    [${new Date().toISOString()}]: ${req.method} at ${req.url}
+    [${new Date().toISOString()}]: ${req.method} at ${req.baseUrl}${req.url}
   `);
   next();
 }
