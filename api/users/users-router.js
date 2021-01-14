@@ -1,8 +1,10 @@
 const express = require('express');
 const User = require('./users-model');
+const Post = require('../posts/posts-model');
 const { 
   validateUserId,
   validateUser,
+  validatePost,
   serverErrorHandler
 } = require('../middleware/middleware');
 
@@ -45,16 +47,28 @@ router.delete('/:id', validateUserId, async (req, res, next) => {
   }
 });
 
-router.put('/:id', validateUserId, (req, res) => {
-  // do your magic!
-  // this needs a middleware to verify user id
-  // and another middleware to check that the request body is valid
+// curl -d '{"name": "changed my name"}' -H 'Content-Type: application/json' -X PUT http://localhost:5000/api/users/:id
+router.put('/:id', validateUserId, validateUser, async (req, res, next) => {
+  const id = req.params.id;
+  const user = req.body;
+  try {
+    await User.update(id, user);
+    const newUser = await User.getById(id);
+    res.status(201).json(newUser);
+  } catch (err) {
+    next(err);
+  }
 });
 
-router.post('/:id/posts', validateUserId, (req, res) => {
-  // do your magic!
-  // this needs a middleware to verify user id
-  // and another middleware to check that the request body is valid
+// 
+router.post('/:id/posts', validateUserId, validatePost, async (req, res, next) => {
+  const post = req.body;
+  try {
+    const newPost = Post.insert(post);
+    res.status(201).json(newPost);
+  } catch (err) {
+    next(err);
+  }
 });
 
 router.get('/:id/posts', validateUserId, (req, res) => {
