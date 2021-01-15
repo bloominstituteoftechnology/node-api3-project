@@ -6,24 +6,46 @@ function validateUserId(req, res, next) {
   console.log('validating user id')
   const id = req.params.id
   console.log('user id', id)
-  posts.getById(id)
+  users.getById(id)
   .then(user => {
     console.log('inside then', user)
     if (user) {
       req.user = user
+      next();
       // res.status(200).json(user)
     } else {
-      res.status(404).json(`post with id ${id} not found`)
+      res.status(404).json(`user with id ${id} not found`)
     }
   }).catch(err => {
     console.log(err)
     res.status(500).json('ouch')
   })
-  next();
 }
 
 function validateUser(req, res, next) {
   // do your magic!
+  console.log('checking request body')
+  const body  = req.body
+  users.update(req.params.id, body)
+  .then(user => {
+    if (user) {
+      res.status(200).json(user)
+    } else {
+      res.status(404).json({ message: 'asfasf'})
+    }
+    next()
+  })
+  .catch(err => {
+    console.log(err)
+    res.status(500).json({
+      message: 'Error updating the adopter',
+    });
+  })
+  // if (body) {
+  //   next()
+  // } else {
+  //   res.status(400).jon({ error: "please provide text for your post"})
+  // }
 }
 
 async function validatePostId(req, res, next) {
@@ -47,6 +69,13 @@ console.log('checking post id')
 
 function validatePost(req, res, next) {
   // do your magic!
+  console.log('checking request body')
+  const body  = req.body
+  if (body.text || body.user_id) {
+    next()
+  } else {
+    res.status(400).jon({ error: "please provide text for your post"})
+  }
 }
 
 function logger(req, res, next) {
