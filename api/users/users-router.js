@@ -1,41 +1,98 @@
-const express = require('express');
+const router = require("express").Router();
+const Users = require("./users-model.js");
+const Posts = require("../posts/posts-router.js")
 
-const router = express.Router();
-
-router.post('/', (req, res) => {
-  // do your magic!
-  // this needs a middleware to check that the request body is valid
+router.post('/', validateUser, (req, res) => {
+  Users.insert(req.body)
+  .then(user => {
+               res.status(201).json(user);
+      })
+      .catch(err => {
+          console.log(err);
+          res.status(500).json({ error: "There was an error while saving the user to the database"})
+      })
 });
 
 router.get('/', (req, res) => {
-  // do your magic!
+  Users.get(req.query)
+    .then(users => {
+     res.status(200).json(users);
+    })
+    .catch(error => {
+          console.log(error);
+      res.status(500).json({
+        error: "The users information could not be found."
+      });
+    });
 });
 
-router.get('/:id', (req, res) => {
-  // do your magic!
-  // this needs a middleware to verify user id
+router.get('/:id', validateUser, (req, res) => {
+  Users.getById(req.params.id)
+    .then(user => {
+         res.status(200).json(user);
+      }
+    )
+    .catch(error => {
+      console.log(error);
+      res.status(500).json({
+        error:"The user information could not be retrieved."
+      });
+    });
 });
 
-router.delete('/:id', (req, res) => {
-  // do your magic!
-  // this needs a middleware to verify user id
+router.delete('/:id', validateUser, (req, res) => {
+  Users.getById(req.params.id)
+  .then(user => {
+    res.status(200).json(user);
+  })
+  Users.remove(req.params.id)
+  .catch(error => {
+      console.log(error);
+      res.status(500).json({
+        error: "The user could not be removed" 
+      });
+  
+  });
 });
 
-router.put('/:id', (req, res) => {
-  // do your magic!
-  // this needs a middleware to verify user id
-  // and another middleware to check that the request body is valid
+router.put('/:id', validateUser, validateUserId, (req, res) => {
+  Users.update(req.params.id, req.body)
+   .then(user => {
+       res.status(200).json(user);
+     }
+ )
+  .catch(error => {
+     console.log(error);
+     res.status(500).json({
+       error: "The user information could not be modified."
+     });
+   });
 });
 
-router.post('/:id/posts', (req, res) => {
-  // do your magic!
-  // this needs a middleware to verify user id
-  // and another middleware to check that the request body is valid
+router.post('/:id/posts', validatePost, (req, res) => {
+  const user = {...req.body, user_id: req.params.id};
+  Posts.insert(user)
+  .then(post => {
+          res.status(201).json(post);
+      })
+      .catch(err => {
+          console.log(err);
+          res.status(500).json({ error: "There was an error while saving the post to the database"})
+      })
 });
 
-router.get('/:id/posts', (req, res) => {
-  // do your magic!
-  // this needs a middleware to verify user id
+router.get('/:id/posts', validateUserId, (req, res) => {
+  Users.getById(req.params.id)
+  .then(user => {
+       res.status(200).json(user);
+    }
+  )
+  .catch(error => {
+    console.log(error);
+    res.status(500).json({
+      error:"The user information could not be retrieved."
+    });
+  });
 });
 
-// do not forget to export the router
+module.exports = router;
