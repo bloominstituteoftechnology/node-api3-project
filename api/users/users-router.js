@@ -2,40 +2,76 @@ const express = require('express');
 
 const router = express.Router();
 
-router.post('/', (req, res) => {
-  // do your magic!
-  // this needs a middleware to check that the request body is valid
+const {validateUserId, validateUser, validatePost} = require('../middleware/middleware');
+
+const postsModel = require('../posts/posts-model');
+const usersModel = require('../users/users-model'); 
+
+router.post('/', validateUser, (req, res) => {
+  usersModel.insert(req.body)
+  .then((post) => {
+    res.status(201).json(post)
+  })
+  .catch((err) => {
+    res.status(500).json({ messsage: err.message })
+  })
 });
 
 router.get('/', (req, res) => {
-  // do your magic!
+  usersModel.get()
+  .then((users) => {
+    res.status(200).json(users)
+  })
+  .catch((err) => {
+    res.status(500).json({ message: err.message })
+  })
 });
 
-router.get('/:id', (req, res) => {
-  // do your magic!
-  // this needs a middleware to verify user id
+router.get('/:id', validateUserId, (req, res) => {
+  res.status(200).json(req.user)
 });
 
-router.delete('/:id', (req, res) => {
-  // do your magic!
-  // this needs a middleware to verify user id
+router.delete('/:id', validateUserId, (req, res) => {
+  usersModel.remove(req.user.id)
+  .then((deleted) => {
+    res.status(200).json(deleted)
+  })
+  .catch((err) => {
+    res.status(500).json({ message: err.message })
+  })
 });
 
-router.put('/:id', (req, res) => {
-  // do your magic!
-  // this needs a middleware to verify user id
-  // and another middleware to check that the request body is valid
+router.put('/:id', validateUserId, validateUser, (req, res) => {
+  usersModel.update(req.user.id, req.body)
+  .then((update) => {
+    res.status(200).json(update)
+  })
+  .catch((err) => {
+    res.status(500).json({ message: err.message })
+  })
 });
 
-router.post('/:id/posts', (req, res) => {
-  // do your magic!
-  // this needs a middleware to verify user id
-  // and another middleware to check that the request body is valid
+router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
+  const post = {user_id: req.user.id, text: req.body.text }
+
+  postsModel.insert(post)
+    .then((posted) => {
+      res.status(201).json(posted)
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message })
+    })
 });
 
-router.get('/:id/posts', (req, res) => {
-  // do your magic!
-  // this needs a middleware to verify user id
+router.get('/:id/posts', validateUserId, (req, res) => {
+
+  usersModel.getUserPosts(req.user.id)
+  .then((user) => {
+    res.status(201).json(user)
+  })
+  .catch((err) => {
+    res.status(500).json({ message: err.message})
+  })
 });
 
-// do not forget to export the router
+module.exports=router;
