@@ -1,5 +1,5 @@
 const postsModel=require('../posts/posts-model');
-const usersModel=require('../posts/posts-model');
+const usersModel=require('../users/users-model');
 
 function logger(req, res, next) {
   // do your magic!
@@ -10,8 +10,6 @@ function logger(req, res, next) {
 function validateUserId(req, res, next) {
   // do your magic!
   const id=req.params.id;
-  //validate id for post
-  console.log('in validateUserId=',id)
   usersModel.getById(id)
   .then(userFound=>{
     if(userFound){
