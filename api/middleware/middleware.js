@@ -17,7 +17,8 @@ function validateUserId(req, res, next) {
       req.user=userFound //valid user saved to req.user
       next();
     }else{
-      res.status(404).json({message: "sorry ,user not found"})
+      // res.status(404).json({message: "sorry ,user not found"})
+      next({code:404, message:'sorry user Id not found'})
     }
   })
   .catch(err=>{ 
