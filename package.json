@@ -1,22 +1,30 @@
 {
-    "name": "node-api3-project",
-    "version": "1.0.0",
-    "scripts": {
-        "start": "node index.js",
-        "server": "nodemon index.js"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/LambdaSchool/node-api3-project.git"
-    },
-    "dependencies": {
-        "express": "^4.17.1",
-        "knex": "^0.21.15",
-        "sqlite3": "^5.0.1"
-    },
-    "devDependencies": {
-        "eslint": "^7.17.0",
-        "knex-cleaner": "^1.3.1",
-        "nodemon": "^2.0.7"
-    }
+  "name": "api3-project",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node index.js",
+    "server": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LambdaSchool/node-api3-project.git"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "knex": "^0.21.15",
+    "sqlite3": "^5.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.17.0",
+    "knex-cleaner": "^1.3.1",
+    "nodemon": "^2.0.7"
+  },
+  "description": "In this challenge, you build an API and write custom middleware that satisfies the requirements listed under the `Minimum Viable Product` section.",
+  "bugs": {
+    "url": "https://github.com/LambdaSchool/node-api3-project/issues"
+  },
+  "homepage": "https://github.com/LambdaSchool/node-api3-project#readme",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC"
 }
