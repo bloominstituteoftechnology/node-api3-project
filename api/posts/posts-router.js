@@ -3,6 +3,7 @@ const Posts = require("../posts/posts-model")
 
 const {
   validatePostId,
+  validatePost
 } = require('../middleware/middleware')
 
 const router = express.Router();
@@ -33,7 +34,7 @@ router.get('/:id', validatePostId, (req, res) => {
 router.delete('/:id', validatePostId, (req, res) => {
 Posts.remove(req.params.id)
 .then(posts => {
-  if(count > 0) {
+  if(posts > 0) {
     res.status(200).json({message: 'deleted'});
   } else {
     res.status(404).json({message: 'Could not be found'})
@@ -46,8 +47,8 @@ Posts.remove(req.params.id)
 
 });
 
-router.put('/:id', validatePostId, (req, res) => {
-Posts.update(req.params.id)
+router.put('/:id', [validatePostId,validatePost], (req, res) => {
+Posts.update(req.params.id, req.body)
 .then(posts => {
   if (posts) {
     res.status(200).json(posts)
