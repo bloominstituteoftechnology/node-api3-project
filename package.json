@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "scripts": {
         "start": "node index.js",
-        "server": "nodemon index.js"
+        "server": "nodemon --require dotenv/config index.js"
     },
     "repository": {
         "type": "git",
@@ -12,8 +12,8 @@
     "dependencies": {
         "cors": "^2.8.5",
         "express": "^4.17.1",
-        "helmet": "^4.4.1",
-        "knex": "^0.21.15",
+        "helmet": "^4.2.0",
+        "knex": "^0.21.12",
         "morgan": "^1.10.0",
         "sqlite3": "^5.0.0"
     },
