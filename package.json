@@ -10,8 +10,11 @@
         "url": "git+https://github.com/LambdaSchool/node-api3-project.git"
     },
     "dependencies": {
+        "dotenv": "^8.2.0",
         "express": "^4.17.1",
+        "helmet": "^4.4.1",
         "knex": "^0.21.15",
+        "morgan": "^1.10.0",
         "sqlite3": "^5.0.1"
     },
     "devDependencies": {
