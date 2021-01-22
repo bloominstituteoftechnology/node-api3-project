@@ -11,9 +11,9 @@ function UserInfo({users}){
 
 useEffect(()=>{
 fetchPosts(id,setPosts)
-},[])
+},[id])
 
-const user= users.find(item=> item.id == id)
+const user= users.find(item=> item.id === Number(id))
 
 const handleBack=()=>{
  history.push('/')

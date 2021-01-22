@@ -1,8 +1,9 @@
 import axios from 'axios';
+const baseURL="https://kavya-post.herokuapp.com";
 
 function fetchPosts(id,setPosts){
 
-axios.get(`http://localhost:4000/api/users/${id}/posts`)
+axios.get(`${baseURL}/api/users/${id}/posts`)
 .then(res=>{
     console.log('res in get posts:',res)
     setPosts(res.data)
