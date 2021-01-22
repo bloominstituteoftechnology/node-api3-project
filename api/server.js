@@ -19,15 +19,20 @@ server.use((req,res,next) =>{
   next();
 
 })
+
+
 const postsRouterPipeline = [logger,logger,logger]
 server.use('/api/posts', postsRouterPipeline, postsRouter )
 
 server.get('/', (req, res) => {
-  const textIn = (req.text) ? ` ${req.text}` : '';
+  const textIn = (req.text) ? ` ${req.text}` : 'NA';
   res.send(`<h2>Post Says ${textIn}!</h2>`);
 });
 
+
+
 module.exports = server;
+
 
 function logger(req, res, next) {
   console.log('falling into posts router')
