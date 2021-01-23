@@ -14,7 +14,7 @@ function get() {
 
 function getById(id) {
   return db('posts')
-    .where({ id })
+    .where({ user_id })
     .first();
 }
 
