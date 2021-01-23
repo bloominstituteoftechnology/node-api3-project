@@ -1,10 +1,10 @@
 const express = require('express');
 
 const Posts = require('./posts-model.js');
-
+const { validatePost } = require('../middleware/middleware')
 const router = express.Router();
 
-router.get('/', (req, res,next) => {
+router.get('/', validatePost, (req, res,next) => {
   // Get the posts db
   Posts.get()
     .then(posts => {
