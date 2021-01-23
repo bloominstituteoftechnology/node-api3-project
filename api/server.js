@@ -2,7 +2,7 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors')
 const postsRouter = require('./posts/posts-router.js')
-
+const { validatePost } = './middleware/middleware.js'
 const server = express();
 
 // remember express by default cannot parse JSON in request bodies

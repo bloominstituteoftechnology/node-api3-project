@@ -1,10 +1,10 @@
 const express = require('express');
 
 const Posts = require('./posts-model.js');
-const { validatePost } = require('../middleware/middleware')
+const { validatePost,validatePostId } = require('../middleware/middleware')
 const router = express.Router();
 
-router.get('/', validatePost, (req, res,next) => {
+router.get('/',  (req, res,next) => {
   // Get the posts db
   Posts.get()
     .then(posts => {
@@ -16,9 +16,10 @@ router.get('/', validatePost, (req, res,next) => {
     })
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', validatePostId,(req, res) => {
   // do your magic!
   // this needs a middleware to verify post id
+  res.status(200).json(req.Posts)
 });
 
 router.delete('/:id', (req, res) => {
