@@ -54,9 +54,15 @@ router.delete('/:id', mw.validateUserId, (req, res) => {
     })
 });
 
+// RETURN THE ARRAY OF USER POSTS
 router.get('/:id/posts', mw.validateUserId, (req, res) => {
-  // RETURN THE ARRAY OF USER POSTS
-  // this needs a middleware to verify user id
+  Users.getUserPosts(req.params.id)
+  .then((posts) =>{
+    res.status(200).json(posts)
+  })
+  .catch((error) =>{
+    res.status(500).json({message: 'Error retrieving posts'})
+  })
 });
 
 router.post('/:id/posts',mw.validateUserId, mw.validatePost, (req, res) => {
