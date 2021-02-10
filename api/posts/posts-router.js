@@ -1,14 +1,17 @@
-const express = require('express');
-
+const express = require("express");
+const Post = require("./posts-model");
 const router = express.Router();
-
-router.get('/', (req, res) => {
-  // RETURN AN ARRAY WITH ALL THE POSTS
+const { validatePostId } = require("../middleware/middleware");
+router.get("/", async (req, res) => {
+    const posts = await Post.get();
+    res.json(200).json(posts);
 });
 
-router.get('/:id', (req, res) => {
-  // RETURN THE POST OBJECT
-  // this needs a middleware to verify post id
+router.get("/:id", validatePostId, async (req, res) => {
+    const { id } = req.params;
+    const post = await Post.findById(id);
+    res.status(200).json(post);
 });
 
 // do not forget to export the router
+module.exports = router;
