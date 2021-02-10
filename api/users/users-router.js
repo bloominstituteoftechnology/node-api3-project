@@ -3,37 +3,37 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  // do your magic!
+  // RETURN AN ARRAY WITH ALL THE USERS
 });
 
 router.get('/:id', (req, res) => {
-  // do your magic!
+  // RETURN THE USER OBJECT
   // this needs a middleware to verify user id
 });
 
 router.post('/', (req, res) => {
-  // do your magic!
+  // RETURN THE NEWLY CREATED USER OBJECT
   // this needs a middleware to check that the request body is valid
 });
 
 router.put('/:id', (req, res) => {
-  // do your magic!
+  // RETURN THE FRESHLY UPDATED USER OBJECT
   // this needs a middleware to verify user id
   // and another middleware to check that the request body is valid
 });
 
 router.delete('/:id', (req, res) => {
-  // do your magic!
+  // RETURN THE FRESHLY DELETED USER OBJECT
   // this needs a middleware to verify user id
 });
 
 router.get('/:id/posts', (req, res) => {
-  // do your magic!
+  // RETURN THE ARRAY OF USER POSTS
   // this needs a middleware to verify user id
 });
 
 router.post('/:id/posts', (req, res) => {
-  // do your magic!
+  // RETURN THE NEWLY CREATED USER POST
   // this needs a middleware to verify user id
   // and another middleware to check that the request body is valid
 });
