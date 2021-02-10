@@ -25,7 +25,8 @@ There are two possible ways to submit your project. Your instructor should have 
 
 ### Task 2: Minimum Viable Product
 
-- Write five custom `middleware` functions detailed below, in `api/middleware/middleware.js`.
+- Wire the application together completing `api/server.js` and `index.js`.
+- Write four custom middleware functions detailed below, in `api/middleware/middleware.js`.
 - Complete the endpoints inside `api/posts/posts-router.js` and `api/users/users-router.js`.
 - Use the custom middlewares in their appropriate places in the application (specific endpoints, entire routes or globally).
 - There are endpoints in `users-router.js` to retrieve the list of `posts` by a `user` and to store a new `post` for a `user`.
@@ -48,12 +49,6 @@ There are two possible ways to submit your project. Your instructor should have 
   - `validateUser` validates the `body` on a request to create or update a user
   - if the request `body` is missing, respond with status `400` and `{ message: "missing user data" }`
   - if the request `body` lacks the required `name` field, respond with status `400` and `{ message: "missing required name field" }`
-
-- `validatePostId()`
-
-  - this middleware will be used for all post endpoints that include an `id` parameter in the url (ex: `/api/posts/:id` and it should check the database to make sure there is a post with that id.
-  - if the `id` parameter is valid, store the post object as `req.post` and allow the request to continue
-  - if the `id` parameter does not match any post id in the database, respond with status `404` and `{ message: "post not found" }`
 
 - `validatePost()`
 
