@@ -16,9 +16,9 @@ router.get('/', (req, res) => {
   })
 });
 
-router.get('/:id', (req, res) => {
-  // RETURN THE POST OBJECT
-  // this needs a middleware to verify post id
+// RETURN THE POST OBJECT FROM SPECIFIED ID
+router.get('/:id', mw.validatePostId, (req, res) => {
+ res.status(200).json(req.post);
 });
 
 // do not forget to export the router
