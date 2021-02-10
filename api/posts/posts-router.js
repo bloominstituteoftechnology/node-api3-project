@@ -3,11 +3,11 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  // do your magic!
+  // RETURN AN ARRAY WITH ALL THE POSTS
 });
 
 router.get('/:id', (req, res) => {
-  // do your magic!
+  // RETURN THE POST OBJECT
   // this needs a middleware to verify post id
 });
 
