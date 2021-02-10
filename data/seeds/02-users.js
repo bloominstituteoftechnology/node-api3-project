@@ -1,13 +1,17 @@
-exports.seed = function(knex, Promise) {
-  return knex('users').insert([
-    { name: 'Frodo Baggins' }, // 1
-    { name: 'Samwise Gamgee' }, // 2
-    { name: 'Meriadoc Brandybuck' }, // 3
-    { name: 'Peregrin Took' }, // 4
-    { name: 'Mithrandir' }, // 5
-    { name: 'Boromir' }, // 6
-    { name: 'Legolas' }, // 7
-    { name: 'Gimli' }, // 8
-    { name: 'Aragorn' }, // 9
-  ]);
+const users = [
+  { name: 'Frodo Baggins' },
+  { name: 'Samwise Gamgee' },
+  { name: 'Meriadoc Brandybuck' },
+  { name: 'Peregrin Took' },
+  { name: 'Mithrandir' },
+  { name: 'Boromir' },
+  { name: 'Legolas' },
+  { name: 'Gimli' },
+  { name: 'Aragorn' },
+];
+
+exports.users = users;
+
+exports.seed = function (knex) {
+  return knex('users').insert(users);
 };

@@ -1,21 +1,26 @@
-module.exports = {
-  development: {
-    client: 'sqlite3',
-    useNullAsDefault: true,
-    connection: {
-      filename: './data/blog.db3',
-    },
-    pool: {
-      afterCreate: (conn, done) => {
-        conn.run('PRAGMA foreign_keys = ON', done);
-      },
-    },
-    migrations: {
-      directory: './data/migrations',
-      tableName: 'knex_migrations',
-    },
-    seeds: {
-      directory: './data/seeds',
+const sharedConfig = {
+  client: 'sqlite3',
+  useNullAsDefault: true,
+  migrations: {
+    directory: './data/migrations',
+  },
+  seeds: {
+    directory: './data/seeds',
+  },
+  pool: {
+    afterCreate: (conn, done) => {
+      conn.run('PRAGMA foreign_keys = ON', done)
     },
   },
-};
+}
+
+module.exports = {
+  development: {
+    ...sharedConfig,
+    connection: { filename: './data/lambda.db3' },
+  },
+  testing: {
+    ...sharedConfig,
+    connection: { filename: './data/testing.db3' },
+  },
+}

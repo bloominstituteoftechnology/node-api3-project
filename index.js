@@ -1,1 +1,1 @@
-// require your server and start it
+// require your server and launch it
