@@ -1,6 +1,16 @@
 const express = require('express');
+const morgan = require('morgan');
+const helmet = require('helmet');
+
+const postsRouter = require('./posts/posts-router');
+const usersRouter = require('./users/users-router');
 
 const server = express();
+
+server.use(helmet());
+server.use(express.json(), morgan('dev'));
+server.use('/api/posts', postsRouter);
+server.use('/api/users', usersRouter);
 
 // remember express by default cannot parse JSON in request bodies
 
@@ -8,6 +18,7 @@ const server = express();
 
 server.get('/', (req, res) => {
   res.send(`<h2>Let's write some middleware!</h2>`);
+  res.status.json({message: 'API running', env: process.env.NODE_ENV})
 });
 
 module.exports = server;
