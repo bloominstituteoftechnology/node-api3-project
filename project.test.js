@@ -82,4 +82,95 @@ describe('server.js', () => {
       expect(res.body.message).toMatch(/missing required name/i)
     })
   })
+  describe('4 [PUT] /api/users/:id', () => {
+    it('writes the updates in the database', async () => {
+      await request(server).put('/api/users/1').send({ name: 'FRODO BAGGINS' })
+      let users = await db('users')
+      expect(users[0]).toMatchObject({ id: 1, name: 'FRODO BAGGINS' })
+    })
+    it('responds with the newly updated user', async () => {
+      let res = await request(server).put('/api/users/1').send({ name: 'FRODO BAGGINS' })
+      expect(res.body).toMatchObject({ id: 1, name: 'FRODO BAGGINS' })
+    })
+    it('responds with a 404 if user id does not exist', async () => {
+      let res = await request(server).put('/api/users/111').send({ name: 'FRODO BAGGINS' })
+      expect(res.status).toBe(404)
+    })
+    it('responds with a 400 if empty payload', async () => {
+      let res = await request(server).put('/api/users/1')
+      expect(res.status).toBe(400)
+    })
+    it('responds with a 400 if missing name', async () => {
+      let res = await request(server).put('/api/users/1').send({ no: 'FRODO BAGGINS' })
+      expect(res.status).toBe(400)
+    })
+    it('responds with the correct error message if empty payload', async () => {
+      let res = await request(server).put('/api/users/1')
+      expect(res.body.message).toMatch(/missing user data/i)
+    })
+    it('responds with the correct error message if missing name', async () => {
+      let res = await request(server).put('/api/users/1').send({ no: 'FRODO BAGGINS' })
+      expect(res.body.message).toMatch(/missing required name/i)
+    })
+  })
+  describe('5 [DELETE] /api/users/:id', () => {
+    it('deletes the user from the database', async () => {
+      await request(server).delete('/api/users/1')
+      let users = await db('users')
+      expect(users[0]).toMatchObject({ name: 'Samwise Gamgee' })
+    })
+    it('responds with the newly deleted user', async () => {
+      let res = await request(server).delete('/api/users/1')
+      expect(res.body).toMatchObject({ id: 1, name: 'Frodo Baggins' })
+    })
+    it('responds with a 404 if user id does not exist', async () => {
+      let res = await request(server).delete('/api/users/111')
+      expect(res.status).toBe(404)
+    })
+  })
+  describe('6 [GET] /api/users/:id/posts', () => {
+    it('gets the correct number of user posts', async () => {
+      const res = await request(server).get('/api/users/1/posts')
+      expect(res.body).toHaveLength(initialPosts.filter(p => p.user_id == 1).length)
+    })
+    it('responds with a 404 if user id does not exist', async () => {
+      const res = await request(server).get('/api/users/111/posts')
+      expect(res.status).toBe(404)
+    })
+  })
+  describe('7 [POST] /api/users/:id/posts', () => {
+    it('creates a new user post in the database', async () => {
+      await request(server).post('/api/users/1/posts').send({ text: 'foo' })
+      let posts = await db('posts').where('user_id', 1)
+      expect(posts).toHaveLength(initialPosts.filter(p => p.user_id == 1).length + 1)
+      await request(server).post('/api/users/1/posts').send({ text: 'bar' })
+      posts = await db('posts').where('user_id', 1)
+      expect(posts).toHaveLength(initialPosts.filter(p => p.user_id == 1).length + 2)
+    })
+    it('responds with the newly created user post', async () => {
+      let res = await request(server).post('/api/users/1/posts').send({ text: 'foo' })
+      expect(res.body).toHaveProperty('id')
+      expect(res.body).toMatchObject({ text: 'foo' })
+    })
+    it('responds with a 404 if user id does not exist', async () => {
+      let res = await request(server).post('/api/users/111/posts').send({ text: 'foo' })
+      expect(res.status).toBe(404)
+    })
+    it('responds with a 400 if empty payload', async () => {
+      let res = await request(server).post('/api/users/1/posts')
+      expect(res.status).toBe(400)
+    })
+    it('responds with a 400 if missing text', async () => {
+      let res = await request(server).post('/api/users/1/posts').send({ no: 'foo' })
+      expect(res.status).toBe(400)
+    })
+    it('responds with the correct error message if empty payload', async () => {
+      let res = await request(server).post('/api/users/1/posts')
+      expect(res.body.message).toMatch(/missing post data/i)
+    })
+    it('responds with the correct error message if missing text', async () => {
+      let res = await request(server).post('/api/users/1/posts').send({ no: 'foo' })
+      expect(res.body.message).toMatch(/missing required text/i)
+    })
+  })
 })
