@@ -35,15 +35,13 @@ function validateUser(req, res, next) {
 
 function validatePost(req, res, next) {
   const { text } = req.body;
-  try{
-        if(!text){
+        if(!req.body){
             res.status(400).json({message: 'missing post data'});
-          } else{
+          } else if(!text){
             next();
+          } else{
+            next()
           }
-      } catch(error){
-          res.status(400).json({message: 'missing required text field'});
-        }
 }
 
 async function validatePostId (req, res, next) {

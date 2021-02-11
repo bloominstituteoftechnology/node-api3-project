@@ -67,11 +67,10 @@ router.get('/:id/posts', mw.validateUserId, (req, res) => {
 });
 
 // RETURN THE NEWLY CREATED USER POST
-router.post('/:id/posts',mw.validateUserId, mw.validatePostId, (req, res, next) => {
-  const postInfo = {...req.body};
+router.post('/:id/posts',mw.validateUserId, mw.validatePost, (req, res, next) => {
+  const postInfo = {...req.body, user_id: req.params.id};
 
-  Users.insert(postInfo)
-  console.log(postInfo)
+  Posts.insert(postInfo)
   .then((post) =>{
     res.status(201).json(post);
   })
