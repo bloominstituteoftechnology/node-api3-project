@@ -1,5 +1,5 @@
 // require your server and launch it
-const dotenv = require("dotenv").config();
+require('dotenv').config();
 const server = require('./api/server');
 
 
