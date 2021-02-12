@@ -14,6 +14,7 @@ server.use(helmet());
 server.use(express.json(), morgan('dev'));
 server.use('/api/posts', postsRouter);
 server.use('/api/users', usersRouter);
+
 server.use("/api/*", (_,res)=>{
   res.json({data:"THE API IS ALIVE"})
 })
