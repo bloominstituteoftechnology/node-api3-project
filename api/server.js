@@ -5,8 +5,6 @@ const helmet = require('helmet');
 const postsRouter = require('./posts/posts-router');
 const usersRouter = require ('./users/users-router');
 
-const mw = require('./middleware/middleware');
-
 const server = express();
 
 server.use(helmet());

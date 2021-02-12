@@ -1,9 +1,9 @@
-const Posts = require('../posts/posts-model');
 const Users = require('../users/users-model');
 
-function logger (req, res, next) => {
+function logger (req, res, next) {
   // do your magic!
-  console.log(req.method, 'Request URL:', req.originalUrl, new Date().toUTCString())
+  console.log(req.method, 'Request URL:', req.originalUrl, new Date().toUTCString());
+  next()
 }
 
 async function validateUserId(req, res, next) {
@@ -39,7 +39,7 @@ function validateUser(req, res, next) {
   }
 }
 
-function validatePost(req, res, next) {
+async function validatePost(req, res, next) {
   // do your magic!
   const { text } = req.body
 
@@ -52,10 +52,32 @@ function validatePost(req, res, next) {
   }
 }
 
+async function validatePostId (req, res, next) {
+
+  const {id} = req.params
+
+  const post = await Posts.getById(id)
+
+  try {
+
+    if(!post) {
+      res.status(404).json({
+        message: 'no user found'
+      })
+    } else {
+      req.id = id
+      req.user = post
+      next()
+    }
+  } catch(error) {
+    res.status(404).json(error.message)
+  }
+
 // do not forget to expose these functions to other modules
 module.exports = {
   logger,
   validateUserId,
   validateUser,
-  validatePost
+  validatePost,
+  validatePostId
 }
