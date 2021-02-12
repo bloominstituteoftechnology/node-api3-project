@@ -4,13 +4,16 @@
     "scripts": {
         "start": "node index.js",
         "server": "nodemon index.js",
-        "test": "cross-env NODE_ENV=testing jest --watch --verbose --runInBand --silent"
+        "test": "cross-env NODE_ENV=testing jest --watch --verbose --runInBand --silent",
+        "heroku-postbuild": "cd client && npm i && npm run build"
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/LambdaSchool/node-api3-project.git"
     },
     "dependencies": {
+        "cors": "^2.8.5",
+        "dotenv": "^8.2.0",
         "express": "^4.17.1",
         "helmet": "^4.4.1",
         "knex": "^0.21.17",
