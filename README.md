@@ -53,7 +53,7 @@ There are two possible ways to submit your project. Your instructor should have 
 
   - `validatePost` validates the `body` on a request to create a new post
   - if the request `body` is missing, respond with status `400` and `{ message: "missing post data" }`
-  - if the request `body` lacks the required `text` field, respond with status `400` and `{ message: "missing required text field" }`
+  - if the request `body` lacks the required `text` and `user_id` fields, respond with status `400` and `{ message: "missing required text and user_id fields" }`
 
 ### Database Persistence Helpers
 
