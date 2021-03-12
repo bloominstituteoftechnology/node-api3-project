@@ -10,6 +10,7 @@ module.exports = {
 };
 
 function get() {
+  //throw 'err'
   return db('users');
 }
 
