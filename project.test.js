@@ -65,17 +65,9 @@ describe('server.js', () => {
       res = await request(server).post('/api/users').send({ name: 'bar' })
       expect(res.body).toMatchObject({ id: 11, name: 'bar' })
     })
-    it('responds with a 400 if empty payload', async () => {
-      let res = await request(server).post('/api/users')
-      expect(res.status).toBe(400)
-    })
     it('responds with a 400 if missing name', async () => {
       let res = await request(server).post('/api/users').send({ random: 'thing' })
       expect(res.status).toBe(400)
-    })
-    it('responds with the correct error message if empty payload', async () => {
-      let res = await request(server).post('/api/users')
-      expect(res.body.message).toMatch(/missing user data/i)
     })
     it('responds with the correct error message if missing name', async () => {
       let res = await request(server).post('/api/users').send({ random: 'thing' })
@@ -96,17 +88,9 @@ describe('server.js', () => {
       let res = await request(server).put('/api/users/111').send({ name: 'FRODO BAGGINS' })
       expect(res.status).toBe(404)
     })
-    it('responds with a 400 if empty payload', async () => {
-      let res = await request(server).put('/api/users/1')
-      expect(res.status).toBe(400)
-    })
     it('responds with a 400 if missing name', async () => {
       let res = await request(server).put('/api/users/1').send({ no: 'FRODO BAGGINS' })
       expect(res.status).toBe(400)
-    })
-    it('responds with the correct error message if empty payload', async () => {
-      let res = await request(server).put('/api/users/1')
-      expect(res.body.message).toMatch(/missing user data/i)
     })
     it('responds with the correct error message if missing name', async () => {
       let res = await request(server).put('/api/users/1').send({ no: 'FRODO BAGGINS' })
@@ -156,17 +140,9 @@ describe('server.js', () => {
       let res = await request(server).post('/api/users/111/posts').send({ text: 'foo' })
       expect(res.status).toBe(404)
     })
-    it('responds with a 400 if empty payload', async () => {
-      let res = await request(server).post('/api/users/1/posts')
-      expect(res.status).toBe(400)
-    })
     it('responds with a 400 if missing text', async () => {
       let res = await request(server).post('/api/users/1/posts').send({ no: 'foo' })
       expect(res.status).toBe(400)
-    })
-    it('responds with the correct error message if empty payload', async () => {
-      let res = await request(server).post('/api/users/1/posts')
-      expect(res.body.message).toMatch(/missing post data/i)
     })
     it('responds with the correct error message if missing text', async () => {
       let res = await request(server).post('/api/users/1/posts').send({ no: 'foo' })
