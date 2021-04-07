@@ -88,9 +88,10 @@ The _Database Schemas_ for the `users` and `posts` resources are:
 
 We have provided test data for the resources.
 
-#### Notes
+#### Important Notes
 
 - Run tests locally executing `npm test`.
+- Reset the database by executing `npm run resetdb`.
 - You are welcome to create additional files but **do not move or rename existing files** or folders.
 - Do not alter your `package.json` file except to install additional libraries or add additional scripts.
 - In your solution, it is essential that you follow best practices and produce clean and professional results.
