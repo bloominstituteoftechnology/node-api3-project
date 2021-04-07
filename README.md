@@ -90,6 +90,7 @@ We have provided test data for the resources.
 
 #### Notes
 
+- Run tests locally executing `npm test`.
 - You are welcome to create additional files but **do not move or rename existing files** or folders.
 - Do not alter your `package.json` file except to install additional libraries or add additional scripts.
 - In your solution, it is essential that you follow best practices and produce clean and professional results.
