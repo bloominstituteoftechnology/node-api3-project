@@ -36,10 +36,10 @@ function validateUser(req, res, next) {
   if(req.body.name){
     users.checkNameUnique(req.body.name)
       .then( user =>{
-        if(user)
-          res.status(400).json({message: 'Name must be unique'})
-        else
+        if(user.length === 0)
           next()
+        else
+          res.status(400).json({message: 'Name must be unique'})
       })
       .catch( error => {
         res.status(500).json({message: 'Server error', error})

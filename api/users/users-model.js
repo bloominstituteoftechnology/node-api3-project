@@ -30,21 +30,27 @@ function getUserPosts(userId) {
 function checkNameUnique(name){
   return db('users as u')
     .select('u.name')
-    .where(name)
+    .where('u.name', name)
 }
 
 function insert(user) {
   return db('users')
     .insert(user)
     .then(ids => {
+      console.log(ids)
       return getById(ids[0]);
     });
 }
 
+// changed this to return the updated object
 function update(id, changes) {
   return db('users')
     .where({ id })
-    .update(changes);
+    // .returning('name') not supported by sqlite3
+    .update(changes)
+    .then( () => {
+      return getById(id)
+    })
 }
 
 function remove(id) {

@@ -30,20 +30,43 @@ router.get('/:id', validateUserId, (req, res) => {
   res.status(200).json(req.user)
 });
 
-router.post('/', (req, res) => {
+router.post('/', validateUser, (req, res) => {
   // RETURN THE NEWLY CREATED USER OBJECT
   // this needs a middleware to check that the request body is valid
+  const { name } = req.body
+  users.insert({name})
+    .then( newUser => {
+      res.status(201).json(newUser)
+    })
+    .catch( error => {
+      res.status(500).json({message: 'Server Error', error})
+    })
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validateUserId, validateUser, (req, res) => {
   // RETURN THE FRESHLY UPDATED USER OBJECT
   // this needs a middleware to verify user id
   // and another middleware to check that the request body is valid
+  const { name } = req.body
+  users.update(req.params.id, { name })
+    .then( user => {
+      res.status(200).json(user)
+    })
+    .catch( error => {
+      res.status(500).json({message: 'Server Error', error})
+    })
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', validateUserId, (req, res) => {
   // RETURN THE FRESHLY DELETED USER OBJECT
   // this needs a middleware to verify user id
+  users.remove(req.params.id)
+    .then( () => {
+      res.status(200).json(req.user)
+    })
+    .catch( error => {
+      res.status(500).json({message: 'Server Error', error})
+    })
 });
 
 router.get('/:id/posts', (req, res) => {
