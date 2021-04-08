@@ -4,6 +4,7 @@ module.exports = {
   get,
   getById,
   getUserPosts,
+  checkNameUnique,
   insert,
   update,
   remove,
@@ -24,6 +25,12 @@ function getUserPosts(userId) {
     .join('users as u', 'u.id', 'p.user_id')
     .select('p.id', 'p.text', 'u.name as postedBy')
     .where('p.user_id', userId);
+}
+
+function checkNameUnique(name){
+  return db('users as u')
+    .select('u.name')
+    .where(name)
 }
 
 function insert(user) {
