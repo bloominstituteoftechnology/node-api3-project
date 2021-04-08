@@ -23,7 +23,7 @@ function validateUserId(req, res, next) {
         req.user = user
         next()
       } else {
-        res.status(404).json({message : `Could not find user with id ${req.params.id}`})
+        res.status(404).json({message: `User ${req.params.id} not found`})
       }
     })
     .catch( error => {
@@ -46,7 +46,7 @@ function validateUser(req, res, next) {
       })
   }
   else
-    res.status(400).json({message: 'Name is required'})
+    res.status(400).json({ message: 'missing required name field' })
 }
 
 function validatePost(req, res, next) {
@@ -54,5 +54,5 @@ function validatePost(req, res, next) {
   if(req.body.text)
     next()
   else
-    res.status(400).json({message: 'Field "text" is required'})
+    res.status(400).json({ message: 'missing required text field' })
 }
