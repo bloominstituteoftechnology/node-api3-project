@@ -54,5 +54,5 @@ function validatePost(req, res, next) {
   if(req.body.text)
     next()
   else
-    res.status(400)
+    res.status(400).json({message: 'Field "text" is required'})
 }
