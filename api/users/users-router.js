@@ -4,7 +4,6 @@ const Posts = require('../posts/posts-model.js')
 // You will need `users-model.js` and `posts-model.js` both
 // The middleware functions also need to be required
 const mw = require("../middleware/middleware.js");
-const { json } = require('express');
 
 const router = express.Router();
 
@@ -37,7 +36,7 @@ router.post('/', mw.validateUser, (req, res) => {
 router.put('/:id', mw.validateUserId, mw.validateUser, (req, res) => {
     Users.update(req.params.id, req.body)
     .then(async ()=>{
-        updatedUser = await Users.getById(req.params.id)
+        const updatedUser = await Users.getById(req.params.id)
         res.status(200).json(updatedUser)
     })
     .catch(error=>{
@@ -47,7 +46,7 @@ router.put('/:id', mw.validateUserId, mw.validateUser, (req, res) => {
 });
 
 router.delete('/:id', mw.validateUserId, async (req, res) => {
-    user = await Users.getById(req.params.id)
+    const user = await Users.getById(req.params.id)
     Users.remove(req.params.id)
     .then(()=>{
         res.status(200).json(user)
