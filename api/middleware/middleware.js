@@ -17,13 +17,13 @@ function logger(req, res, next) {
 
 function validateUserId(req, res, next) {
   // DO YOUR MAGIC
-  users.getById(req.params.user_id)
+  users.getById(req.params.id)
     .then( user => {
       if(user){
         req.user = user
         next()
       } else {
-        res.status(404).json({message : `Could not find user with id ${req.params.user_id}`})
+        res.status(404).json({message : `Could not find user with id ${req.params.id}`})
       }
     })
     .catch( error => {
