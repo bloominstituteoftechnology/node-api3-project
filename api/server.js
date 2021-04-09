@@ -1,7 +1,6 @@
 const express = require('express');
 const userRouter = require("./users/users-router.js")
 const cors = require("cors")
-const dotenv = require("dotenv").config();
 
 const server = express();
 server.use(cors())
