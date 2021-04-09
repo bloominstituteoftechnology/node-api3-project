@@ -1,8 +1,8 @@
 // require your server and launch it
-const server = require("./api/server.js")
 const dotenv = require("dotenv").config();
-const port = process.env.PORT || 9000
+const server = require("./api/server.js")
+const PORT = process.env.PORT || 4000
 
-server.listen(port, ()=>{
-    console.log(`Running on ${port} at ${__dirname}`)
+server.listen(PORT, ()=>{
+    console.log(`Running on ${PORT}`)
 })
