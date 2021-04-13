@@ -1,8 +1,23 @@
 const user = require("../users/users-model")
 
 
-function logger(req, res, next) {
+function logger(format) {
   // DO YOUR MAGIC
+  return (req, res, next) => {
+    const time = new Date().toISOString()
+
+    switch (format) {
+      case "short":
+    console.log(`${req.ip} made a ${req.method}`)
+        break
+      case "long":
+    console.log(`${req.ip} made a ${req.method} request to ${req.url} at ${time}`)
+        break
+      default:
+        return next("Error: Need a logger format")
+    }
+  next()
+}
 }
 
 function validateUserId() {
@@ -33,9 +48,19 @@ function validateUser() {
   }
 }
 
-function validatePost(req, res, next) {
+function validatePost() {
   // DO YOUR MAGIC
-
+  return (req, res, next) => {
+    if (!req.body.text) {
+      return res.status(400).json({message: "missing required text field"})
+    }
+      next()
+  }
 }
 
 // do not forget to expose these functions to other modules
+
+
+module.exports = {
+  logger, validateUserId, validateUser, validatePost
+}
