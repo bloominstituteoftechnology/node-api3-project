@@ -48,7 +48,11 @@ router.get('/users/:id/posts', validateUserId(), (req, res, next) => {
 });
 
 router.post('/users/:id/posts', validateUserId(), validatePost(), (req, res, next) => {
-  posts.insert(req.body)
+  const postData = {
+    ...req.body,
+    user_id: req.params.id,
+  }
+  posts.insert(postData)
     .then(post => {
       res.status(201).json(post)
     })
