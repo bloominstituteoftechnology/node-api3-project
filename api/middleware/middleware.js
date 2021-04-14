@@ -46,7 +46,13 @@ const validateUser = () => {
 
 const validatePost = () => {
   return(req, res, next) => {
-  // DO YOUR MAGIC
+    if (!req.body.text) {
+			return res.status(400).json({
+				message: "Missing post text",
+			})
+		}
+
+		next()
   }
 }
 
@@ -54,5 +60,6 @@ const validatePost = () => {
 module.exports = {
   logger,
   validateUserId,
-  validateUser
+  validateUser,
+  validatePost
 }
