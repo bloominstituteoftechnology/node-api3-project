@@ -1,3 +1,5 @@
+//omw to doing this 
+
 const db = require('../../data/db-config');
 
 module.exports = {
