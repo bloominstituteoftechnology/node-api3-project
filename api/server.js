@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require("express");
 
 const server = express();
 
@@ -6,8 +6,8 @@ const server = express();
 
 // global middlewares and the user's router need to be connected here
 
-server.get('/', (req, res) => {
-  res.send(`<h2>Let's write some middleware!</h2>`);
+server.get("/", (req, res) => {
+  res.send(`<h2>Let's write some middleware!!</h2>`);
 });
 
 module.exports = server;
