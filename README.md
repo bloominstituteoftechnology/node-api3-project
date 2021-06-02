@@ -18,10 +18,10 @@ There are two possible ways to submit your project. Your instructor should have 
 
 #### Option B - Pull Request
 
-- [ ] Fork and clone the repository.
-- [ ] Implement your project in a `firstname-lastname` branch.
-- [ ] Create a pull request of `firstname-lastname` against your `main` branch.
-- [ ] Open the assignment in Canvas and submit your pull request.
+- [*] Fork and clone the repository.
+- [*] Implement your project in a `firstname-lastname` branch.
+- [*] Create a pull request of `firstname-lastname` against your `main` branch.
+- [*] Open the assignment in Canvas and submit your pull request.
 
 ### Task 2: Minimum Viable Product
 
@@ -29,6 +29,17 @@ There are two possible ways to submit your project. Your instructor should have 
 - Write four custom middleware functions detailed below, in `api/middleware/middleware.js`.
 - Use the custom middlewares in their appropriate places in the application (specific endpoints, entire routes or globally).
 - There are endpoints in `users-router.js` to retrieve the list of `posts` by a `user` and to store a new `post` for a `user`.
+
+
+npm install
+control l
+npm run server
+new window npm test
+
+index.js and server.js
+middleware.js
+users-router.js
+
 
 #### Custom Middleware Requirements
 
