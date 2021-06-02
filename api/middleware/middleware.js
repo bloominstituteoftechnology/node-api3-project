@@ -1,5 +1,10 @@
+// - `logger` logs to the console the following information about each request: request method, request url, and a timestamp
+//   - this middleware runs on every request made to the API
 function logger(req, res, next) {
-  console.log("logger middleware");
+  const timestamp = new Date().toLocaleString();
+  const method = req.method;
+  const url = req.originalUrl;
+  console.log(`time: ${timestamp}, method: ${method}, URL: ${url} `);
   next();
 }
 
