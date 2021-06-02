@@ -1,10 +1,7 @@
-const express = require("express");
-
-const server = express();
-
-server.use(express.json());
-
-// remember express by default cannot parse JSON in request bodies
+const express = require("express"); //importing express
+const server = express(); //instatiating express
+server.use(express.json()); //method to recognize incoming request objects as JSON Object
+const { logger } = require("./middleware/middleware"); //middleware functions
 
 // global middlewares and the user's router need to be connected here
 
