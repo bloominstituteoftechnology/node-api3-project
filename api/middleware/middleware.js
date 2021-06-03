@@ -1,54 +1,65 @@
-//imports
-const users = require('../users/users-model');
-const post = require('../posts/posts-model');
-
+const User = require('../users/users-model');
 function logger(req, res, next) {
   // DO YOUR MAGIC
-  console.log(`Made a [${req.method}] to ${req.url} at ${time}`)
+  const timestamp = new Date().toLocaleString()
+  const method = req.method
+  const url = req.originalUrl
+  console.log(`[${method}] ${url}  at ${timestamp}`)
   next()
-}//end of logger
+}
 
-function validateUserId(req, res, next) {
+async function validateUserId(req, res, next) {
   // DO YOUR MAGIC
-  users.getById(req.params.id)
-  .then(user =>{
-    if (user){
-      req.user = user;
-      next();
-    }//end of if
-    else{
-      res.status(404).json({
-        message:'User not found'
-      })
-    }//end of else
-  })//end of then
-  .catch(error => {
-    console.log(error)
+  try{
+    const user = await User.getById(req.params.id)
+    if(!user){
+     
+        next({status: 404 , message: 'user not found'})
+      
+    }else{
+      req.user = user
+      next()
+    }
+
+  }//end of try
+  catch{
     res.status(500).json({
-      message: "Error retrieving the user"
+      message: 'problem finding user'
     })
-  })//end of catch
-}//end of validateUserId
+
+  }//end of catch
+
+
+
+}
 
 function validateUser(req, res, next) {
   // DO YOUR MAGIC
-  if(!req.body.name)  {
+  const {name} = req.body
+  if(!name || !name.trim()){
     res.status(400).json({
-      message : "Missing required name field"
+      message:'missing required name'
     })
+  }else{
+    req.name = name.trim();
+    next()
   }
-  next();
-}//end of validateUser
+
+
+}
 
 function validatePost(req, res, next) {
   // DO YOUR MAGIC
-  if(!req.body.text){
+  const {text} = req.body
+  if(!text || !text.trim()){
     res.status(400).json({
-      message:"Missing required text field"
+      message:'missing required text field'
     })
+  }else{
+    req.text = text.trim();
+    next()
   }
-  next();
-}//end of validatePost
+}
 
 // do not forget to expose these functions to other modules
 module.exports = {
