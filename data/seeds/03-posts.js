@@ -1,6 +1,6 @@
 const posts = [
   {
-    user_id: 1,
+    id: 1,
     text: 'I wish the ring had never come to me. I wish none of this had happened.',
   },
   {
