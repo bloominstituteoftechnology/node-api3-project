@@ -16,7 +16,7 @@ function validateUserId(req, res, next) {
   // DO YOUR MAGIC
 
   try {
-    const user = await user.getbyID(req.params.id)
+    const user = user.getbyID(req.params.id)
     if(!user) {
       res.status(404).json({
         message: 'no such user'
