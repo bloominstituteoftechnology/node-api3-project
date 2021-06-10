@@ -1,64 +1,46 @@
-const express = require("express");
-const {
-  validateUserId,
-  validateUser,
-  validatePost,
-} = require("../middleware/middleware");
+const express = require('express');
+
 // You will need `users-model.js` and `posts-model.js` both
 // The middleware functions also need to be required
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
+router.get('/', (req, res) => {
   // RETURN AN ARRAY WITH ALL THE USERS
-  console.log("made it");
 });
 
-router.get("/:id", validateUserId, (req, res) => {
+router.get('/:id', (req, res) => {
   // RETURN THE USER OBJECT
   // this needs a middleware to verify user id
-  //sanity check
-  console.log(req.user);
 });
 
-router.post("/", validateUser, (req, res) => {
+router.post('/', (req, res) => {
   // RETURN THE NEWLY CREATED USER OBJECT
   // this needs a middleware to check that the request body is valid
-  console.log("user validated", req.name);
 });
 
-router.put("/:id", validateUserId, validateUser, (req, res) => {
+router.put('/:id', (req, res) => {
   // RETURN THE FRESHLY UPDATED USER OBJECT
   // this needs a middleware to verify user id
   // and another middleware to check that the request body is valid
-  //sanity checker
-  console.log(req.user, req.name);
 });
 
-router.delete("/:id", validateUserId, (req, res) => {
+router.delete('/:id', (req, res) => {
   // RETURN THE FRESHLY DELETED USER OBJECT
   // this needs a middleware to verify user id
-  //sanity checker
-  console.log(req.user);
 });
 
-router.get("/:id/posts", validateUserId, (req, res) => {
+router.get('/:id/posts', (req, res) => {
   // RETURN THE ARRAY OF USER POSTS
   // this needs a middleware to verify user id
-  //sanity checker
-  console.log(req.user);
 });
 
-router.post("/:id/posts", validateUserId, validatePost, (req, res) => {
+router.post('/:id/posts', (req, res) => {
   // RETURN THE NEWLY CREATED USER POST
   // this needs a middleware to verify user id
   // and another middleware to check that the request body is valid
-  //sanity checker
-  console.log(req.text);
-  console.log(req.user);
-  
 });
 
 // do not forget to export the router
 
-module.exports = router;
+module.exports = router
