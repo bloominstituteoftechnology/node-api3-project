@@ -136,7 +136,7 @@ router.post("/:id/posts", validateUserId, validatePost, async (req, res, next) =
     }
 });
 
-router.use((err, req, res, next) => {// eslint-disable-line
+router.use((err, req, res) => {// eslint-disable-line
     res.status(err.status || 500).json({
         customMessage: 'dead path',
         message: err.message,
