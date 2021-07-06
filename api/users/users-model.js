@@ -37,7 +37,10 @@ function insert(user) {
 function update(id, changes) {
   return db('users')
     .where({ id })
-    .update(changes);
+    .update(changes)
+    .then(rows => {
+      return getById(id);
+    });
 }
 
 function remove(id) {
