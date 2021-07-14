@@ -8,7 +8,7 @@ const {
 
 // You will need `users-model.js` and `posts-model.js` both
 const User = require("./usersModel");
-const Post = require("./posts/postsRoutes");
+const Post = require("../posts/postsModel");
 // The middleware functions also need to be required
 const router = express.Router();
 
