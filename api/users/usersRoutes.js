@@ -23,7 +23,7 @@ router.get("/", (req, res, next) => {
 
 router.get("/:id", validateUserId, (req, res) => {
   // RETURN THE USER OBJECT
-  res.json(req, user);
+  res.json(req.user);
 });
 
 router.post("/", validateUser, (req, res, next) => {
