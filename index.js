@@ -1,8 +1,8 @@
-// require your server and launch it
+require("dotenv").config();
 const server = require("./api/server");
 
-const PORT = 5000;
+const port = process.env.PORT || 5000;
 
-server.listen(PORT, () => {
-  console.log("\n*** Server running on http://localhost:5000 ***\n");
+server.listen(port, () => {
+  console.log("\n*** Server running on ${PORT} ***\n");
 });

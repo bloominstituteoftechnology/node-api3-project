@@ -1,13 +1,17 @@
 const express = require("express");
+const helmet = require("helmet");
+const morgan = require("morgan");
 const { logger } = require("./middleware/middleware");
-const server = express();
 const usersRouter = require("./users/usersRoutes");
-// remember express by default cannot parse JSON in request bodies
-server.use(express.json());
+const server = express();
 
+server.use(helmet());
+server.use(morgan());
+server.use(express.json());
 server.use(logger);
 server.use("/api/users", usersRouter);
-// global middlewares and the user's router need to be connected here
+
+// global middlewares and the user's router
 server.get("/", (req, res) => {
   res.send("<h2> Lets write some middlware here </h2>");
 });
