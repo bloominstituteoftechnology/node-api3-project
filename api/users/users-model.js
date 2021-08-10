@@ -38,7 +38,7 @@ function update(id, changes) {
   return db('users')
     .where({ id })
     .update(changes)
-    .then(rows => {
+    .then(() => {
       return getById(id);
     });
 }
