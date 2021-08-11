@@ -12,7 +12,8 @@ const router = express.Router();
 
 const users = require('./users-model')
 
-const post = require('../posts/posts-model')
+const post = require('../posts/posts-model');
+const { response } = require('express');
 
 
 
@@ -60,10 +61,10 @@ router.put('/:id',   validateUserId, validateUser, (req, res, next) => {
   // and another middleware to check that the request body is valid
 });
 
-router.delete('/:id',   validateUserId, (req, res) => {
+router.delete('/:id',   validateUserId, (req, res, next) => {
 
   try {
-    User.remove(req.params.id)
+    users.remove(req.params.id)
     res.json(req.user)
   } catch (err) {
     next(err)
@@ -72,7 +73,14 @@ router.delete('/:id',   validateUserId, (req, res) => {
   // this needs a middleware to verify user id
 });
 
-router.get('/:id/posts', (req, res) => {
+router.get('/:id/posts', validateUserId, async (req, res, next ) => {
+  try {
+    const result = await users.getUserPosts(req.params.id)
+    res.json(result)
+  } catch (err) {
+    next(err)
+  }
+
   // RETURN THE ARRAY OF USER POSTS
   // this needs a middleware to verify user id
 });

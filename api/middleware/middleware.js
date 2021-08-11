@@ -4,12 +4,13 @@ const user = require('../users/users-model')
 
 function logger(req, res, next) {
   // DO YOUR MAGIC
-  
+  console.log(
+    `[${new Date().toISOString()}] ${req.method} to ${req.url} from ${req.get(
+      'Origin'
+    )}`
+  );
 
-  const  timestamp = new Date().toLocaleString
-  const method= req.method
-  const url = req.originalUrl
-  
+  next();
 }
 
 function validateUserId(req, res, next) {
