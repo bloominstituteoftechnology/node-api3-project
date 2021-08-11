@@ -1,17 +1,39 @@
-function logger(req, res, next) {
-  // DO YOUR MAGIC
+const Users = require('../users/users-model.js')
+
+const logger = (req, res, next) => {
+  console.log(`
+    method: ${req.method}
+    endpoint: ${req.url}
+    timestamp: ${req.timeStamp}
+  `)
+  next()
 }
 
-function validateUserId(req, res, next) {
-  // DO YOUR MAGIC
+const validateUserId = async (req, res, next) => {
+  const { id } = req.params
+  try {
+    const user = await Users.getById(id)
+    if ( ! user) {
+      res.status(404)
+        .json({ message: 'user not found' })
+    } else {
+      req.user = user
+    }
+    next()
+  } catch {
+    res.status(500)
+      .json({ message: 'SERVER ERROR retrieving user' })
+  }
 }
 
-function validateUser(req, res, next) {
-  // DO YOUR MAGIC
+const validateUser = (req, res, next) => {
+  next()
 }
 
-function validatePost(req, res, next) {
-  // DO YOUR MAGIC
+const validatePost = (req, res, next) => {
+  next()
 }
 
-// do not forget to expose these functions to other modules
+module.exports = {
+  logger, validateUserId, validateUser, validatePost,
+}
