@@ -1,12 +1,14 @@
 const express = require("express");
 const morgan = require("morgan");
 const helmet = require("helmet");
+// const logger = require("logger");
 const usersRouter = require("./users/users-router.js");
 const middlewareRouter = require("./middleware/middleware.js");
 const server = express();
 server.use(express.json());
 server.use(morgan("dev"));
 server.use(helmet());
+// server.use(logger);
 // server.use("./api/users", usersRouter);
 // server.use("./middleware/middleware", middlewareRouter);
 
