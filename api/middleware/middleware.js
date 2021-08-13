@@ -7,20 +7,19 @@ function logger(req, res, next) {
   next()
 }
 
-function validateUserId(req, res, next) {
+function validateUserId(req, res, next)  {
   // DO YOUR MAGIC
-  try{
+  
     const userId = req.params.id
-    const user = await User.getById(userId)
+    const user = User.getById(userId)
     if(!user){
       res.status(404).json(`No user with this ${userId}`)
     }else{
       req.User = user
       next()
-    }
-  }catch(err){
-    res.status(500).json({message: 'error'})
+    
   }
+  
 }
 
 function validateUser(req, res, next) {
