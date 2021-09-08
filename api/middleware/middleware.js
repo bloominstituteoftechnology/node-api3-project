@@ -18,7 +18,7 @@ async function validateUserId(req, res, next) { // interact. w DB => make async
     const user = await User.getById(req.params.id)
     if (!user) {
       res.status(404).json({
-        message: "no such user",
+        message: "user not found",
       })
     } else {
       req.user = user
@@ -37,6 +37,14 @@ async function validateUserId(req, res, next) { // interact. w DB => make async
 
 function validateUser(req, res, next) {
   // DO YOUR MAGIC
+  const { name } = req.body
+  if (!name || !name.trim()) {//.trim() if white space is submitted
+  res.status(400).json({
+    message: "missing required name field"
+  })
+  } else {
+    req.name = name.trim()
+  }
   console.log('validateUser middleware')
   next()
 }
@@ -44,8 +52,16 @@ function validateUser(req, res, next) {
 function validatePost(req, res, next) {
   // DO YOUR MAGIC
   console.log('validatePost middleware')
-  next()
-}
+  const { name } = req.body
+  if (!name) {
+    res.status(400).json({
+      message: "missing required name field"
+    }) 
+  } else {
+       next()
+    }
+
+  }
 
 // do not forget to expose these functions to other modules
 module.exports = {
