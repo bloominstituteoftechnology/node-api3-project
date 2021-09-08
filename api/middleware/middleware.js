@@ -52,12 +52,13 @@ function validateUser(req, res, next) {
 function validatePost(req, res, next) {
   // DO YOUR MAGIC
   console.log('validatePost middleware')
-  const { name } = req.body
-  if (!name) {
+  const { text } = req.body
+  if (!text || !text.trim()) {
     res.status(400).json({
-      message: "missing required name field"
+      message: "missing required text field"
     }) 
   } else {
+       req.text = text.trim()
        next()
     }
 
