@@ -1,3 +1,6 @@
+
+const User = require('../users/users-model')
+
 function  logger(req, res, next) { //ctrl + d
   // DO YOUR MAGIC
   const timestamp = new Date().toLocaleDateString()
@@ -10,7 +13,23 @@ function  logger(req, res, next) { //ctrl + d
   next()
 }
 
-function validateUserId(req, res, next) {
+async function validateUserId(req, res, next) { // interact. w DB => make async
+  try {
+    const user = await User.getById(req.params.id)
+    if (!user) {
+      res.status(404).json({
+        message: "no such user",
+      })
+    } else {
+      req.user = user
+      next()
+    }
+  } catch (err) {
+    res.status(500).json({
+      message: "problem finding user"
+    })
+  }
+
   // DO YOUR MAGIC
   console.log('validateUserId middleware')
   next()
