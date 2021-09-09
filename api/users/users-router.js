@@ -70,7 +70,6 @@ router.delete('/:id', validateUserId, async (req, res, next) => {
   // this needs a middleware to verify user id
   //console.log('req.user -->', req.user)
   try {
-
     await User.remove(req.params.id)
     res.json(req.user)
   } catch(err) {
@@ -78,10 +77,16 @@ router.delete('/:id', validateUserId, async (req, res, next) => {
   }
 });
 
-router.get('/:id/posts', validateUserId, (req, res) => {
+router.get('/:id/posts', validateUserId, async (req, res, next) => {
   // RETURN THE ARRAY OF USER POSTS
   // this needs a middleware to verify user id
-  console.log('req.user -->', req.user)
+  //console.log('req.user -->', req.user)
+  try {
+    const result = await User.getUserPosts(req.params.id)
+    res.json(result)
+  } catch(err) {
+    next(err)
+  }
 });
                                                                         //eslint disables red underline like from '..but was never read'
 router.post('/:id/posts', validateUserId, validatePost, (req, res) => { //eslint-disable-line
