@@ -89,12 +89,22 @@ router.get('/:id/posts', validateUserId, async (req, res, next) => {
   }
 });
                                                                         //eslint disables red underline like from '..but was never read'
-router.post('/:id/posts', validateUserId, validatePost, (req, res) => { //eslint-disable-line
+router.post('/:id/posts', validateUserId, validatePost, async (req, res, next) => { //eslint-disable-line
   // RETURN THE NEWLY CREATED USER POST
   // this needs a middleware to verify user id
   // and another middleware to check that the request body is valid
-  console.log('req.user -->', req.user)
-  console.log('req.text -->', req.text)
+  // console.log('req.user -->', req.user)
+  // console.log('req.text -->', req.text)
+  try {
+    const result = await Post.insert({
+      user_id: req.params.id,
+      text: req.test,
+    })
+    res.json(201).json(result)
+  } catch (err) {
+    next(err)
+  }
+
 });
 
 router.use( (err, req, res, next) => { //eslint-disable-line
