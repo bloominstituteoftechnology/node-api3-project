@@ -1,5 +1,5 @@
 /* eslint-disable */
-const User = require("../api/users/users-model");
+const User = require("../users/users-model");
 
 function logger(req, res, next) {
   const timestamp = new Date().toLocaleString();

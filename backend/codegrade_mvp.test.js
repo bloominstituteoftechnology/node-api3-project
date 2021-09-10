@@ -1,9 +1,9 @@
 const request = require("supertest");
-const server = require("./backend/api/server");
-const db = require("./backend/data/db-config");
+const server = require("./api/server");
+const db = require("./data/db-config");
 
-const { users: initialUsers } = require("./backend/data/seeds/02-users");
-const { posts: initialPosts } = require("./backend/data/seeds/03-posts");
+const { users: initialUsers } = require("./data/seeds/02-users");
+const { posts: initialPosts } = require("./data/seeds/03-posts");
 
 beforeAll(async () => {
   await db.migrate.rollback();

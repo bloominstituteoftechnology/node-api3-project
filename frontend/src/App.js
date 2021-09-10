@@ -16,7 +16,7 @@ export default class App extends Component {
 
   // Fetch the list of players from API and store it in the state
   componentDidMount() {
-    fetch("http://localhost:3003/users/list")
+    fetch("http://localhost:5555/users/list")
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState({ users: responseJson.data });
@@ -24,7 +24,7 @@ export default class App extends Component {
   }
   // a function to handle the view of a single-player card
   showCard = (id) => {
-    fetch(`http://localhost:3003/users/${id}`)
+    fetch(`http://localhost:5555/users/${id}`)
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState({ user: responseJson.data });

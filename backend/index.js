@@ -2,14 +2,14 @@ require("dotenv").config();
 const morgan = require("morgan");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const { logger } = require("./backend/middleware/middleware");
+const { logger } = require("./middleware/middleware");
 const express = require("express");
 
-const app = require("./backend/api/server");
+const app = require("./api/server");
 const helmet = require("helmet");
-const usersRouter = require("./backend/api/users/users-router");
+const usersRouter = require("./users/users-router");
 
-const PORT = process.env.PORT || 3003;
+const PORT = process.env.PORT || 5000;
 
 app.use(morgan());
 app.use(helmet());
