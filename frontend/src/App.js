@@ -14,7 +14,7 @@ export default class App extends Component {
     };
   }
 
-  // Fetch the list of players from API and store it in the state
+  // Fetch the list of users from API and store it in the state
   componentDidMount() {
     fetch("http://localhost:5555/users/list")
       .then((response) => response.json())
@@ -22,7 +22,7 @@ export default class App extends Component {
         this.setState({ users: responseJson.data });
       });
   }
-  // a function to handle the view of a single-player card
+  // a function to handle the view of a single-user card
   showCard = (id) => {
     fetch(`http://localhost:5555/users/${id}`)
       .then((response) => response.json())
@@ -35,7 +35,7 @@ export default class App extends Component {
     });
   };
 
-  // a function to handle the view of the player’s list
+  // a function to handle the view of the users list
   showList = () => {
     this.setState({
       card: false,
@@ -72,6 +72,4 @@ export default class App extends Component {
       </div>
     );
   }
-
-  //...
 }
