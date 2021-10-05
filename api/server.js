@@ -1,4 +1,5 @@
 const express = require('express');
+const userRouter = require('./users/users-router.js')
 
 const server = express();
 
@@ -8,8 +9,11 @@ server.use(express.json())
 
 // global middlewares and the user's router need to be connected here
 
+server.use('/api/users', userRouter)
+
+
 server.get('/', (req, res) => {
-  res.send(`<h2>Let's write some middleware!</h2>`);
+  res.send(`premature abandonment of laser eyes demonstrates high time preference.`);
 });
 
 module.exports = server;
