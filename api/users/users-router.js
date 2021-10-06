@@ -33,7 +33,7 @@ router.post('/',validateUser, (req, res) => {
       res.status(201).json(user)
     })
     .catch(err=>{
-      res.status(400).json(message.err)
+      res.status(400).json(err)
     })
 });
 
@@ -43,32 +43,39 @@ router.put('/:id',validateUserId, validateUser, (req, res) => {
       res.status(201).json(user)
     })
     .catch(err=>{
-      res.status(400).json(message.err)
+      res.status(400).json(err)
     })
 });
 
 router.delete('/:id',validateUserId, (req, res) => {
+  let deletedUser;
+  Users.getById(id) = deletedUser
   Users.remove(req.params.id)
     .then(user=>{
-      res.status(200).json(user)
+      res.status(200).json(user, deletedUser)
     })
     .catch(err=>{
-      res.status(400).json(message.err)
+      res.status(400).json(err)
     })
-  
-  // RETURN THE FRESHLY DELETED USER OBJECT
-  // this needs a middleware to verify user id
 });
 
 router.get('/:id/posts',validateUserId, (req, res) => {
-  // RETURN THE ARRAY OF USER POSTS
-  // this needs a middleware to verify user id
+  Users.getUserPosts(req.params.id)
+    .then(posts=>{
+      res.status(200).json(posts)
+    })
+    .catch(err=>{
+      res.status(400).json(err)
+    })
+  
 });
 
-router.post('/:id/posts',validateUserId, validatePost, (req, res) => {
-  // RETURN THE NEWLY CREATED USER POST
-  // this needs a middleware to verify user id
-  // and another middleware to check that the request body is valid
+router.post("/:id/posts", validateUserId, validatePost, async (req, res) => {
+  const newPost = await Posts.insert({
+    user_id: req.params.id,
+    text: req.body.text,
+  });
+  res.status(201).json(newPost);
 });
 
 // do not forget to export the router
