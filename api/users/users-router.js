@@ -48,11 +48,9 @@ router.put('/:id',validateUserId, validateUser, (req, res) => {
 });
 
 router.delete('/:id',validateUserId, (req, res) => {
-  let deletedUser;
-  Users.getById(id) = deletedUser
   Users.remove(req.params.id)
     .then(user=>{
-      res.status(200).json(user, deletedUser)
+      res.status(200).json(user)
     })
     .catch(err=>{
       res.status(400).json(err)
