@@ -8,6 +8,7 @@ const {
   validateUserId,
   validateUser,
   validatePost,
+  handleError,
 } = require("../middleware/middleware");
 
 const router = express.Router();
@@ -66,18 +67,15 @@ router.post("/:id/posts", validateUserId, validatePost, (req, res, next) => {
   // RETURN THE NEWLY CREATED USER POST
   // this needs a middleware to verify user id
   // and another middleware to check that the request body is valid
-  Users.insert(req.body.posts)
-    .then(() => {
-      res.status(201).json(req.post);
-    })
+  Posts.insert({
+    user_id: req.params.id,
+    text: req.body.text,
+  })
+    .then((post) => res.json(post))
     .catch(next);
 });
 
-router.use((err, req, res) => {
-  res.status(err.status || 500).json({
-    message: err.message,
-  });
-});
+router.use(handleError);
 
 // do not forget to export the router
 module.exports = router;
