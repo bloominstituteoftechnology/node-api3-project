@@ -1,6 +1,6 @@
 const express = require('express');
 const userRouter = require('../api/users/users-router');
-const logger = require('./middleware/middleware');
+const { logger } = require('./middleware/middleware');
 
 const server = express();
 

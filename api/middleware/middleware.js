@@ -1,5 +1,5 @@
 function logger(req, res, next) {
-  console.log(`Time Stamp: ${new Date.toISOString()}, Request Method: ${req.method}, Request URL: ${req.url}`);
+  console.log(`Time Stamp: ${new Date().toISOString()}, Request Method: ${req.method}, Request URL: ${req.url}`);
 
   next();
 }
