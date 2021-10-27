@@ -40,8 +40,9 @@ router.put('/:id', validateUserId, validateUser, async (req, res) => {
 
 router.delete('/:id', validateUserId, async (req, res) => {
   try {
+    const user = await Users.getById(req.params.id)
     const deletedUser = await Users.remove(req.params.id);
-    res.status(200).json(deletedUser);
+    res.status(200).json(user);
   } catch (err) {
     res.status(500).json({ message: "something went wrong" })
   }
@@ -56,10 +57,13 @@ router.get('/:id/posts', validateUserId, async (req, res) => {
   }
 });
 
-router.post('/:id/posts', (req, res) => {
-  // RETURN THE NEWLY CREATED USER POST
-  // this needs a middleware to verify user id
-  // and another middleware to check that the request body is valid
+router.post('/:id/posts', validateUserId, validatePost, async (req, res) => {
+  try {
+    const newPost = await Posts.insert({user_id: req.params.id, text: req.body.text});
+    res.status(201).json(newPost);
+  } catch (err) {
+    res.status(500).json({ message: "something went wrong" })
+  }
 });
 
 // do not forget to export the router
