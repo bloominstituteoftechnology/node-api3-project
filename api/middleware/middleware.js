@@ -47,6 +47,11 @@ function validateUserId(req, res, next) {
 //   }
 // }
 
+// -------------------------------------------
+// Notes for myself: the code below validate user without schema
+// Keeping just for learning purpose
+// -------------------------------------------
+
 // function validateUser(req, res, next) {
 //   const { name } = req.body;
 //     if (name) {
@@ -79,13 +84,39 @@ async function validateUser(req, res, next) {
   }
 }
   
+// -------------------------------------------
+// Notes for myself: the code below validate post without schema
+// Keeping just for learning purpose
+// -------------------------------------------
+// function validatePost(req, res, next) {
+//   const { text } = req.body;
+//   if (text) {
+//     next();
+//   } else {
+//     next({ message: "missing required text field", status: 400 });
+//   }
+// }
 
-function validatePost(req, res, next) {
-  const { text } = req.body;
-  if (text) {
-    next();
-  } else {
-    next({ message: "missing required text field", status: 400 });
+const postSchema = yup.object().shape({
+  text: yup
+    .string()
+    .typeError('name needs to be a string')
+    .trim('whitespace alone does not count')
+    .required('you NEEED to supply a text')
+    .min(3, 'text needs to be 3 chars long')
+    .max(500, 'text cannot be longer than 500')
+})
+
+async function validatePost(req, res, next) {
+  try {
+    const validated = await postSchema.validate(
+      req.body,
+      { strict: false, stripUnknown: true }
+    )
+    req.body = validated
+    next()
+  } catch (err) {
+    next({ message: "missing required text field", status: 400 })
   }
 }
 
