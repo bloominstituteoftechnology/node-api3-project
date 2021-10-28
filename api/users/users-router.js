@@ -73,10 +73,25 @@ router.put('/:id', validateUserId, validateUser, (req, res, next) => {
     .catch(next)
 });
 
-router.delete('/:id', (req, res) => {
-  // RETURN THE FRESHLY DELETED USER OBJECT
-  // this needs a middleware to verify user id
+router.delete('/:id', validateUserId, (req, res, next) => {
+  Users.remove(req.user.id)
+    .then(() => {
+      res.status(200).json(req.user);
+    })
+    .catch(next);
 });
+
+// -------------------------------------------
+// Notes for myself: Async way- delete as soon as I feel confident
+// The code below passed the test also.
+// router.delete("/:id", validateUserId, async (req, res, next) => {
+//   try {
+//     res.status(200).json(req.user);
+//     await Users.remove(req.user.id);
+//   } catch (err) {
+//     next(err);
+//   }
+// });
 
 router.get('/:id/posts', (req, res) => {
   // RETURN THE ARRAY OF USER POSTS
