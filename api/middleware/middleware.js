@@ -27,6 +27,8 @@ function validateUserId(req, res, next) {
     .catch(next)
 }
 
+
+
 // -------------------------------------------
 // Notes for myself: Async way- delete as soon as I feel confident
 // The code below passed the test also.
@@ -45,14 +47,38 @@ function validateUserId(req, res, next) {
 //   }
 // }
 
-function validateUser(req, res, next) {
-  const { name } = req.body;
-    if (name) {
-      next();
-    } else {
-      next({ message: "missing required name field", status: 400 });
-    }
+// function validateUser(req, res, next) {
+//   const { name } = req.body;
+//     if (name) {
+//       next();
+//     } else {
+//       next({ message: "missing required name field", status: 400 });
+//     }
+// }
+
+const userSchema = yup.object().shape({
+  name: yup
+    .string()
+    .typeError('name needs to be a string')
+    .trim('whitespace alone does not count')
+    .required('you NEEED to supply name')
+    .min(3, 'name needs to be 3 chars long')
+    .max(100, 'name cannot be longer than 100')
+})
+
+async function validateUser(req, res, next) {
+  try {
+    const validated = await userSchema.validate(
+      req.body,
+      { strict: false, stripUnknown: true }
+    )
+    req.body = validated
+    next()
+  } catch (err) {
+    next({ message: "missing required name field", status: 400 })
+  }
 }
+  
 
 function validatePost(req, res, next) {
   const { text } = req.body;
