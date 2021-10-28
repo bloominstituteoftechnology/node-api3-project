@@ -73,6 +73,7 @@ router.put('/:id', validateUserId, validateUser, (req, res, next) => {
     .catch(next)
 });
 
+
 router.delete('/:id', validateUserId, (req, res, next) => {
   Users.remove(req.user.id)
     .then(() => {
