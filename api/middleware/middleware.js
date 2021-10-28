@@ -3,8 +3,9 @@ const yup = require ('yup');
 
 function handleError(err, req, res, next) {
   res.status(err.status || 500).json({
-    message:err.message,
+    message: err.message,
     prodMessage: 'something went really wrong!',
+    stack: err.stack,
   });
 }
 
@@ -134,7 +135,7 @@ async function validatePost(req, res, next) {
   }
 }
 
-// do not forget to expose these functions to other modules
+
 module.exports = {
   handleError,
   logger,
