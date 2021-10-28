@@ -59,6 +59,22 @@ function validateUserId(req, res, next) {
 //     }
 // }
 
+// -------------------------------------------
+// Notes for myself: this is the way that Gabe posted
+// -------------------------------------------
+// function validateUser(req, res, next) {
+//   const { name } = req.body;
+//     if (!name || !name.trim()) {
+//       res.status(400).json({
+//         message: 'missing required name field',
+//       })
+//     } else {
+//       req.name = name.trim()
+//       next();
+//     }
+// }
+
+
 const userSchema = yup.object().shape({
   name: yup
     .string()
