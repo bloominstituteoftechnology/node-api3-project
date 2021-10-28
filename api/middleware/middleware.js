@@ -27,8 +27,6 @@ function validateUserId(req, res, next) {
     .catch(next)
 }
 
-
-
 // -------------------------------------------
 // Notes for myself: Async way- delete as soon as I feel confident
 // The code below passed the test also.
