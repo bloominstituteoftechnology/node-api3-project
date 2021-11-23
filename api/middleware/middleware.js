@@ -2,44 +2,30 @@ const User = require('../users/users-model')
 
 function logger(req, res, next) {
   // DO YOUR MAGIC
-  console.log(req.method)
-  console.log(req.url);  
-   console.log(new Date);  
-    next()
+  const timeStamp = new Date().toLocaleString()
+  const method = req.method
+  const url = req.originalUrl
+  // console.log('logger middleware');
+  console.log(`[${timeStamp}] ${method} to ${url}`);
+  next()
 }
 
-async function validateUserId(req, res, next) {
+function validateUserId(req, res, next) {
   // DO YOUR MAGIC
-  try {
-    const { id } = req.params
-    const user = await User.getById(id)
-    if(!user){
-      res.status(404).json(`no user with ${id}`)
-    } else {
-      req.user = user
-      next()
-    }
-  } catch (error) {
-    res.status(500).json({ message: error.message})
-  }
+  console.log('validateUserId middleware');
+  next()
 }
 
 function validateUser(req, res, next) {
   // DO YOUR MAGIC
-  if(!req.body.name){
-    res.status(400).json("Name required")
-  } else {
-    next()
-  }
+  console.log('validateUser middleware');
+  next()
 }
 
 function validatePost(req, res, next) {
   // DO YOUR MAGIC
-  if(!req.body.text){
-    res.status(400).json("Text is required")
-  } else {
-    next()
-  }
+  console.log('validatePosts middleware');
+  next()
 }
 
 // do not forget to expose these functions to other modules
