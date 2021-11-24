@@ -1,14 +1,20 @@
 const express = require('express');
-// const User = require('../users/users-model')
-// const Posts = require('../posts/posts-model')
+const User = require('../users/users-model')
+const Posts = require('../posts/posts-model')
+
 const { validateUserId, validateUser, validatePost } = require('../middleware/middleware')
 // You will need `users-model.js` and `posts-model.js` both
 // The middleware functions also need to be required
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   // RETURN AN ARRAY WITH ALL THE USERS
+  User.get()
+  .then(users => {
+    res.json(users)
+  })
+  .catch(next)
 });
 
 router.get('/:id', validateUserId, (req, res) => {
@@ -51,6 +57,14 @@ router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
   console.log(req.user);
   console.log(req.text);
 });
+
+router.use((err, req, res, next) => { 
+  res.status(err.status || 500).json({
+    customMessage: 'Error inside posts router',
+    message: err.message,
+    stack: err.stack
+  })
+})
 
 // do not forget to export the router
 module.exports = router
