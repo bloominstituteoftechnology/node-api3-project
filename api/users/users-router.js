@@ -12,9 +12,7 @@ router.get('/', (req, res) => {
   })
   .catch(error => {
     console.log(error);
-    res.status(500).json({
-      message: 'Error retrieving users',
-    });
+    res.status(500).json({message: 'Error retrieving users'});
   });
 });
 
@@ -25,9 +23,7 @@ router.get('/:id',mw.validateUserId, (req, res) => {
     })
     .catch(error => {
       console.log(error);
-      res.status(500).json({
-        message: 'Error retrieving user',
-      });
+      res.status(500).json({message: 'Error retrieving user'});
     })
 });
 
@@ -38,32 +34,67 @@ router.post('/',mw.validateUser, (req, res) => {
     })
     .catch(error => {
       console.log(error);
-      res.status(500).json({
-        message: 'Error creating user',
-      });
+      res.status(500).json({message: 'Error creating user'});
     })
 });
 
-router.put('/:id', (req, res) => {
-  // RETURN THE FRESHLY UPDATED USER OBJECT
-  // this needs a middleware to verify user id
-  // and another middleware to check that the request body is valid
+router.put('/:id',mw.validateUserId,mw.validateUser, (req, res) => {
+  Users.update(req.params.id,req.body)
+    .then(user => {
+      res.status(200).json(user)
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).json({message: 'Error updating user'});
+    })
 });
 
-router.delete('/:id', (req, res) => {
-  // RETURN THE FRESHLY DELETED USER OBJECT
-  // this needs a middleware to verify user id
+router.delete('/:id',mw.validateUserId, (req, res) => {
+  Users.getById(req.params.id)
+    .then(user =>{
+      Users.remove(req.params.id)
+        .then(users => {
+          res.status(200).json(user)
+        })
+        .catch(error => {
+          console.log(error);
+          res.status(500).json({message: 'Error deleting user'});
+        })
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).json({message: 'Error retrieving user'});
+    })
 });
 
-router.get('/:id/posts', (req, res) => {
-  // RETURN THE ARRAY OF USER POSTS
-  // this needs a middleware to verify user id
+router.get('/:id/posts',mw.validateUserId, (req, res) => {
+  const postArray = [];
+  Posts.get()
+  .then(posts => {
+    posts.forEach(post =>{
+      if(post.user_id == req.params.id) {
+        postArray.push(post)
+      }
+    })
+    res.status(200).json(postArray)
+  })
+  .catch(error => {
+    console.log(error);
+    res.status(500).json({message: 'Error retrieving posts'});
+  })
 });
 
-router.post('/:id/posts', (req, res) => {
-  // RETURN THE NEWLY CREATED USER POST
-  // this needs a middleware to verify user id
-  // and another middleware to check that the request body is valid
+router.post('/:id/posts',mw.validateUserId, mw.validatePost, (req, res) => {
+  const newPost = req.body
+  newPost.user_id = req.params.id
+  Posts.insert(newPost)
+  .then(post => {
+    res.status(201).json(post)
+  })
+  .catch(error => {
+    console.log(error);
+    res.status(500).json({message: 'Error adding post'});
+  })
 });
 
-// do not forget to export the router
+module.exports = router;

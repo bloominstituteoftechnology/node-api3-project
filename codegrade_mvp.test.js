@@ -131,7 +131,7 @@ describe('server.js', () => {
       expect(posts).toHaveLength(initialPosts.filter(p => p.user_id == 1).length + 2)
     }, 750)
     test('[21] responds with the newly created user post', async () => {
-      let res = await request(server).post('/api/users/1/posts').send({ text: 'foo' })
+      let res = await request(server).post('/api/users/1/posts').send({ user_id: 1, text: 'foo' })
       expect(res.body).toHaveProperty('id')
       expect(res.body).toMatchObject({ text: 'foo' })
     }, 750)

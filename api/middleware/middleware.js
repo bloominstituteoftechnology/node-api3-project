@@ -39,8 +39,10 @@ function validatePost(req, res, next) {
   const newPost = req.body;
   if (!req.body) {
     res.status(400).json({ message: "missing post data" })
-  } else if (!newPost.text || !newPost.user_id) {
-    res.status(400).json({ message: "missing required text field" })
+  } else if (!newPost.text) {
+    res.status(400).json({ message: "missing required text" })
+  // else if (!newPost.text || !newPost.user_id) {
+  //   res.status(400).json({ message: "missing required text or user_id fields" })
   } else {
     next()
   }
