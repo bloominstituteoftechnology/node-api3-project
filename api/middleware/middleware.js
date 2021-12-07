@@ -2,22 +2,49 @@ const Posts = require('../posts/posts-model');
 const Users = require('../users/users-model');
 
 function logger(req, res, next) {
-  // DO YOUR MAGIC
+  const date = new Date();
+  console.log(`
+    REQUEST METHOD: ${req.method}
+    REQUEST URL: ${req.originalUrl}
+    TIMESTAMP: ${date.toLocaleString()}
+  `);
+  next()
 }
 
 function validateUserId(req, res, next) {
-  // DO YOUR MAGIC
+  const {id} = req.params;
+  Users.getById(id)
+    .then(user => {
+      if (!user) {
+        res.status(404).json({message: "user not found"})
+      } else {
+        req.user = user
+        next()
+      }
+    })
 }
 
 function validateUser(req, res, next) {
-  // DO YOUR MAGIC
+  const newUser = req.body;
+  if (!req.body) {
+    res.status(400).json({message: "missing user data"})
+  } else if (!newUser.name) {
+    res.status(400).json({message: "missing required name field"})
+  } else {
+    next()
+  }
 }
 
 function validatePost(req, res, next) {
-  // DO YOUR MAGIC
+  const newPost = req.body;
+  if (!req.body) {
+    res.status(400).json({ message: "missing post data" })
+  } else if (!newPost.text || !newPost.user_id) {
+    res.status(400).json({ message: "missing required text field" })
+  } else {
+    next()
+  }
 }
-
-// do not forget to expose these functions to other modules
 
 module.exports = {
   logger,
