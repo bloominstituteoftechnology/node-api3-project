@@ -38,26 +38,47 @@ router.post('/',validateUser,async (req, res) => {
   }
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id',validateUser, validatePost, async (req, res) => {
   // RETURN THE FRESHLY UPDATED USER OBJECT
   // this needs a middleware to verify user id
   // and another middleware to check that the request body is valid
+  const { id } = req.params
+  const changes = req.body
+
+  const updateUser = await Users.update(id, changes)
+  res.status(201).json(updateUser)
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id',validateUserId, async (req, res) => {
   // RETURN THE FRESHLY DELETED USER OBJECT
   // this needs a middleware to verify user id
+  const { id } = req.params
+  
+  const deletedUser = await Users.remove(id)
+  res.status(200).json(deletedUser)
+  
 });
 
-router.get('/:id/posts', (req, res) => {
+router.get('/:id/posts', validateUserId, (req, res) => {
   // RETURN THE ARRAY OF USER POSTS
   // this needs a middleware to verify user id
+  const { id } = req.params
+  
+  Users.getUserPosts(id)
+    .then(post => {
+    res.status(200).json(post)
+    })
+    .catch(err => {
+      res.status(500).json({message: err.message})
+    })
 });
 
-router.post('/:id/posts', (req, res) => {
+router.post('/:id/posts', validateUserId (req, res) => {
   // RETURN THE NEWLY CREATED USER POST
   // this needs a middleware to verify user id
   // and another middleware to check that the request body is valid
+
+
 });
 
 // do not forget to export the router
