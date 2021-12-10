@@ -1,9 +1,10 @@
 function logger(req, res, next) {
-  // DO YOUR MAGIC
+  console.log(req.method)
+  next()
 }
 
 function validateUserId(req, res, next) {
-  // DO YOUR MAGIC
+//   // DO YOUR MAGIC
 }
 
 function validateUser(req, res, next) {
@@ -15,3 +16,10 @@ function validatePost(req, res, next) {
 }
 
 // do not forget to expose these functions to other modules
+
+module.export = {
+  logger,
+  validateUserId,
+  validateUser,
+  validatePost
+}
