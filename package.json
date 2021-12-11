@@ -14,8 +14,10 @@
     },
     "dependencies": {
         "express": "^4.17.1",
+        "helmet": "^4.6.0",
         "knex": "^0.95.14",
-        "sqlite3": "^5.0.2"
+        "morgan": "^1.10.0",
+        "sqlite3": "^4.2.0"
     },
     "devDependencies": {
         "@types/jest": "^27.0.3",
