@@ -1,7 +1,8 @@
 // require your server and launch it
-const server = require('./api/server')
+const express = require('express');
+const server = require('./api/server');
 
-const port = 8080
+const port = 8080;
 
 server.listen(port, () => {
     
