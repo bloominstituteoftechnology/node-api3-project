@@ -2,7 +2,7 @@ const express = require('express');
 
 // You will need `users-model.js` and `posts-model.js` both
 const User = require('./users-model')
-const Posts = require('../posts/posts-model')
+const Post = require('../posts/posts-model')
 // The middleware functions also need to be required
 const { validateUserId, validateUser, validatePost } = require('../middleware/middleware')
 
@@ -76,23 +76,24 @@ router.post('/:id/posts', validateUserId, validatePost, async (req, res, next) =
   // this needs a middleware to verify user id
   // and another middleware to check that the request body is valid
   try{
-    const newPost = await Post.insert({
+    const result = await Post.insert({
+      ...req.body,
       user_id: req.params.id,
       text: req.text,
     })
-    res.status(201).json(newPost)
-  }catch (err){
+    res.status(201).json(result)
+  } catch (err) {
     next(err)
   }
 });
 
-router.use((err, req, res, next) => {
+router.use((err, req, res) => {
   res.status(err.status || 500).json({
-    customMessage: 'Error inside user router',
-    message: err.message,
+    customMessage: 'something went wrong',
+    errorMessage: err.message,
     stack: err.stack
   })
 })
-// do not forget to export the router
-module.exports = router 
 
+// do not forget to export the router
+module.exports = router; 
