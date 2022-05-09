@@ -13,9 +13,9 @@
         "url": "git+https://github.com/BloomInstituteOfTechnology/node-api3-project.git"
     },
     "dependencies": {
-        "@vscode/sqlite3": "5.0.7",
         "express": "^4.17.3",
-        "knex": "^1.0.3"
+        "knex": "^2.0.0",
+        "sqlite3": "^5.0.8"
     },
     "devDependencies": {
         "@types/jest": "^27.4.1",
