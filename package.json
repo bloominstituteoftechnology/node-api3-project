@@ -15,7 +15,7 @@
     "dependencies": {
         "express": "^4.18.1",
         "knex": "^2.0.0",
-        "sqlite3": "^5.0.8"
+        "sqlite3": "^5.1.5"
     },
     "devDependencies": {
         "@types/jest": "^27.5.0",
